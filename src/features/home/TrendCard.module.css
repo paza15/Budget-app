@@ -1,0 +1,4 @@
+/* The trend in its group (DESIGN.md §9.22): a 124 plot, a 22 axis and the legend under it. */
+.chart {
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding) var(--space-3);
+}

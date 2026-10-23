@@ -1,0 +1,42 @@
+/* The erase sheet's body (DESIGN.md §9.16 sheets, §9.12 buttons, §9.17 for the centred question):
+   the question in Title 3 and what it deletes in Subhead --ink-2, centred; the field in a raised
+   group 20 below; the buttons 24 below that, 12 apart, full width like the add sheet's button. */
+.form {
+  padding-bottom: var(--space-2);
+}
+
+.intro {
+  padding: var(--space-2) var(--space-6) 0;
+  text-align: center;
+}
+
+.title {
+  font: var(--text-title3);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.message {
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* The form only wraps the field; it adds no box of its own. */
+.field {
+  display: contents;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4) 0;
+}
+
+.error {
+  font: var(--text-footnote);
+  color: var(--critical-ink);
+  text-align: center;
+}

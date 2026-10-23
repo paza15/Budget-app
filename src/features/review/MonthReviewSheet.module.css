@@ -1,0 +1,430 @@
+/*
+ * The month-end review (docs/design/EXTRAS.md §1): printed straight onto statement paper, the
+ * sheet's --surface. No inset groups, no cards: sections are separated by space and printed rules.
+ * Side margins are the gutter (a 337pt content box on an iPhone 15).
+ */
+
+.body {
+  padding: 0 var(--gutter) calc(var(--space-7) + var(--space-0-5));
+}
+
+/* ── The result (§1.2) ───────────────────────────────────────────────────── */
+
+.result {
+  padding-top: var(--space-2);
+}
+
+.label,
+.labelCritical {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-height: 22px;
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+/* Money came out of the wallet, or the budget was overspent: words and the octagon, never colour alone. */
+.labelCritical {
+  font-weight: 600;
+  color: var(--critical-ink);
+}
+
+.labelIcon {
+  color: var(--critical);
+}
+
+/* The figure on the leading side and the seal on the trailing side; BigAmount takes what the seal
+   leaves (content width − seal − 12) and shrinks within it. */
+.figureRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.figure {
+  margin-top: var(--space-1);
+}
+
+/* The 54px brass seal with "Closed 31 Oct" centred 5 under it. Static, like every engraving. */
+.seal {
+  display: grid;
+  flex: none;
+  justify-items: center;
+  gap: calc(var(--space-1) + 1px);
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+}
+
+.sealCaption {
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.sentence {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+  font: var(--text-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+/* ── Sections: 34 above, a Headline title and the printed rule 9 below it ─── */
+
+.section {
+  margin-top: calc(var(--space-7) + var(--space-0-5));
+}
+
+.heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: calc(var(--space-2) + 1px);
+  border-bottom: var(--hairline-width) solid var(--hairline-strong);
+}
+
+.headingTitle {
+  min-width: 0;
+  font: var(--text-headline);
+  color: var(--ink);
+}
+
+/* Money only: serif, --ink-2. */
+.headingMeta {
+  flex: none;
+  font: var(--text-figure-sm);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ── Money in and out (§1.3): the ledger of DESIGN.md §9.6 without its group ── */
+
+/* A real table: the operator column (22), the labels, and the figures with the 20px margin column
+   after them where the result's unit hangs. Rows are at least 44 tall (a cell's height is its
+   minimum). */
+.ledger {
+  width: 100%;
+  margin: var(--space-0-5) 0 var(--space-2);
+  border-collapse: collapse;
+}
+
+.ledger th,
+.ledger td {
+  height: var(--touch-min);
+  padding: 0;
+  vertical-align: middle;
+}
+
+/* Hairlines between the addends start after the operator column, like the margin of ruled paper;
+   none above the result. */
+.line + .line .lineLabel,
+.line + .line .lineFigure {
+  border-top: var(--hairline-width) solid var(--hairline);
+}
+
+/* The labels' column takes all the room left, so the operator column holds its width through the
+   min-content of its glyph box. */
+.operator {
+  font: var(--text-figure);
+  color: var(--ink-3);
+}
+
+.operatorGlyph {
+  display: inline-block;
+  width: 22px;
+}
+
+.lineLabel {
+  width: 100%;
+  font: var(--text-body);
+  color: var(--ink);
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.ledger .lineFigure {
+  position: relative;
+  padding: 0 var(--space-5) 0 var(--space-3);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.resultLine th,
+.resultLine td,
+.resultLineCritical th,
+.resultLineCritical td {
+  height: 52px;
+}
+
+.resultLine .operator,
+.resultLineCritical .operator {
+  color: var(--ink);
+}
+
+.resultLine .lineLabel,
+.resultLineCritical .lineLabel {
+  font-weight: 600;
+}
+
+/* The sum rule: 1px --ink-3 on the result row's top edge, as wide as the widest figure (--colw,
+   written by useLedgerColumn), aligned right with the figures. */
+.resultLine .lineFigure::before,
+.resultLineCritical .lineFigure::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: var(--space-5);
+  width: var(--colw, 0);
+  height: var(--rule-width);
+  background: var(--ink-3);
+}
+
+/* The accountant's double rule, 9 below the figure: brass, settled; --critical when the month
+   took money out. */
+.resultFigure::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: calc(-1 * (var(--space-2) + 1px));
+  width: var(--colw, 100%);
+  height: calc(2 * var(--rule-width) + var(--double-rule-gap));
+  border-top: var(--rule-width) solid var(--brass);
+  border-bottom: var(--rule-width) solid var(--brass);
+}
+
+.resultLineCritical .resultFigure::after {
+  border-color: var(--critical);
+}
+
+/* The carry row: where the result went. A button to the Wallet. */
+.carry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  min-height: var(--touch-min);
+  border-top: var(--hairline-width) solid var(--hairline);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  text-align: start;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.carry:active {
+  background: var(--press);
+}
+
+.carryText {
+  flex: 1;
+  min-width: 0;
+}
+
+.carryValue {
+  color: var(--ink);
+}
+
+.chevron {
+  flex: none;
+  margin-left: auto;
+  color: var(--ink-3);
+}
+
+/* ── Where it went (§1.4) ────────────────────────────────────────────────── */
+
+.bar {
+  margin-top: var(--space-4);
+}
+
+.legend {
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+  container-type: inline-size;
+}
+
+/* Line 1: the dot, the name and the amount; line 2 under the name: the change in words. */
+.legendRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: baseline;
+  padding: calc(var(--space-2) + var(--space-0-5)) 0 calc(var(--space-3) - 1px);
+  font: var(--text-body);
+}
+
+.legendRow + .legendRow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 18px;
+  height: var(--hairline-width);
+  background: var(--hairline);
+}
+
+/* A 9px dot in the category ink, centred on line 1 (a Body line is 1.2941em). */
+.dot {
+  align-self: start;
+  width: 9px;
+  height: 9px;
+  margin-top: calc((1.2941em - 9px) / 2);
+  border-radius: 50%;
+}
+
+.legendName {
+  min-width: 0;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.legendValue {
+  padding-left: var(--space-3);
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* The change: an arrow plus words in --ink-2, never a colour (up is not red, down is not green). */
+.change {
+  display: flex;
+  grid-column: 2 / -1;
+  align-items: center;
+  gap: calc(var(--space-1) + 1px);
+  margin-top: var(--space-0-5);
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.changeIcon {
+  flex: none;
+}
+
+/* ── The month in numbers (§1.5) ─────────────────────────────────────────── */
+
+.facts {
+  container-type: inline-size;
+}
+
+.fact,
+.factLink {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--space-3);
+  align-items: baseline;
+  min-height: 48px;
+  padding: calc(var(--space-3) + 1px) 0;
+}
+
+/* Full-width hairlines between the facts. */
+.facts > * + *::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--hairline-width);
+  background: var(--hairline);
+}
+
+.factLabel {
+  grid-column: 1;
+  min-width: 0;
+  font: var(--text-body);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* Counts are SF Pro (DESIGN.md §5.2); money is serif. Neither wraps. */
+.factCount,
+.factMoney {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--ink);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.factCount {
+  font: var(--text-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.factMoney {
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.factDetail {
+  grid-column: 1;
+  margin-top: var(--space-0-5);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+/* "Still owed to you": the amount and a 14px chevron column; the button's hit area is the row. */
+.factButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: inherit;
+}
+
+.factButton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.factButton:active::after {
+  background: var(--press);
+}
+
+.factButton:focus-visible {
+  outline: none;
+}
+
+.factButton:focus-visible::after {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.footer {
+  margin-top: calc(var(--space-5) + var(--space-0-5));
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* ── Accessibility text sizes: amounts move under their names, never wrap ── */
+
+@container (max-width: 14.4em) {
+  .legendRow {
+    grid-template-columns: 18px minmax(0, 1fr);
+  }
+
+  .legendValue {
+    grid-column: 2;
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .fact,
+  .factLink {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .factCount,
+  .factMoney {
+    grid-column: 1;
+    grid-row: auto;
+    text-align: left;
+  }
+}

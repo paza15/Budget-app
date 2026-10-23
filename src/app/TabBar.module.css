@@ -1,0 +1,135 @@
+/* The floating glass tab bar (DESIGN.md §7, §9.1). The only blurred layer: backdrop-filter sits
+   on the bar itself. */
+
+/* A 128px fade from transparent to --bg behind the bar, so text never collides with the glass. */
+.fade {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-tabbar);
+  height: 128px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg) 0%, transparent),
+    color-mix(in srgb, var(--bg) 82%, transparent) 30%,
+    var(--bg) 52%
+  );
+}
+
+/* Left and right --tabbar-inset (or the safe area, when wider), bottom --tabbar-offset; on wide
+   screens it stays a phone-sized capsule in the middle. */
+.bar {
+  position: fixed;
+  right: max(var(--tabbar-inset), env(safe-area-inset-right));
+  bottom: var(--tabbar-offset);
+  left: max(var(--tabbar-inset), env(safe-area-inset-left));
+  z-index: var(--z-tabbar);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr var(--tabbar-height) 1fr 1fr;
+  align-items: center;
+  max-width: var(--sheet-max-width);
+  height: var(--tabbar-height);
+  margin: 0 auto;
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-edge),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-float);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Glass without backdrop-filter falls back to the solid surface. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .bar {
+    background: var(--glass-solid);
+  }
+}
+
+.tab,
+.add {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* A 54px pill (the bar's height inside its padding): the 25px icon over the label, 2px apart. */
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-0-5);
+  min-width: 0;
+  height: calc(var(--tabbar-height) - 2 * var(--space-1));
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--ink-2);
+  font: var(--text-tab);
+  transition:
+    background-color var(--dur-fade) var(--ease-standard),
+    color var(--dur-fade) var(--ease-standard);
+}
+
+/* Active: --accent-ink, the label at 600, on the --lens pill. */
+.tab[aria-current='page'] {
+  background: var(--lens);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A 50px --accent circle with the bold plus in --on-accent. */
+.add {
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  width: var(--add-button-size);
+  height: var(--add-button-size);
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--ink) 22%, transparent);
+  transition: transform var(--dur-press) var(--ease-standard);
+}
+
+.add:active {
+  transform: scale(0.94);
+}
+
+.tab:focus-visible,
+.add:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Reduce Motion: no transforms, opacity only (DESIGN.md §10). */
+@media (prefers-reduced-motion: reduce) {
+  .add {
+    transition: opacity var(--dur-press) var(--ease-standard);
+  }
+
+  .add:active {
+    transform: none;
+    opacity: 0.8;
+  }
+}

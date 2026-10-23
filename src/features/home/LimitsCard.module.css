@@ -1,0 +1,66 @@
+/* Limit rows (DESIGN.md §9.21): a 34px coin, then the name and the amount on one line, the meter 9
+   below and its status line 7 below that. Padding 12 16; hairlines from the text column. */
+.row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  column-gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3) var(--group-padding);
+}
+
+/* The row's one button lies over it: the whole row is the target and shows the press overlay. */
+.open {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.open:active {
+  background: var(--press);
+}
+
+.open:focus-visible {
+  outline-offset: -2px;
+}
+
+.main {
+  min-width: 0;
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-height: 22px;
+}
+
+.name {
+  min-width: 0;
+  font: var(--text-body);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.figure {
+  flex: none;
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+}
+
+/* No limits yet: the line and "Set a limit", side by side while they fit. */
+.empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--group-padding);
+}
+
+.emptyText {
+  font: var(--text-body);
+  color: var(--ink-2);
+}

@@ -1,0 +1,5 @@
+/* Masked amounts are set in --ink-3 (docs/DESIGN.md §5.4); fill covers SVG text. */
+.masked {
+  color: var(--ink-3);
+  fill: var(--ink-3);
+}

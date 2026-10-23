@@ -1,0 +1,155 @@
+/* Month switcher (DESIGN.md §9.2, §9.3). Glass sits on opaque paper here, so it has no blur. */
+
+.monthButton,
+.backPill,
+.compactLabel {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* The stepper and the compact capsule are the kit's GlassGroup; the pill is glass of its own. */
+.backPill {
+  background: var(--glass);
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-edge),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-control);
+}
+
+/* ── Title: the serif month name with its caret, the range, the back pill ─── */
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  min-width: 0;
+  width: 100%;
+}
+
+.titleText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.monthButton {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-height: var(--touch-min);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  text-align: start;
+}
+
+.monthName {
+  font: var(--text-month);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+/* Nudged down to the x-height of the serif name. */
+.caret {
+  flex: none;
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+  color: var(--ink-3);
+}
+
+.monthButton:active .monthName {
+  opacity: 0.7;
+}
+
+.range {
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* 34 tall, with a 44 hit area from the pseudo-element. */
+.backPill {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: calc(var(--space-7) + var(--space-0-5));
+  padding: 0 calc(var(--space-3) + var(--space-0-5));
+  border-radius: var(--radius-pill);
+  font: var(--text-subhead);
+  font-weight: 600;
+  color: var(--accent-ink);
+  white-space: nowrap;
+  transition: transform var(--dur-press) var(--ease-standard);
+}
+
+.backPill::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--touch-min) - 100%) / -2) 0;
+}
+
+.backPill:active {
+  transform: scale(0.97);
+}
+
+/* ── Compact: "‹ October ›" in one capsule (category detail) ───────────────── */
+
+.compactRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+/* 44 + label + 44: the label is Subhead 600 in SF Pro, as in the reference's category detail
+   (DESIGN.md §9.3); the serif month belongs to the large title and the compact header. */
+.compactLabel {
+  min-height: var(--touch-min);
+  padding: 0 var(--space-0-5);
+  font: var(--text-subhead);
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* ── MonthSwitcher: title and stepper in one row ──────────────────────────── */
+
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.switcherTitle {
+  flex: 1;
+  width: auto;
+}
+
+/* ── Focus and motion ─────────────────────────────────────────────────────── */
+
+.monthButton:focus-visible,
+.backPill:focus-visible,
+.compactLabel:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backPill:active {
+    transform: none;
+  }
+}

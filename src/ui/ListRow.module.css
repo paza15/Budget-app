@@ -1,0 +1,194 @@
+/* List rows (DESIGN.md §9.8): grid 34px coin, 12 gap, padding 11 16; min 52 (one line), 62 (two
+   lines), 50 for settings rows without a coin (48 in sheets). Rows are size containers. */
+.row {
+  display: flex;
+  align-items: stretch;
+  container-type: inline-size;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: var(--form-row-min, 50px);
+  padding: 11px var(--group-padding);
+  color: var(--ink);
+  text-align: start;
+}
+
+.withLeading .body {
+  min-height: var(--row-min);
+}
+
+.two .body {
+  align-items: flex-start;
+  min-height: var(--row-2);
+}
+
+/* The 12pt gap to the trailing column comes from the body's own padding. */
+.withTrailing .body {
+  padding-right: var(--space-3);
+}
+
+.button {
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.button:active:not(:disabled) {
+  background: var(--press);
+}
+
+.disabled .body {
+  opacity: 0.4;
+}
+
+.leading {
+  display: flex;
+  flex: none;
+}
+
+/* In two-line rows the coin hangs from the first line. */
+.two .leading {
+  margin-top: 2px;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Line 1: the title and the amount share the first baseline. */
+.line1 {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--space-2) + var(--space-0-5));
+}
+
+.title {
+  display: -webkit-box;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: var(--text-body);
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.destructive .title {
+  color: var(--critical-ink);
+}
+
+.tinted .title {
+  color: var(--accent-ink);
+}
+
+.detail {
+  flex: none;
+  max-width: 60%;
+  overflow: hidden;
+  font: var(--text-body);
+  color: var(--ink-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.value {
+  flex: none;
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--ink-2);
+}
+
+.struck {
+  color: var(--ink-2);
+  text-decoration: line-through;
+}
+
+.critical {
+  color: var(--critical-ink);
+}
+
+/* Line 2: the subtitle runs the full width; an optional note sits right under the amount. */
+.line2 {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  margin-top: 2px;
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+.subtitle {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.note {
+  flex: none;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.chevron {
+  align-self: center;
+  color: var(--ink-3);
+  transition: rotate var(--dur-fade) var(--ease-standard);
+}
+
+/* An expanded disclosure: the down chevron points up. */
+.turned {
+  rotate: 180deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}
+
+/* The trailing control (a 26px paid check) centred in its own 28px column, on line 1. The column
+   is 28px of content plus the group padding, so amounts line up whether or not a row has a check. */
+.trailing {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  min-width: 28px;
+  padding-right: var(--group-padding);
+}
+
+.two .trailing {
+  align-items: flex-start;
+  padding-top: 9px;
+}
+
+/* Accessibility text sizes: the amount moves under the title; it never wraps or truncates. A
+   setting's detail moves under it too, so it never squeezes the label into a mid-word break.
+   14.4em sits between iOS's largest standard size and AX1, measured against the rows of inset
+   groups (the viewport minus 40): at xxxLarge (23px) it is 331px, less than the 335px rows of a 375pt
+   iPhone, so no standard size wraps; at AX1 (28px) it is 403px, more than the 400px rows of a 440pt
+   iPhone. ListRow.test.tsx keeps this. */
+@container (max-width: 14.4em) {
+  .line1 {
+    flex-wrap: wrap;
+  }
+
+  .value,
+  .detail {
+    flex-basis: 100%;
+  }
+
+  .detail {
+    max-width: none;
+  }
+}

@@ -1,0 +1,70 @@
+/* Colour swatches (DESIGN.md §6): 30pt circles with 44pt targets, padding 12 16 14. */
+.row {
+  padding: 0 var(--group-padding);
+}
+
+/* "Accent … Navy": the label in Body --ink, the chosen name in Body --ink-2 (the form-row look). */
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--form-row-min, 50px);
+  font: var(--text-body);
+}
+
+.label {
+  min-width: 0;
+  color: var(--ink);
+}
+
+.chosen {
+  flex: none;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* Fixed 30px columns spread edge to edge, so a second row lines up under the first. */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 30px);
+  justify-content: space-between;
+  row-gap: calc(var(--space-3) + var(--space-0-5));
+  padding: var(--space-3) 0 calc(var(--space-3) + var(--space-0-5));
+}
+
+.swatch {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--swatch);
+  cursor: pointer;
+  transition: box-shadow var(--dur-fade) var(--ease-standard);
+}
+
+/* The choice: a 2px gap in the group's paper, then a 1.5px --ink ring. */
+.selected {
+  box-shadow:
+    0 0 0 2px var(--group-bg, var(--surface)),
+    0 0 0 3.5px var(--ink);
+}
+
+/* The radio covers the swatch and 7pt around it (a 44pt target), invisible. */
+.input {
+  position: absolute;
+  inset: -7px;
+  z-index: 1;
+  width: calc(100% + 14px);
+  height: calc(100% + 14px);
+  margin: 0;
+  border-radius: 50%;
+  opacity: 0;
+  cursor: inherit;
+  appearance: none;
+}
+
+.swatch:has(.input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 5px;
+}

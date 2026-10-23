@@ -1,0 +1,18 @@
+.glyph {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+/* Emoji sit in the same box as a glyph, a touch smaller because emoji fill their em square. */
+.emoji {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  font-size: calc(var(--size) * 0.92);
+  line-height: 1;
+  font-variant-emoji: emoji;
+  vertical-align: middle;
+}

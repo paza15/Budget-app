@@ -1,0 +1,50 @@
+/* A status line in an inset group (DESIGN.md §4.4, §9.8): a 20px status icon, then Body text. One
+   line is 50 tall like a settings row (14 + 22 + 14); longer text wraps under itself with the
+   icon on its first line. */
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding);
+}
+
+/* Centred on the first line: Body is 22px tall, the icon 20. */
+.icon {
+  flex: none;
+  margin-top: 1px;
+}
+
+.text,
+.toned {
+  flex: 1;
+  min-width: 0;
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+[data-tone='good'] .icon {
+  color: var(--good);
+}
+
+[data-tone='good'] .toned,
+[data-tone='good'] .lead {
+  color: var(--good-ink);
+}
+
+[data-tone='warning'] .icon {
+  color: var(--warning);
+}
+
+[data-tone='warning'] .toned,
+[data-tone='warning'] .lead {
+  color: var(--warning-ink);
+}
+
+[data-tone='critical'] .icon {
+  color: var(--critical);
+}
+
+[data-tone='critical'] .toned,
+[data-tone='critical'] .lead {
+  color: var(--critical-ink);
+}

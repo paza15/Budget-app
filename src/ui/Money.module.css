@@ -1,0 +1,17 @@
+/* Money inherits its font: serif where a figure stands in its own cell, SF Pro in sentences. */
+.money {
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--ink-2);
+}
+
+.critical {
+  color: var(--critical-ink);
+}
+
+/* "•••" keeps the style of the figure it replaces, in tertiary ink. */
+.masked {
+  color: var(--ink-3);
+}

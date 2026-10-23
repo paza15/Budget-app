@@ -1,0 +1,90 @@
+/* The error fallback (docs/SPEC.md §3.10), laid out like an empty state (DESIGN.md §9.20). */
+
+.fallback {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-6) + var(--space-0-5)) calc(var(--space-6) + var(--space-1));
+  text-align: center;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+/* The app-level fallback replaces everything, so it fills the screen inside the safe areas. */
+.fallback[data-level='app'] {
+  position: fixed;
+  inset: 0;
+  padding-top: max(env(safe-area-inset-top), var(--space-6));
+  padding-right: max(env(safe-area-inset-right), var(--gutter));
+  padding-bottom: max(env(safe-area-inset-bottom), var(--space-6));
+  padding-left: max(env(safe-area-inset-left), var(--gutter));
+}
+
+.fallback[data-level='screen'] {
+  height: 100%;
+  padding-bottom: var(--content-bottom);
+}
+
+.fallback[data-level='sheet'] {
+  background: transparent;
+}
+
+.title {
+  margin: 0;
+  font: var(--text-headline);
+}
+
+.message {
+  margin: 0;
+  max-width: 280px;
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.primary,
+.secondary {
+  appearance: none;
+  min-height: var(--touch-min);
+  margin: 0;
+  padding: 0 calc(var(--space-4) + var(--space-0-5));
+  border: 0;
+  border-radius: var(--radius-pill);
+  font: var(--text-subhead);
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.secondary {
+  background: var(--surface-2);
+  color: var(--accent-ink);
+}
+
+.secondary:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

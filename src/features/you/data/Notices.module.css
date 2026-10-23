@@ -1,0 +1,72 @@
+/* Notice rows (DESIGN.md §9.8): a two-line row (name in Body, what and which license in Subhead
+   --ink-2) with a 14px chevron in --ink-3 that turns when the row is open; the license text in
+   Footnote --ink-2 under it. */
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--row-2);
+  padding: calc(var(--space-3) - 1px) var(--group-padding);
+  list-style: none;
+  cursor: pointer;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+/* WebKit draws its own disclosure triangle unless told not to. */
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:active {
+  background: var(--press);
+}
+
+.summary:focus-visible {
+  outline-offset: -4px;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+}
+
+.name {
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+.meta {
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+.chevron {
+  flex: none;
+  color: var(--ink-3);
+  transition: transform var(--dur-fade) var(--ease-standard);
+}
+
+.notice[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0 var(--group-padding) var(--space-4);
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

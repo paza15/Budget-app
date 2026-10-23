@@ -1,0 +1,17 @@
+/* A Home card row: the Toggle (text and switch), then the stacked order buttons, which fill the
+   row's 88pt (DESIGN.md §9.26 goal rows). */
+.row {
+  display: flex;
+  align-items: center;
+  min-height: calc(2 * var(--touch-min));
+  padding-right: var(--group-padding);
+  background: var(--group-bg, var(--surface));
+}
+
+/* The whole text toggles, as on iOS; the order buttons sit 4 after the switch. */
+label.toggle {
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  padding-right: var(--space-1);
+}

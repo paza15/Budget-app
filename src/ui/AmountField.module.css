@@ -1,0 +1,93 @@
+/* AmountField (DESIGN.md §9.14): a form row with the amount right-aligned in tabular serif figures. */
+.field {
+  position: relative;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  /* With the label hidden, the content-sized input still sits at the end. */
+  justify-content: flex-end;
+  gap: var(--space-3);
+  min-height: var(--form-row-min, 50px);
+  padding: 0 var(--group-padding);
+}
+
+/* 11 above and below, so a label that wraps keeps that much from the group's edges; one line
+   (22 + 22) still fits the 44 input, so a single-line row stays --form-row-min. */
+.label {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: calc(var(--space-3) - 1px);
+  padding-bottom: calc(var(--space-3) - 1px);
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+/* As wide as its text: --chars (the component's estimate in figure widths) of 1ch, and 2px for
+   the caret. The label keeps the rest of the row and wraps only when the two cannot share it. */
+.input {
+  flex: 0 1 calc(var(--chars, 6) * 1ch + 2px);
+  min-width: 0;
+  height: var(--touch-min);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font: var(--text-figure);
+  /* --text-figure is 18px at the default size; never below 16px, or iOS zooms. */
+  font-size: max(var(--text-input), 1.0588rem);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+  text-align: right;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+/* A placeholder in words ("None", "Amount") is UI text, not a figure (DESIGN.md §5.2). */
+.input[data-placeholder='text']::placeholder {
+  font: var(--text-body);
+  font-size: var(--text-input);
+}
+
+.input:disabled {
+  color: var(--ink-disabled);
+  -webkit-text-fill-color: var(--ink-disabled);
+}
+
+.error {
+  padding: 0 var(--group-padding) var(--space-3);
+  font: var(--text-footnote);
+  color: var(--critical-ink);
+}
+
+/* ── cell: label and input only, filling the grid cell; the feature lays out the row and places
+   the message ([data-part='error']), positioned against the feature's row, not this field. ── */
+.cell {
+  position: static;
+  min-width: 0;
+}
+
+.cell .line {
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+}
+
+.cell .input {
+  flex: 1 1 auto;
+}
+
+.cell .error {
+  padding: 0;
+}
+
+.disabled .label {
+  color: var(--ink-disabled);
+}

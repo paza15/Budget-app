@@ -1,0 +1,13 @@
+/* Padded by the four safe-area insets so their used values can be read (Diagnostics). Fixed at the
+   viewport's corner, as the insets are measured against it; never seen or touched. */
+.probe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+  visibility: hidden;
+  pointer-events: none;
+}

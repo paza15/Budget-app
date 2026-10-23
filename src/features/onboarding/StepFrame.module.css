@@ -1,0 +1,109 @@
+/* Onboarding steps 2 to 7 (DESIGN.md §9.25): the Screen above, the buttons pinned below it. */
+
+.frame {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* With the iOS keyboard up the frame is the visual viewport (useVisualViewport sets --vv-top and
+   --vv-height): it ends at the keyboard, so the button sits on it and the step scrolls in what is
+   left. The keyboard covers the home indicator, so the safe-area part of the bottom padding goes. */
+.frame[data-keyboard] {
+  position: fixed;
+  top: var(--vv-top, 0px);
+  right: 0;
+  bottom: auto;
+  left: 0;
+  height: var(--vv-height, 100%);
+}
+
+/* A step arrives from the side the user is going to (Continue: from the right; Back: from the
+   left), like a pushed screen. */
+.forward {
+  animation: arrive-forward var(--dur-push) var(--ease-push);
+}
+
+.back {
+  animation: arrive-back var(--dur-push) var(--ease-push);
+}
+
+@keyframes arrive-forward {
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-7));
+  }
+}
+
+@keyframes arrive-back {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--space-7)));
+  }
+}
+
+.screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/* The title is focused for VoiceOver when a step opens; it is not a control, so no ring. */
+.screen h1:focus {
+  outline: none;
+}
+
+/* The sentence under the large title: Body --ink-2, at the page's text edge. */
+.lead {
+  margin-top: var(--space-0-5);
+  padding: 0 var(--gutter);
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* Pinned above the bottom safe area, like Welcome's buttons: 44 from the screen edge with a home
+   indicator. */
+.actions {
+  position: relative;
+  display: grid;
+  flex: none;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: var(--sheet-max-width);
+  margin: 0 auto;
+  padding: var(--space-2) calc(var(--gutter) + env(safe-area-inset-right))
+    max(var(--space-4), calc(env(safe-area-inset-bottom) + 10px)) calc(var(--gutter) + env(safe-area-inset-left));
+}
+
+.frame[data-keyboard] .actions {
+  padding-bottom: var(--space-2);
+}
+
+/* What scrolls under the buttons fades out instead of being cut. */
+.actions::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: var(--space-6);
+  background: linear-gradient(to top, var(--bg), color-mix(in srgb, var(--bg) 0%, transparent));
+  pointer-events: none;
+}
+
+/* Reduce Motion: a fade only (the tokens already shorten --dur-push to 200ms). */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes arrive-forward {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes arrive-back {
+    from {
+      opacity: 0;
+    }
+  }
+}

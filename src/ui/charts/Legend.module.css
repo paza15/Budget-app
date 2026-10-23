@@ -1,0 +1,190 @@
+.legend {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * Where it went: 18px dot, the name, the amount and a 46px share, 40 tall (docs/DESIGN.md §9.22).
+ * Each row is a size container: at accessibility text sizes the figures move under the name
+ * (DESIGN.md §5.5). The row sets the Body text itself, so the em of its breakpoint and the lh
+ * below are always the Body size.
+ */
+.rows .item {
+  container-type: inline-size;
+  font: var(--text-body);
+}
+
+/*
+ * The padding centres one line of Body text in 40px (a negative result computes to 0), and the
+ * 9px dot sits on the name's first line. The first declarations spell out Body's line height
+ * (1.2941rem, --text-body) for engines without the lh unit.
+ */
+.rows .entry {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: start;
+  min-height: 40px;
+  padding-block: calc((40px - 1.2941rem) / 2);
+  padding-block: calc((40px - 1lh) / 2);
+}
+
+.rows .swatch {
+  margin-top: calc((1.2941rem - 9px) / 2);
+  margin-top: calc((1lh - 9px) / 2);
+}
+
+/*
+ * The name, then the figures as one unit. The figures stay on the name's line while its longest
+ * word still fits beside them; otherwise they move under it, so a long name never breaks inside a
+ * word at the standard text sizes either.
+ */
+.rows .main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-0-5) var(--space-3);
+  min-width: 0;
+}
+
+/*
+ * A zero basis and nearly all the free space: the name fills the line and wraps between words,
+ * and only its longest word (at most the full line) decides when the figures move down.
+ */
+.rows .label {
+  flex: 1000 1 0%;
+  max-width: 100%;
+  font: var(--text-body);
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+/* Alone on a line, the amount starts under the name and the share ends the line. */
+.rows .figures {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Amounts never wrap or truncate. */
+.rows .value {
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+/* The 46px share column, its 8px lead included; it grows only when large text needs it. */
+.rows .meta {
+  min-width: 46px;
+  padding-left: var(--space-2);
+  font: var(--text-footnote);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+/*
+ * Accessibility sizes: every row puts its figures under the name. A legend row is the screen
+ * minus the 20pt gutters and the 16pt group padding: 303px on a 375pt iPhone, 368px on a 440pt
+ * one. 13.16em sits between the largest standard size and AX1 for all of them: at xxxLarge (23px)
+ * it is 302.7px, under the narrowest row, so no standard size stacks; at AX1 (28px) it is 368.5px,
+ * over the widest row, so every accessibility size does. It is DESIGN.md §5.5's rule; its 14.4em
+ * is measured on full-width rows (335px on a 375pt iPhone) and would stack these 32px narrower
+ * rows at xxxLarge. Legend.test.tsx keeps this.
+ */
+@container (max-width: 13.16em) {
+  .rows .entry {
+    padding-block: var(--space-2);
+  }
+
+  .rows .label {
+    flex-basis: 100%;
+  }
+}
+
+/* Under a plot: keys and names in one wrapping line. */
+.inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+}
+
+/* Block-level flex: an inline box would align on the swatch's synthesized baseline. */
+.inline .entry {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+}
+
+.inline .label {
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.inline .value,
+.inline .meta {
+  font: var(--text-figure-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.swatch {
+  display: block;
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+/* "10px rounded keys" under a plot (docs/DESIGN.md §9.22). */
+.swatch[data-shape='square'] {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-xs);
+}
+
+/* A line series is keyed with a stroke, as it is drawn. */
+.swatch[data-shape='line'] {
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+/* Rows that open something: a 44px target, the press overlay and a focus ring. */
+.button {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.button::after {
+  content: '';
+  position: absolute;
+  inset: -2px 0;
+}
+
+.button:active {
+  background: var(--press);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

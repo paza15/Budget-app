@@ -1,0 +1,28 @@
+/* A transaction row's line 2 (DESIGN.md §9.26, EXTRAS.md §2.5): a 15px regular glyph in --ink-2,
+   5 before the words ("Paid from wallet", "Split, Max owes 9,00 €"), and the whole bill trailing. */
+.via {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: calc(var(--space-1) + 1px);
+  min-width: 0;
+  max-width: 100%;
+  vertical-align: top;
+}
+
+.via > span {
+  min-width: 0;
+}
+
+/* Centred on the first line, and still there when the words wrap to a second one. */
+.glyph {
+  flex: none;
+  margin-top: var(--space-0-5);
+  margin-top: calc((1lh - 15px) / 2);
+  color: var(--ink-2);
+}
+
+/* "of 18,00 €": Subhead --ink-2 like the line, tabular so the bills line up; never wraps. */
+.bill {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

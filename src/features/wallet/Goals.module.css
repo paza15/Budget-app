@@ -1,0 +1,256 @@
+/* Goals (DESIGN.md §9.26 "Goals"): Limits-style meter rows with an order column, "Add a goal",
+   and the collapsed "Done" group. */
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A goal row: min 88, padding 14 16, grid 34px minmax(0, 1fr) 28px, gap 12. A size container, so
+   accessibility text sizes can wrap the name. */
+.goal {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 28px;
+  column-gap: var(--space-3);
+  min-height: 88px;
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding);
+  container-type: inline-size;
+}
+
+/* Hairlines from the text column (x 62) to the trailing edge, between goals and above "Add a goal". */
+.goal + .goal::before,
+.list + .add::before,
+.doneItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--group-padding) + 34px + var(--space-3));
+  z-index: 1;
+  height: var(--hairline-width);
+  background: var(--hairline);
+  pointer-events: none;
+}
+
+/* The row's button covers the coin, the lines and the meter; the order column keeps its own taps. */
+.open {
+  position: absolute;
+  inset: 0 calc(var(--group-padding) + 28px) 0 0;
+  border-radius: 0;
+  transition: background-color var(--dur-press) var(--ease-standard);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.open:active {
+  background: var(--press);
+}
+
+/* The group clips anything outside it, so rings sit inside. */
+.open:focus-visible,
+.add:focus-visible,
+.orderButton:focus-visible {
+  outline-offset: -2px;
+}
+
+.coin {
+  align-self: start;
+}
+
+.main {
+  min-width: 0;
+}
+
+/* Line 1: the name (one line, an ellipsis) and what the goal holds, on one baseline, 10 apart. */
+.line1 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-height: 22px;
+}
+
+.name {
+  min-width: 0;
+  overflow: hidden;
+  font: var(--text-body);
+  color: var(--ink);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.held {
+  flex: none;
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+}
+
+/* Line 3, 7 below the meter: the state, and "of {target}" right-aligned under the amount. */
+.line3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-height: 18px;
+  margin-top: calc(var(--space-2) - 1px);
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-width: 0;
+}
+
+.stateText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Right-aligned under the amount, also when large text wraps it onto a line of its own. */
+.of {
+  flex: none;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The 22px brass seal of a reached goal sits on line 3 without making it taller. */
+.seal {
+  display: inline-flex;
+  flex: none;
+  margin: calc(-1 * var(--space-0-5)) 0;
+}
+
+/* The order column: two 44 × 44 buttons stacked, reaching 16 into the trailing padding and 14 into
+   the top and bottom padding, so together they fill the row's height. */
+.order {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: var(--touch-min) var(--touch-min);
+  align-content: space-between;
+  align-self: stretch;
+  width: var(--touch-min);
+  margin: calc(-1 * (var(--space-3) + var(--space-0-5))) calc(-1 * var(--group-padding))
+    calc(-1 * (var(--space-3) + var(--space-0-5))) 0;
+}
+
+.orderButton {
+  color: var(--ink-3);
+}
+
+/* arrow-up is centred on line 1 (its hit area stays 44 × 44). */
+.up svg {
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+}
+
+/* Accessibility text sizes (the ListRow threshold): names take two lines, line 3 may wrap. */
+@container (max-width: 14.4em) {
+  .name {
+    display: -webkit-box;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .line3 {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+}
+
+/* "Add a goal": min 50, grid 34px 1fr, plus-circle 22 centred in the coin column, --accent-ink. */
+.add {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: var(--space-3);
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 var(--group-padding);
+  font: var(--text-body);
+  color: var(--accent-ink);
+  text-align: start;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.add:active {
+  background: var(--press);
+}
+
+.addIcon {
+  justify-self: center;
+}
+
+/* ── Done ─────────────────────────────────────────────────────────────────────────────────── */
+
+/* A group of its own, 14 below the footer. Section gives untitled groups 20 above; the doubled
+   class wins over that whatever order the style sheets load in. */
+.doneSection.doneSection {
+  margin-top: calc(var(--space-3) + var(--space-0-5));
+}
+
+.doneList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Open rows: min 62, grid 34px minmax(0, 1fr) auto, padding 9 6 9 16; they fade in. */
+.doneItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  column-gap: var(--space-3);
+  align-items: center;
+  min-height: var(--row-2);
+  padding: calc(var(--space-2) + 1px) calc(var(--space-1) + var(--space-0-5)) calc(var(--space-2) + 1px) var(--group-padding);
+  animation: fade-in var(--dur-fade) var(--ease-standard);
+}
+
+.doneMain {
+  display: grid;
+  min-width: 0;
+}
+
+.doneName {
+  font: var(--text-body);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.doneSub {
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+/* "Put back": Subhead 600 --accent-ink, 44 tall, padding 0 10. */
+.putBack {
+  min-height: var(--touch-min);
+  padding: 0 calc(var(--space-2) + var(--space-0-5));
+  border-radius: var(--radius-pill);
+  font: var(--text-subhead);
+  font-weight: 600;
+  color: var(--accent-ink);
+  white-space: nowrap;
+  transition: opacity var(--dur-press) var(--ease-standard);
+}
+
+.putBack:active {
+  opacity: 0.6;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

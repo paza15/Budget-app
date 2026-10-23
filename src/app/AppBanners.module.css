@@ -1,0 +1,26 @@
+/* App banners (DESIGN.md §9.19): in the content flow, never floating, so a banner pushes the
+   content down instead of covering it. In a screen, its Screen's banner slot places them
+   (src/ui/Screen.module.css); these rules are for the outlet at the top of the app. */
+
+/* The fallback slot at the top of #app-root, for when the visible screen has none (onboarding). */
+.outlet {
+  flex: none;
+}
+
+/* The banners, one under another, 10 apart like in a screen's slot. At the top of the app they
+   continue the status bar: --bg, and they take the top safe area. Their sides line up with the
+   screens' groups: the gutter inside the safe area. */
+.atTop {
+  display: grid;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  padding-top: max(env(safe-area-inset-top), var(--space-2));
+  padding-right: calc(var(--gutter) + env(safe-area-inset-right));
+  padding-bottom: var(--space-1);
+  padding-left: calc(var(--gutter) + env(safe-area-inset-left));
+  background: var(--bg);
+}
+
+/* Nothing to show: no space. */
+.atTop:empty {
+  display: none;
+}

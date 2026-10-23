@@ -1,0 +1,153 @@
+/* The wallet entry sheet (DESIGN.md §9.26, laid out like the transaction sheet of §9.16). */
+
+/* The amount, centred, 10 below the header, then the "Wallet after" line 10 below it. */
+.amount {
+  padding: calc(var(--space-2) + var(--space-0-5)) var(--gutter) 0;
+  text-align: center;
+}
+
+/* The "Wallet after" line (ConsequenceLine), 10 under the amount. */
+.after {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+}
+
+/* The Note and Date group, 18 below (Section gives untitled groups 20; the doubled class wins). */
+.group.group {
+  margin-top: calc(var(--space-4) + var(--space-0-5));
+}
+
+/* The rows are a size container for the small-screen layout below. */
+.rows {
+  container: entry-rows / inline-size;
+}
+
+.noteForm {
+  margin: 0;
+}
+
+/* The Date row: the label in the 48px column of the Note row, the mini chips at the end. */
+.dateRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--form-row-min, 48px);
+  padding: 0 var(--group-padding);
+}
+
+.dateLabel {
+  flex: none;
+  min-width: 48px;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* The fieldset only groups the chips for assistive technology (the row label names it). The chips
+   may reach 8 into the row's trailing padding, as in the reference. */
+.chipSet {
+  flex: 1;
+  min-width: 0;
+  margin: 0 calc(-1 * var(--space-2)) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.chips {
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-width: 0;
+}
+
+/* The third chip is drawn under a native date input that takes its taps. */
+.other {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+}
+
+.otherChip {
+  display: inline-flex;
+  min-width: 0;
+}
+
+/* Should the row still be too narrow (large text), the picked date ends in an ellipsis rather than
+   running out of the group. */
+.otherChip > .chip {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* Invisible, over the chip and its 44pt hit area; 16px so iOS never zooms. */
+.dateInput {
+  position: absolute;
+  inset: -6px -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 12px);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  font-size: var(--text-input);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* The input is invisible, so its keyboard focus shows on the chip under it. */
+.other:has(.dateInput:focus-visible) .otherChip > button {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Under 360pt of content (iPhone SE, where the group is 327 wide): labels 42 and 8 from their
+   row's content, chip padding 10, chip gaps 5. */
+@container entry-rows (max-width: 340px) {
+  .note label,
+  .dateLabel {
+    min-width: 42px;
+  }
+
+  .note > div,
+  .dateRow {
+    gap: var(--space-2);
+  }
+
+  .chips {
+    gap: calc(var(--space-1) + 1px);
+  }
+
+  .chips .chip {
+    padding: 0 calc(var(--space-2) + var(--space-0-5));
+  }
+}
+
+/* The keypad 10 below the group; the primary button 12 below it. */
+.keypad {
+  margin: calc(var(--space-2) + var(--space-0-5)) var(--space-4) 0;
+}
+
+.save.save {
+  width: calc(100% - 2 * var(--space-4));
+  margin: var(--space-3) var(--space-4) 0;
+}
+
+/* Screens under 700px tall (iPhone SE): the amount 4 below the header, rows 44, keys 48 (the
+   Keypad does that), a 50 button, as in the transaction sheet (DESIGN.md §9.16). */
+@media (max-height: 699px) {
+  .amount {
+    padding-top: var(--space-1);
+  }
+
+  .rows {
+    --form-row-min: 44px;
+  }
+
+  .save.save {
+    min-height: 50px;
+    margin-top: calc(var(--space-2) + var(--space-0-5));
+  }
+}
+
+.missing {
+  padding-bottom: var(--space-7);
+}

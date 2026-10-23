@@ -1,0 +1,23 @@
+/* The recurring sheet (DESIGN.md §9.7, §9.16; reference ?screen=recurring). */
+.body {
+  padding-bottom: var(--space-6);
+}
+
+/* The first group starts 12 under the sheet header (the reference's gap), whether it opens with a
+   group title (This month, Every month) or with the group itself (a new item). */
+.body .firstTitled > :first-child,
+.body .firstUntitled {
+  margin-top: var(--space-3);
+}
+
+/* An end before the start: said under the group, in --critical-ink. */
+.error {
+  padding: var(--space-2) calc(var(--space-4) + var(--group-padding)) 0;
+  font: var(--text-footnote);
+  color: var(--critical-ink);
+}
+
+/* "Stop after October" and "Delete", 26 under the form. */
+.body .actions {
+  margin-top: calc(var(--space-6) + var(--space-0-5));
+}

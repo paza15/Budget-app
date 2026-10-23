@@ -1,0 +1,71 @@
+/* The Wallet tab (DESIGN.md §9.26). */
+
+/* The hero is the screen's title. Screen's title block gives 12 above, 16 right and 20 left; the
+   hero's own padding is 14 20 0. */
+.hero {
+  margin-top: var(--space-0-5);
+  padding-right: var(--space-1);
+}
+
+/* Label row (min 22): "Wallet" in Subhead 500 --ink-2. */
+.label {
+  display: flex;
+  align-items: center;
+  min-height: 22px;
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+/* Below zero: a 16px warning-octagon in --critical and "Short by" in Subhead 600 --critical-ink. */
+.short {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  font-weight: 600;
+  color: var(--critical-ink);
+}
+
+.shortIcon {
+  color: var(--critical);
+}
+
+/* The figure, 6 below (BigAmount sets the 3px optical shift and shrinks to fit). */
+.figure {
+  display: flex;
+  min-width: 0;
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+}
+
+/* The sentence 10 below in Body --ink; "Not set aside" 2 below in Subhead --ink-2. */
+.sentence {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+.subline {
+  margin-top: var(--space-0-5);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+/* "Add money" and "Take money out", 22 below the hero: secondary, 44 tall, 1fr 1fr with a 10 gap. */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  margin-top: calc(var(--space-5) + var(--space-0-5));
+  padding: 0 var(--gutter);
+}
+
+/* At large text sizes the labels wrap rather than spill out of their halves. */
+.action.action {
+  white-space: normal;
+  text-wrap: balance;
+}
+
+/* "Wallet settings": a one-row group 26 below the passbook (Section gives untitled groups 20). */
+.body .settings {
+  margin-top: calc(var(--space-6) + var(--space-0-5));
+}

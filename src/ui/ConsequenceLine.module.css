@@ -1,0 +1,44 @@
+/* The consequence line (DESIGN.md §9.16): one centred Subhead line, 20 tall even when empty. */
+.line {
+  overflow: hidden;
+  height: 20px;
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The figure in the words: --ink, at the line's own weight. */
+.default strong {
+  font-weight: inherit;
+  color: var(--ink);
+}
+
+.warning {
+  color: var(--warning-ink);
+}
+
+.critical {
+  color: var(--critical-ink);
+}
+
+.warning strong,
+.critical strong {
+  font-weight: inherit;
+}
+
+/* The 16px status glyph sits inline, 6 before the words. */
+.icon {
+  display: inline-block;
+  margin-right: calc(var(--space-1) + var(--space-0-5));
+  vertical-align: -3px;
+}
+
+.warning .icon {
+  color: var(--warning);
+}
+
+.critical .icon {
+  color: var(--critical);
+}

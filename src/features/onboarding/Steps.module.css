@@ -1,0 +1,88 @@
+/* The bodies of onboarding steps 3 to 7 (DESIGN.md §9.25). Groups and rows are the UI kit's;
+   these place what sits around them. */
+
+/* "Add another": the plus-circle of "Add a goal" (DESIGN.md §8), regular 22 in --accent-ink. */
+.addIcon {
+  color: var(--accent-ink);
+}
+
+/* Suggestion chips wrap, 8 apart, at the page's text edge, so every one shows at once. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0 var(--gutter);
+}
+
+.chipPlus {
+  color: var(--ink-2);
+}
+
+/* The PIN setup of the lock feature, under the lead; it lays itself out and pads its own sides. */
+.pinFlow {
+  margin-top: var(--space-3);
+}
+
+/* ── Face ID offer ── */
+
+.faceId {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-7);
+}
+
+.note,
+.error {
+  padding: 0 var(--gutter);
+  font: var(--text-footnote);
+}
+
+.note {
+  margin-top: var(--space-6);
+  color: var(--ink-2);
+}
+
+.error {
+  margin-top: var(--space-5);
+  color: var(--critical-ink);
+}
+
+/* ── Done: the hero of Home (DESIGN.md §9.4) ── */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-5);
+  padding: 0 var(--gutter);
+}
+
+/* The label row: Subhead 500 --ink-2; over budget, 600 --critical-ink with the octagon. */
+.heroLabel,
+.heroLabelOver {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5) / 2);
+  min-height: calc(var(--space-5) + var(--space-0-5));
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.heroLabelOver {
+  font-weight: 600;
+  color: var(--critical-ink);
+}
+
+.heroIcon {
+  color: var(--critical);
+}
+
+.heroFigure {
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+}
+
+.heroSentence {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+  font: var(--text-body);
+  color: var(--ink);
+}

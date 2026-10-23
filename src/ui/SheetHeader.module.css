@@ -1,0 +1,87 @@
+/*
+ * Sheet header (docs/DESIGN.md §9.16): min 52 tall, grid 1fr auto 1fr, padding 0 12, with the
+ * kit's glass capsules (Button variant glass) at both ends.
+ */
+
+.header {
+  /* Pinned while the sheet's content scrolls, on the sheet's own material: --sheet-bg comes from
+     the Sheet (--surface-sheet, or --surface on the statement paper of the month-end review). */
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: grid;
+  /* 1fr auto 1fr: a short title stays centred between equal columns. The capsules never get less
+     than their own width; a long title gives way and truncates. */
+  grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 52px;
+  padding: 0 var(--space-3);
+  background: var(--sheet-bg, var(--surface-sheet));
+  /* The header drags the sheet (Sheet), so the browser must not pan or zoom from here. Taps on the
+     capsules still work. */
+  touch-action: none;
+}
+
+/* The scroll-edge fade (DESIGN.md §7, EXTRAS.md §1.1): once the content has scrolled under the
+   header (Sheet sets data-sheet-scrolled on its content), an 18px fade from the sheet's material to
+   transparent hangs below the header instead of a hard edge. */
+.header::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: linear-gradient(
+    var(--sheet-bg, var(--surface-sheet)),
+    color-mix(in srgb, var(--sheet-bg, var(--surface-sheet)) 0%, transparent)
+  );
+  opacity: 0;
+  transition: opacity var(--dur-fade) var(--ease-standard);
+  pointer-events: none;
+}
+
+:global([data-sheet-scrolled]) .header::after {
+  opacity: 1;
+}
+
+.start,
+.end {
+  display: flex;
+}
+
+.start {
+  justify-content: flex-start;
+}
+
+.end {
+  justify-content: flex-end;
+}
+
+/* The title, or the title over its subtitle: centred lines that truncate rather than wrap. */
+.titles {
+  display: grid;
+  min-width: 0;
+  text-align: center;
+}
+
+.title,
+.subtitle {
+  min-width: 0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title {
+  font: var(--text-sheet-title);
+  color: var(--ink);
+}
+
+/* Footnote --ink-2 under the title (EXTRAS.md §1.1): 22 + 18 still fits the 52px row. */
+.subtitle {
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}

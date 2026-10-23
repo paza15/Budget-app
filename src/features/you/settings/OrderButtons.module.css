@@ -1,0 +1,22 @@
+/* Order buttons (SPEC §3.7): 44pt targets reaching 8 into the row's trailing padding. */
+.stack,
+.row {
+  display: flex;
+  flex: none;
+  align-items: center;
+  margin-right: calc(-1 * var(--space-2));
+}
+
+/* Up over down: together they fill an 88pt row, as the goal rows' order column does. */
+.stack {
+  flex-direction: column;
+}
+
+/* --ink-3 arrows (DESIGN.md §8 "Goal order buttons"); disabled ones fade like the month stepper's. */
+button.arrow {
+  color: var(--ink-3);
+}
+
+button.arrow:disabled {
+  color: var(--ink-disabled);
+}

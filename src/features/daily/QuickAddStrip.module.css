@@ -1,0 +1,93 @@
+/* Quick-add tiles (DESIGN.md §9.23): three per row with 8 gaps, then the row scrolls sideways. */
+.strip {
+  display: grid;
+  grid-auto-columns: calc((100% - 2 * var(--space-2)) / 3);
+  grid-auto-flow: column;
+  gap: var(--space-2);
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-padding: 0 var(--gutter);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+/* 64 tall, radius 14, --surface, grid 30px 1fr, padding 0 10. Scales to 0.97 while pressed. */
+.tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: var(--space-2);
+  align-items: center;
+  min-height: 64px;
+  padding: 0 calc(var(--space-2) + var(--space-0-5));
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  text-align: start;
+  scroll-snap-align: start;
+  transition: transform var(--dur-press) var(--ease-standard);
+}
+
+.tile:active {
+  transform: scale(0.97);
+}
+
+.tile:focus-visible {
+  outline-offset: -2px;
+}
+
+/* The light 24 glyph in its 30 box, with the "+" badge on its bottom right. */
+.glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--ink);
+}
+
+/* A 15px --accent disc with a 9px bold plus in --on-accent and a 2px --surface ring: one tap logs. */
+.plus {
+  position: absolute;
+  right: -3px;
+  bottom: calc(-1 * var(--space-0-5));
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--surface);
+  color: var(--on-accent);
+}
+
+.text {
+  display: grid;
+  min-width: 0;
+}
+
+.label {
+  overflow: hidden;
+  font: var(--text-subhead);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Serif --text-figure-sm in --ink-2 (Money's muted tone; "•••" keeps --ink-3 when hidden). */
+.amount {
+  font: var(--text-figure-sm);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile:active {
+    transform: none;
+  }
+}

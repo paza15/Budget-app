@@ -1,0 +1,42 @@
+/* Where it went (DESIGN.md §9.22): the bar 16 into the group, the legend 8 under it. */
+.breakdown {
+  padding: var(--space-4) var(--group-padding) calc(var(--space-1) + var(--space-0-5));
+}
+
+.legend {
+  margin-top: var(--space-2);
+}
+
+/* "Plus 778,88 € in fixed costs": Subhead --ink-2 on a 44 row with a hairline above, the 14px
+   chevron at the trailing end. */
+.plus {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  min-height: var(--touch-min);
+  margin-top: var(--space-1);
+  border-top: var(--hairline-width) solid var(--hairline);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  text-align: start;
+}
+
+/* The press overlay reaches the group's edges. */
+.plus::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(-1 * var(--group-padding));
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.plus:active::after {
+  background: var(--press);
+}
+
+.chevron {
+  flex: none;
+  margin-left: auto;
+  color: var(--ink-3);
+}

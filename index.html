@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>html{background:#EDEEEA}@media (prefers-color-scheme:dark){html{background:#0B1222}}</style>
+    <meta charset="UTF-8" />
+    <!-- docs/SPEC.md §7. The style above paints --bg (src/styles/tokens.css) before anything loads.
+         Production builds insert the Content-Security-Policy here (vite.config.ts). theme-init.js
+         must follow the theme-color meta, which it updates for a saved theme. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#EDEEEA" />
+    <script src="/theme-init.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="On a Budget" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>On a Budget</title>
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

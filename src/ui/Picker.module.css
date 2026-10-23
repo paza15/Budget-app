@@ -1,0 +1,95 @@
+/* Grids of choices shared by IconPicker and EmojiPicker: 44pt round cells, the choice in --accent. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--touch-min), 1fr));
+  gap: var(--space-1);
+  justify-items: center;
+}
+
+.cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  border-radius: 50%;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fade) var(--ease-standard),
+    color var(--dur-fade) var(--ease-standard),
+    box-shadow var(--dur-fade) var(--ease-standard);
+}
+
+.cell:active {
+  background: var(--press);
+}
+
+/* A category glyph: the choice is an --accent coin with the glyph in --on-accent. */
+.selected,
+.selected:active {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Emoji keep their colours: the choice is an --accent ring on --accent-soft. */
+.emoji {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.emoji.selected,
+.emoji.selected:active {
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* The native radio covers its cell, invisible: it carries the name, the state and the keyboard. */
+.input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border-radius: inherit;
+  opacity: 0;
+  cursor: inherit;
+  appearance: none;
+}
+
+.cell:has(.input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* "Use my initial": a pill choice before the grid. */
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 calc(var(--space-3) + var(--space-0-5));
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.pill::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+
+.pill.selected {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.pill:has(.input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

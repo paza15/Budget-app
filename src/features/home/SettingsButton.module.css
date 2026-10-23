@@ -1,0 +1,76 @@
+/* The settings entry on Home (EXTRAS.md §3.1): one pill, 44 tall, padding 0 12 0 8 and margin-left
+   −8, so the press pill starts 8 left of the medallion (which stays at x 20) and ends 12 after the
+   greeting. No chevron, no glass. It may shrink (the medallion and its padding keep it past 44 wide),
+   so the greeting gives way when the nav row runs out of room. */
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-width: 0;
+  min-height: var(--touch-min);
+  margin-left: calc(-1 * var(--space-2));
+  padding: 0 var(--space-3) 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  text-align: start;
+  transition:
+    transform var(--dur-press) var(--ease-standard),
+    background-color var(--dur-press) var(--ease-standard);
+}
+
+.button:active {
+  background: var(--press);
+  transform: scale(0.97);
+}
+
+/* The 32px medallion, with the backup dot laid over it. */
+.medal {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+}
+
+/* 8px --critical with a 2px --bg ring, its box at the medallion's top right (EXTRAS.md §3.2). */
+.dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--critical);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* Subhead 500 --ink-2, 10 after the medallion. A long name ends in an ellipsis wherever the nav row
+   runs out of room, rather than pushing the month stepper off it. */
+.greeting {
+  min-width: 0;
+  overflow: hidden;
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: opacity var(--dur-fade) var(--ease-standard);
+}
+
+/* The compact header (the Screen marks itself data-compact): the greeting leaves the row and the
+   medallion alone stays the button, still at x 20 with its 44pt target. */
+[data-compact] .greeting {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-compact] .button {
+  padding-right: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:active {
+    transform: none;
+  }
+}

@@ -1,0 +1,23 @@
+/* The line under the PIN dots (DESIGN.md §9.24): one Footnote line is always reserved (1lh of the
+   Footnote style), so a message appearing never moves the keypad. */
+
+.message {
+  display: grid;
+  justify-items: center;
+  min-height: 1lh;
+  font: var(--text-footnote);
+  text-align: center;
+}
+
+.line {
+  display: block;
+  max-width: 320px;
+  margin: 0;
+  font: inherit;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.critical {
+  color: var(--critical-ink);
+}

@@ -1,0 +1,273 @@
+/*
+ * "Owed to you" (docs/design/EXTRAS.md §2.7): a pushed screen laid out like category detail. The
+ * total under the title, then one section per person (a header and an inset group of bills), the
+ * collapsed "Settled" group and a footer.
+ */
+
+/* Title 1, 8 under the nav row (Screen's title block starts 12 below it). */
+.title {
+  margin-top: calc(-1 * var(--space-1));
+  font: var(--text-title1);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* ── The total ───────────────────────────────────────────────────────────── */
+
+.summary {
+  padding: calc(var(--space-2) + var(--space-0-5)) var(--gutter) 0;
+}
+
+.total {
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.sentence {
+  margin-top: calc(var(--space-1) - 1px);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+/* A total crossfades to its new value (EXTRAS.md §2.9): both values share one grid cell, aligned
+   on the edge the totals line up on. Opacity only, so Reduce Motion keeps the same fade. */
+.crossfade,
+.crossfadeEnd {
+  display: inline-grid;
+}
+
+.crossfadeEnd {
+  justify-items: end;
+}
+
+.crossfade > *,
+.crossfadeEnd > * {
+  grid-area: 1 / 1;
+}
+
+.fadeIn {
+  animation: fade-in var(--dur-fade) var(--ease-standard);
+}
+
+.fadeOut {
+  animation: fade-out var(--dur-fade) var(--ease-standard) forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ── A person: 24 above, the header, 8 below it, then the group ─────────── */
+
+.person {
+  margin-top: var(--space-6);
+}
+
+/* A section that is leaving, or an item: clipped while it collapses. */
+.person[data-leaving],
+.item[data-leaving] {
+  overflow: hidden;
+}
+
+.personHeader {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  margin-bottom: var(--space-2);
+  padding: 0 calc(var(--gutter) + var(--group-padding)) 0 var(--gutter);
+}
+
+.personName {
+  flex: 1;
+  min-width: 0;
+  font: var(--text-headline);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* In line with the row amounts below it. */
+.personTotal {
+  flex: none;
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.group {
+  margin: 0 var(--gutter);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* ── One bill: coin, line 1, line 2, then the two actions (padding 11 16 8) ── */
+
+.item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  column-gap: var(--space-3);
+  align-items: start;
+  padding: calc(var(--space-3) - 1px) var(--group-padding) var(--space-2);
+  container-type: inline-size;
+}
+
+.itemCoin {
+  margin-top: var(--space-0-5);
+}
+
+.itemMain {
+  min-width: 0;
+}
+
+.itemLine1 {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--space-2) + var(--space-0-5));
+}
+
+/* Two lines at most, like every list row title (DESIGN.md §9.8). */
+.itemTitle {
+  display: -webkit-box;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: var(--text-body);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.itemAmount {
+  flex: none;
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* The date, and "of 18,00 €" (the whole bill) under the amount; it wraps under it when narrow. */
+.itemLine2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 calc(var(--space-2) + var(--space-0-5));
+  margin-top: var(--space-0-5);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+.of {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Two text buttons 22 apart, 30 tall with a 44pt hit area; they wrap rather than shrink. */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 calc(var(--space-5) + var(--space-0-5));
+  margin-top: calc(var(--space-1) + 1px);
+}
+
+.paidBack,
+.forgive {
+  position: relative;
+  min-height: 30px;
+  font: var(--text-subhead);
+  white-space: nowrap;
+}
+
+.paidBack::after,
+.forgive::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * (var(--space-2) - 1px)) calc(-1 * (var(--space-3) - 1px));
+}
+
+.paidBack:active,
+.forgive:active {
+  opacity: 0.6;
+}
+
+.paidBack {
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+
+.forgive {
+  color: var(--ink-2);
+}
+
+/* Closes a group of two or more bills; the row convention draws its hairline from x 16. */
+.markAll {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 var(--group-padding);
+  font: var(--text-body);
+  color: var(--accent-ink);
+  text-align: start;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.markAll:active {
+  background: var(--press);
+}
+
+/* ── Nothing open ────────────────────────────────────────────────────────── */
+
+.empty {
+  margin: var(--space-6) var(--gutter) 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  animation: fade-in var(--dur-fade) var(--ease-standard);
+}
+
+/* ── Settled: a disclosure row, collapsed by default ─────────────────────── */
+
+.settled {
+  margin: var(--space-6) var(--gutter) 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* The settled rows' hairlines start at the text column, the first one too (as the Wallet's Done):
+   the list under the "Settled" row draws that first one itself. */
+.settled > [data-row] + .settledList::before {
+  left: calc(var(--group-padding) + 34px + var(--space-3));
+}
+
+.settledRow {
+  animation: fade-in var(--dur-fade) var(--ease-standard);
+}
+
+.footer {
+  padding: var(--space-2) calc(var(--gutter) + var(--group-padding)) 0;
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+/* Accessibility text sizes: the amount moves under the title and never wraps. */
+@container (max-width: 14.4em) {
+  .itemLine1 {
+    flex-wrap: wrap;
+  }
+
+  .itemAmount {
+    flex-basis: 100%;
+  }
+}

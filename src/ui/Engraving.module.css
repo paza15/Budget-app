@@ -1,0 +1,33 @@
+/* Static guilloché (DESIGN.md §3.1): no filters, no masks, no animation. */
+.engraving {
+  display: block;
+  flex: none;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Without a size the engraving takes its container's width; the viewBox keeps it square. */
+.fill {
+  width: 100%;
+  height: 100%;
+}
+
+/* Rosette: ink at a whisper (0.12 light, 0.16 dark, 0.08 with Increase Contrast). */
+.rosette {
+  color: var(--engrave);
+  stroke-width: var(--engrave-width);
+  opacity: var(--engrave-opacity);
+}
+
+/* Seal: the only brass engraving, because a closed month is settled. 0.75px at full opacity. */
+.seal {
+  color: var(--brass);
+  stroke-width: 0.75px;
+}
+
+/* Medallion rim: ink at 55%, 0.6px. At 32px it reads as the milled edge of a coin. */
+.medallion {
+  color: var(--ink);
+  stroke-width: 0.6px;
+  opacity: 0.55;
+}

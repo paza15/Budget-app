@@ -1,0 +1,266 @@
+/* Screen chrome (DESIGN.md §7 top edge, §9.2 header). The document never scrolls: each screen
+   scrolls in its own container. */
+.screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.scroller {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ── Nav row: 44 tall, padding 0 16 0 20, opaque --bg. It continues the iOS status bar (which is
+   tinted with theme-color = --bg), so it needs no glass. ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: grid;
+  /* Equal sides keep the compact title centred; a wide side pushes it aside instead of overlapping. */
+  grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+  align-items: center;
+  min-height: calc(var(--nav-height) + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) calc(var(--space-4) + env(safe-area-inset-right)) 0
+    calc(var(--gutter) + env(safe-area-inset-left));
+  background: var(--bg);
+}
+
+/* While the compact title is hidden it leaves the grid (below), so nothing reserves room for it:
+   the leading side shrinks first (the eyebrow ends in an ellipsis) and the trailing controls keep
+   their width. The compact header and screens whose centred title always shows keep equal sides. */
+.titleHidden {
+  grid-template-columns: minmax(0, 1fr) auto max-content;
+}
+
+/* The leading side fills its column instead of sizing to its text: a nowrap eyebrow's min-content
+   is its whole width, which would push past the column into the trailing controls. */
+.titleHidden > .leading {
+  justify-self: stretch;
+}
+
+.titleHidden > .center {
+  position: absolute;
+  top: env(safe-area-inset-top);
+  bottom: 0;
+  left: 50%;
+  max-width: 50%;
+  align-content: center;
+  translate: -50% 0;
+}
+
+/* The 18px scroll-edge fade under the compact header, instead of a hairline. */
+.nav::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  height: 18px;
+  background: linear-gradient(var(--bg), color-mix(in srgb, var(--bg) 0%, transparent));
+  opacity: 0;
+  transition: opacity var(--dur-fade) var(--ease-standard);
+  pointer-events: none;
+}
+
+.screen[data-edge] > .scroller > .nav::after {
+  opacity: 1;
+}
+
+.leading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  grid-column: 1;
+  min-width: 0;
+  /* Never wider than its column, whatever the grid: a nowrap greeting then ends in an ellipsis. */
+  max-width: 100%;
+  justify-self: start;
+}
+
+.eyebrow {
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: opacity var(--dur-fade) var(--ease-standard);
+}
+
+/* In the compact header the greeting leaves the row (the monogram stays), so the title has room. */
+.screen[data-compact] .eyebrow {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The back capsule "‹ Daily": glass, 44 tall, padding 0 14 0 10, a 17px chevron 6 from the Body label. */
+.back {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  height: var(--touch-min);
+  max-width: 100%;
+  padding: 0 calc(var(--space-3) + var(--space-0-5)) 0 calc(var(--space-2) + var(--space-0-5));
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-edge),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-control);
+  color: var(--ink);
+  font: var(--text-body);
+  white-space: nowrap;
+  transition: transform var(--dur-press) var(--ease-standard);
+}
+
+.back > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.back:active {
+  transform: scale(0.97);
+}
+
+/* ── Compact title: centred, fades in over --dur-fade ── */
+.center {
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 var(--space-2);
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--dur-fade) var(--ease-standard);
+  pointer-events: none;
+}
+
+.screen[data-compact] .center,
+.always {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Every heading the Screen renders takes focus from script (tabindex -1) when the shell moves
+   VoiceOver to the screen; it shows the ring only on keyboard focus. */
+.focusTarget:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.heading {
+  min-width: 0;
+  max-width: 100%;
+  font: inherit;
+}
+
+.centerTitle {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  font: var(--text-headline);
+  color: var(--ink);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The month in the compact header is serif, like the month title it stands for. */
+.monthTitle {
+  font: var(--text-month-compact);
+}
+
+.centerSubtitle {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  margin-top: 1px;
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.trailing {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  grid-column: 3;
+  gap: var(--space-2);
+  justify-self: end;
+}
+
+/* ── Title row: 52 tall, holds the large title or the month title ── */
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--title-height);
+  padding: 0 calc(var(--space-4) + env(safe-area-inset-right)) 0 calc(var(--gutter) + env(safe-area-inset-left));
+}
+
+.largeTitle {
+  min-width: 0;
+  font: var(--text-large-title);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* Title content on a pushed screen (category detail: badge and name), 12 below the nav row. */
+.titleBlock {
+  padding: var(--space-3) calc(var(--space-4) + env(safe-area-inset-right)) 0
+    calc(var(--gutter) + env(safe-area-inset-left));
+}
+
+/* ── Banner slot: the app banners' place (DESIGN.md §9.19, EXTRAS.md §1.6), in the content flow
+   under the header. With a banner in it: 2 under the title row (or the nav row), on the gutter
+   like the groups (353 wide on an iPhone 15), 6 above the content; several stack 10 apart.
+   Empty, it takes no space. ── */
+.bannerSlot {
+  display: grid;
+  padding: 0 calc(var(--gutter) + env(safe-area-inset-right)) 0 calc(var(--gutter) + env(safe-area-inset-left));
+}
+
+/* The 2 above and the 6 below are margins of the banners in the slot, not its padding: a banner
+   that collapses on dismiss (the review banner, EXTRAS.md §1.9) animates its margin box from
+   these computed margins to 0, and the content rises with it without a jump. (Negative margins
+   cannot cancel a parent's padding: an auto-height box never shrinks below empty.) The 10 between
+   banners is a margin too, not a gap, so a collapsing banner takes all its spacing with it. */
+.bannerSlot > :first-child {
+  margin-top: var(--space-0-5);
+}
+
+.bannerSlot > * + * {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+}
+
+.bannerSlot > :last-child {
+  margin-bottom: calc(var(--space-1) + var(--space-0-5));
+}
+
+/* ── Content ── */
+.content {
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+  padding-left: env(safe-area-inset-left);
+}
+
+/* Clears the floating tab bar: its offset, its height and 28 more. */
+.clearTabBar {
+  padding-bottom: var(--content-bottom);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back:active {
+    transform: none;
+  }
+}

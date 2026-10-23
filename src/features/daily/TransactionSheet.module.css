@@ -1,0 +1,248 @@
+/*
+ * The transaction sheet (DESIGN.md §9.16, §9.26; EXTRAS.md §2.1 to §2.3). Its height budget on
+ * 375×667 is spent exactly: under 700pt of height rows are 44, keys 48, the button 50 and some
+ * gaps shorter; under 360pt of width the date row tightens (label 42, chip padding 10, gaps 5).
+ */
+.sheet {
+  --form-row-min: 48px;
+  --amount-top: calc(var(--space-2) + var(--space-0-5));
+  --chips-top: calc(var(--space-3) + var(--space-0-5));
+  --button-top: var(--space-3);
+  --lines-top: calc(var(--space-2) + var(--space-0-5));
+  --group-top: calc(var(--space-2) + var(--space-0-5));
+  --keypad-top: calc(var(--space-2) + var(--space-0-5));
+  --row-label: 48px;
+  --row-gap: var(--space-3);
+
+  container-type: inline-size;
+}
+
+@media (max-height: 699px) {
+  .sheet {
+    --form-row-min: 44px;
+    --amount-top: var(--space-1);
+    --chips-top: calc(var(--space-2) + var(--space-0-5));
+    --button-top: calc(var(--space-2) + var(--space-0-5));
+  }
+
+  /* "Your share" and today's line together take 22 more: the gaps give it back, so the sheet
+     still fits 375×667 (EXTRAS.md §2.2, DESIGN.md §14 note 21). */
+  .sheet[data-lines='2'] {
+    --amount-top: 0px;
+    --lines-top: var(--space-2);
+    --chips-top: calc(var(--space-1) + var(--space-0-5));
+    --group-top: calc(var(--space-1) + var(--space-0-5));
+    --keypad-top: calc(var(--space-1) + var(--space-0-5));
+    --button-top: calc(var(--space-1) + var(--space-0-5));
+  }
+}
+
+@container (max-width: 359.98px) {
+  .group {
+    --row-label: 42px;
+    --row-gap: var(--space-2);
+  }
+}
+
+/* ── Amount, and the line of what it does (one 20pt line in every state, two with a split) ── */
+.amount {
+  padding: var(--amount-top) var(--gutter) 0;
+  text-align: center;
+}
+
+.lines {
+  min-height: 20px;
+  margin-top: var(--lines-top);
+}
+
+.line + .line {
+  margin-top: var(--space-0-5);
+}
+
+/* ── Category chips, 18 under the line (4 of it inside the row, for the chips' hit areas) ── */
+.chips {
+  --gutter: var(--space-4);
+
+  margin-top: var(--chips-top);
+}
+
+/* ── Note, Date and "Pay from wallet": a --surface-raised group, rows 48 (44 under 700pt) ── */
+.group {
+  margin: var(--group-top) var(--space-4) 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+
+/* Income has no chips: the group sits 18 under the amount's line. */
+.groupIncome {
+  margin-top: calc(var(--space-4) + var(--space-0-5));
+}
+
+.noteRow {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.note {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* The note's label column and gap follow the date row's, so the two rows line up (TextField's
+   own row is the first element inside it). */
+.note > div:first-child {
+  gap: var(--row-gap);
+}
+
+.note label {
+  min-width: var(--row-label);
+}
+
+/* One line; a long note ends in an ellipsis until it is edited. */
+.note input {
+  text-overflow: ellipsis;
+}
+
+/* With suggestions the note keeps room to be tapped, and the chips scroll beside it. */
+.withSuggestions .note {
+  flex: 1 0 8.5em;
+}
+
+.suggestions {
+  display: flex;
+  flex: 0 1 auto;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-width: 0;
+  padding: var(--space-1) var(--group-padding) var(--space-1) 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, var(--ink) calc(100% - var(--group-padding)), transparent);
+  mask-image: linear-gradient(to right, var(--ink) calc(100% - var(--group-padding)), transparent);
+}
+
+.suggestions::-webkit-scrollbar {
+  display: none;
+}
+
+.suggestionAmount {
+  color: var(--ink-2);
+}
+
+.dateRow {
+  display: flex;
+  align-items: center;
+  gap: var(--row-gap);
+  min-height: var(--form-row-min);
+  padding: 0 var(--group-padding);
+}
+
+.rowLabel {
+  flex: none;
+  min-width: var(--row-label);
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+.dateChips {
+  display: flex;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-width: 0;
+  margin-left: auto;
+}
+
+@container (max-width: 359.98px) {
+  .dateChips {
+    gap: calc(var(--space-1) + 1px);
+  }
+
+  .dateChips button {
+    padding: 0 calc(var(--space-2) + var(--space-0-5));
+  }
+}
+
+/* "Other": the chip's look, with the native date input over it (opacity 0, 16px). */
+.other {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  border-radius: var(--radius-pill);
+}
+
+.otherChip {
+  display: inline-flex;
+}
+
+.dateInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  font-size: var(--text-input);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* The input is invisible, so keyboard focus rings the chip under it. */
+.other:has(.dateInput:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Keypad, 10 under the group; then the button 12 under the keypad ── */
+.keypad {
+  margin: var(--keypad-top) var(--space-4) 0;
+}
+
+/* Back from the split editor: a fade with an 8px rise (a fade only with Reduce Motion). */
+.keypadBack {
+  animation: keypad-in var(--dur-grow) var(--ease-out) backwards;
+}
+
+@keyframes keypad-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+}
+
+@keyframes keypad-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keypadBack {
+    animation-name: keypad-fade;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--button-top) var(--space-4) 0;
+}
+
+.actions .save {
+  flex: 1;
+  width: auto;
+}
+
+.delete {
+  flex: none;
+}
+
+@media (max-height: 699px) {
+  .actions .save {
+    min-height: 50px;
+  }
+}

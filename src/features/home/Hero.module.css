@@ -1,0 +1,132 @@
+/* Home's hero (DESIGN.md §9.4): label row, figure, sentence, today line, ahead line, wallet line,
+   a button where the state needs one, then the pace bar. 10 under the title row, on the gutters
+   (the Screen's content box already keeps clear of the side safe areas). */
+.hero {
+  padding: calc(var(--space-2) + var(--space-0-5)) var(--gutter) 0;
+}
+
+/* The words and the figure: one picture for VoiceOver (Hero.tsx), laid out as normal flow. */
+.words {
+  display: block;
+}
+
+/* ── Label row: min 22, the label leading and the status trailing ── */
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 22px;
+}
+
+.label,
+.labelCritical {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-width: 0;
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+/* Over budget and short: the octagon and words in critical ink, 600. */
+.labelCritical {
+  font-weight: 600;
+  color: var(--critical-ink);
+}
+
+.criticalIcon {
+  color: var(--critical);
+}
+
+/* "On track": --ink-2 with check-circle, never a status colour. */
+.status,
+.statusFast {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.statusFast {
+  font-weight: 500;
+  color: var(--warning-ink);
+}
+
+.warningIcon {
+  flex: none;
+  color: var(--warning);
+}
+
+/* ── Figure: 6 below the label; BigAmount sets the 76px serif and its optical side bearing ── */
+.figure {
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+}
+
+/* A closed statement: the seal to the right of the figure, centred on it (DESIGN.md §3.2). */
+.figureRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* 54px brass seal with "Closed 30 Sep" 5 under it, Footnote --ink-2. */
+.seal {
+  display: grid;
+  flex: none;
+  justify-items: center;
+  gap: 5px;
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ── Lines under the figure ── */
+.sentence {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+.subline,
+.warningLine,
+.walletLine {
+  margin-top: var(--space-0-5);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+/* "Today: 4,96 € over" and the ahead line: Subhead 500 --warning-ink after a 16px triangle. */
+.warningLine {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  font-weight: 500;
+  color: var(--warning-ink);
+}
+
+/* The 16px icon sits on the first line (Subhead's 20px line box). */
+.warningLine > svg {
+  margin-top: var(--space-0-5);
+}
+
+/* Over budget: where the overspend goes, balanced over two lines. */
+.walletLine {
+  text-wrap: balance;
+}
+
+/* "Add your income", "Review fixed costs": a secondary md button 14 below. */
+.action {
+  margin-top: calc(var(--space-3) + var(--space-0-5));
+}
+
+/* The pace bar 20 below what is above it; its caption comes with it. */
+.pace {
+  margin-top: var(--space-5);
+}

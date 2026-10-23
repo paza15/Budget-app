@@ -1,0 +1,12 @@
+/* The question above the list, in Body, lined up with the group's content (16 + 16). */
+.lead {
+  padding: var(--space-3) calc(var(--space-4) + var(--group-padding)) 0;
+  font: var(--text-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+/* The destructive confirmation, a full-width capsule 26 below the list, as wide as the groups. */
+.actions {
+  margin: calc(var(--space-6) + var(--space-0-5)) var(--space-4) 0;
+}

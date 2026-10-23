@@ -1,0 +1,65 @@
+/* Chips (DESIGN.md §9.10): 36 tall with a 44pt hit area, padding 0 14, --surface with a 0.5px
+   --hairline-strong ring; selected: --accent fill, --on-accent label and glyph, no ring. */
+.chip {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  max-width: 180px;
+  min-height: 36px;
+  padding: 0 calc(var(--space-3) + var(--space-0-5));
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 0.5px var(--hairline-strong);
+  color: var(--ink);
+  font: var(--text-subhead);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-fade) var(--ease-standard),
+    color var(--dur-fade) var(--ease-standard),
+    box-shadow var(--dur-fade) var(--ease-standard);
+}
+
+/* 44pt hit area. */
+.chip::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip:active:not(:disabled) {
+  background: var(--surface-2-strong);
+}
+
+.chip:disabled {
+  opacity: 0.4;
+}
+
+/* Mini chips (the add sheet's date chips): 32 tall, padding 0 12, on --surface-2. */
+.mini {
+  gap: 5px;
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  background: var(--surface-2);
+  box-shadow: none;
+}
+
+.mini::after {
+  inset: -6px -3px;
+}
+
+/* Selection comes last so it wins over both sizes and their pressed state. */
+.selected,
+.selected:active:not(:disabled) {
+  background: var(--accent);
+  box-shadow: none;
+  color: var(--on-accent);
+}

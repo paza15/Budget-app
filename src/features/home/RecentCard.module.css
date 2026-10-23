@@ -1,0 +1,9 @@
+/* The empty line inside the group: Body --ink-2, padded like a one-line row. */
+.empty {
+  display: flex;
+  align-items: center;
+  min-height: var(--row-min);
+  padding: var(--space-3) var(--group-padding);
+  font: var(--text-body);
+  color: var(--ink-2);
+}

@@ -1,0 +1,17 @@
+/* A person's initial in the coin (EXTRAS.md §2.3, §2.6, §2.7): SF Pro 600 in --ink. The size is
+   chrome inside a fixed coin, so it stays put at every text size, like the monogram's initial. */
+.initial,
+.small {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.initial {
+  font-size: 15px;
+}
+
+.small {
+  font-size: 12px;
+}

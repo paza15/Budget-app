@@ -1,0 +1,171 @@
+/* Buttons (DESIGN.md §9.12). Press: the --press overlay and scale 0.97 over --dur-press. */
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  max-width: 100%;
+  border-radius: var(--radius-pill);
+  text-align: center;
+  white-space: nowrap;
+  transition:
+    transform var(--dur-press) var(--ease-standard),
+    opacity var(--dur-fade) var(--ease-standard),
+    background-color var(--dur-fade) var(--ease-standard),
+    color var(--dur-fade) var(--ease-standard);
+}
+
+.button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--press);
+  opacity: 0;
+  transition: opacity var(--dur-press) var(--ease-standard);
+  pointer-events: none;
+}
+
+.button:active:not(:disabled)::after {
+  opacity: 1;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+/* ── Sizes ── */
+.lg {
+  min-height: 54px;
+  padding: 0 var(--space-6);
+  font: var(--text-headline);
+}
+
+.md {
+  min-height: var(--touch-min);
+  padding: 0 calc(var(--space-4) + var(--space-0-5));
+  font: var(--text-subhead);
+  font-weight: 600;
+}
+
+.sm {
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  font: var(--text-subhead);
+  font-weight: 600;
+}
+
+/* A 44pt hit area around the 32pt button. */
+.sm::before {
+  content: '';
+  position: absolute;
+  inset: calc((32px - var(--touch-min)) / 2) 0;
+}
+
+/* ── Variants ── */
+.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* A disabled primary keeps its shape on a quiet fill. */
+.primary:disabled {
+  background: var(--surface-2);
+  color: var(--ink-disabled);
+}
+
+.secondary {
+  background: var(--surface-2);
+  color: var(--accent-ink);
+}
+
+/* Text buttons (DESIGN.md §9.12): a Body label in the tint, no fill; Subhead at the small size. */
+.plain,
+.destructive:not(.filled) {
+  min-height: var(--touch-min);
+  background: none;
+  font: var(--text-body);
+}
+
+.plain.sm,
+.destructive.sm:not(.filled) {
+  font: var(--text-subhead);
+}
+
+.plain {
+  color: var(--accent-ink);
+}
+
+.destructive {
+  color: var(--critical-ink);
+}
+
+/* Confirmations: a --critical fill. --ink-inverse is near-white on the deep light red and navy on
+   the pale dark red, so the label keeps 4.5:1 in both themes. */
+.destructive.filled {
+  background: var(--critical);
+  color: var(--ink-inverse);
+  font-weight: 600;
+}
+
+.destructive.filled.lg {
+  font: var(--text-headline);
+}
+
+/* Glass capsule (DESIGN.md §7, §9.2): it sits on opaque paper, so it needs no blur. */
+.glass {
+  min-height: var(--touch-min);
+  padding: 0 var(--space-4);
+  gap: calc(var(--space-1) + var(--space-0-5));
+  background: var(--glass);
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-edge),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-control);
+  color: var(--ink);
+  font: var(--text-body);
+}
+
+.glass.tinted {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* "Delete" in a sheet header (DESIGN.md §9.26): a Body label in the critical ink. */
+.glass.critical {
+  color: var(--critical-ink);
+}
+
+/* Selected, like a selected chip (EXTRAS.md §2.1, §4): the "Split" disclosure while it is open. */
+.glass.selected {
+  background: var(--accent);
+  box-shadow: none;
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+/* Text buttons fade when disabled. */
+.secondary:disabled,
+.plain:disabled,
+.destructive:disabled {
+  opacity: 0.4;
+}
+
+/* A disabled glass capsule keeps its glass and greys its label instead (EXTRAS.md §2.1). */
+.glass:disabled,
+.glass.tinted:disabled,
+.glass.critical:disabled {
+  color: var(--ink-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:active:not(:disabled) {
+    transform: none;
+  }
+}

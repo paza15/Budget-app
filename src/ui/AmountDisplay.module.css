@@ -1,0 +1,63 @@
+/* The amount being typed (DESIGN.md §9.16): --text-amount (64) with proportional figures, centred,
+   the unit at half size in --ink-2. A size container: a long amount shrinks to fit the sheet. */
+.figure {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+  font: var(--text-amount);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* --figure-em: the figure's width in em (AmountDisplay estimates it), so it never overflows. */
+.fit {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: min(1em, calc(100cqi / var(--figure-em, 4)));
+  font-variant-numeric: proportional-nums lining-nums;
+}
+
+/* Nothing typed yet: the 0 reads as a placeholder. */
+.zero {
+  color: var(--ink-3);
+}
+
+.unit {
+  font-size: 0.5em;
+  color: var(--ink-2);
+}
+
+/* 0.16em between a unit and its number when no caret stands between them. */
+.unit:first-child {
+  margin-right: 0.16em;
+}
+
+.number + .unit {
+  margin-left: 0.16em;
+}
+
+/* A 2 × 50 --accent-ink caret between the number and the unit, at the figure's x-height. */
+.caret {
+  display: inline-block;
+  align-self: center;
+  width: 2px;
+  height: 0.78em;
+  margin: 0 var(--space-1) 0 3px;
+  border-radius: 1px;
+  background: var(--accent-ink);
+  transform: translateY(0.0625em);
+}
+
+/* With the split panel open the amount is a button that brings the keypad back. */
+.button {
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: opacity var(--dur-press) var(--ease-standard);
+}
+
+.button:active {
+  opacity: 0.6;
+}

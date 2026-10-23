@@ -1,0 +1,136 @@
+/* Install hint (docs/DESIGN.md §9.7 groups, §9.8 rows, §9.19 banners, §9.25 onboarding). The steps
+   group itself is the UI kit's form Section; literal px values are metrics DESIGN.md gives in
+   numbers (the 34px coin column, 11px row padding). */
+
+/* ── Gate: the first onboarding step, a screen of its own ───────────────────────────────────── */
+
+/* It fills the area App gives it (the content area under the banner outlet), not the viewport,
+   so a storage banner above it never pushes "Continue in Safari" off the screen. */
+.gate {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* The screen scrolls in its own container (docs/SPEC.md §7); the button stays pinned below it. */
+.gateScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.gateBody {
+  max-width: var(--sheet-max-width);
+  margin: 0 auto;
+  /* An empty nav row above the large title, as on every screen with one. */
+  padding: var(--nav-height) 0 var(--space-6);
+}
+
+/* Left-aligned large title, as on every later onboarding step. */
+.title {
+  padding: 0 var(--gutter);
+  font: var(--text-large-title);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.lead {
+  margin-top: var(--space-2);
+  padding: 0 var(--gutter);
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* Pinned above the bottom safe area: 44 from the screen edge on an iPhone with a home indicator,
+   like Welcome's buttons. */
+.gateActions {
+  position: relative;
+  width: 100%;
+  max-width: var(--sheet-max-width);
+  margin: 0 auto;
+  padding: var(--space-3) var(--gutter) max(var(--space-4), calc(env(safe-area-inset-bottom) + 10px));
+}
+
+/* Steps that scroll on a short screen fade out into the button area instead of being cut. */
+.gateActions::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: var(--space-6);
+  background: linear-gradient(to top, var(--bg), transparent);
+  pointer-events: none;
+}
+
+/* ── Steps: numbered rows inside the group ──────────────────────────────────────────────────── */
+
+.steps {
+  /* The number coin: the 34px coin column of list rows, growing with Text Size like the number
+     inside it (2.25 × the 15px Subhead). */
+  --coin: max(34px, 1.9853rem);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--coin) 1fr;
+  column-gap: var(--space-3);
+  align-items: start;
+  padding: 11px var(--group-padding);
+}
+
+/* Hairlines run from the text column to the trailing edge, none above the first row. */
+.step + .step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--group-padding) + var(--coin) + var(--space-3));
+  height: var(--hairline-width);
+  background: var(--hairline);
+}
+
+/* The step number in a hairline coin, like a category coin (DESIGN.md §9.9). */
+.number {
+  display: grid;
+  place-items: center;
+  width: var(--coin);
+  height: var(--coin);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.75px var(--hairline-strong);
+  font: var(--text-subhead);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.text {
+  min-width: 0;
+  /* Centres the first line (Body, 1.2941rem tall) on the coin: 6px at the default size. */
+  padding-top: calc((var(--coin) - 1.2941rem) / 2);
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+.text b,
+.bannerText b {
+  font-weight: 600;
+}
+
+/* ── Banner content (the Banner itself comes from the UI kit) ───────────────────────────────── */
+
+.bannerNote {
+  margin-top: var(--space-1);
+  color: var(--ink-2);
+}
+
+@media (prefers-contrast: more) {
+  .number {
+    box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  }
+}

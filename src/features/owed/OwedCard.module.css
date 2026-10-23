@@ -1,0 +1,30 @@
+/* The Home "Owed to you" card (EXTRAS.md §2.6). Person rows are the kit's ListRow; the last line
+   sums the people the card leaves out, like "Plus … in fixed costs": 44 tall, a hairline above it
+   inset to the group's padding, Subhead --ink-2 and a bold 14 chevron in --ink-3. */
+.more {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: calc(100% - 2 * var(--group-padding));
+  min-height: var(--touch-min);
+  margin: 0 var(--group-padding);
+  border-top: var(--hairline-width) solid var(--hairline);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  text-align: start;
+}
+
+.more:active {
+  opacity: 0.6;
+}
+
+.moreText {
+  flex: 1;
+  min-width: 0;
+}
+
+.chevron {
+  flex: none;
+  margin-left: auto;
+  color: var(--ink-3);
+}

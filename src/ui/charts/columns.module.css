@@ -1,0 +1,101 @@
+/*
+ * ColumnChart and StackedColumnChart (docs/DESIGN.md §9.22). The root carries the caption style,
+ * so the charts measure the axis font from it; every text wears an ink token.
+ */
+.root {
+  position: relative;
+  font: var(--text-caption);
+  color: var(--ink-2);
+}
+
+/* The plot takes taps and horizontal scrubs; a vertical drag still scrolls the page. */
+.plot {
+  position: relative;
+  cursor: pointer;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  border-radius: var(--radius-sm);
+}
+
+/* Reached with Tab, the arrow keys then walk the columns. */
+.svg:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.baseline {
+  fill: var(--chart-axis);
+}
+
+/* Solid hairlines, never dashed (docs/DESIGN.md §4.6). */
+.grid {
+  stroke: var(--chart-grid);
+  stroke-width: var(--hairline-width);
+}
+
+.gridLabel {
+  font: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  fill: var(--ink-2);
+}
+
+.column {
+  transition: opacity var(--dur-fade) var(--ease-standard);
+}
+
+/* Selection keeps the tapped column at full strength and fades the others. */
+.column[data-dimmed] {
+  opacity: 0.35;
+}
+
+.reference {
+  fill: var(--chart-ref);
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+}
+
+/* A --surface ring under a line keeps it legible where it crosses a column. */
+.lineHalo {
+  fill: none;
+  stroke: var(--surface);
+  stroke-width: 4.5px;
+  stroke-linejoin: round;
+}
+
+/* Labels on the plot keep a --surface halo for the same reason. */
+.plotLabel {
+  font: var(--text-caption);
+  fill: var(--ink-2);
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.axisLabel {
+  font: var(--text-caption);
+  fill: var(--ink-2);
+}
+
+/* "Today", or the current month. */
+.axisLabel[data-strong] {
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.legend {
+  margin-top: var(--space-2);
+}

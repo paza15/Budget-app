@@ -1,0 +1,99 @@
+/* Banners (DESIGN.md §9.19): radius 22, padding 14 16, grid 22px 1fr with a 12 gap. */
+.banner {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  column-gap: var(--space-3);
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding);
+  border-radius: var(--radius-lg);
+  font: var(--text-subhead);
+  color: var(--ink);
+}
+
+.body {
+  min-width: 0;
+}
+
+/* No lone last word (EXTRAS.md §1.6); browsers without text-wrap: pretty wrap as usual. */
+.text {
+  text-wrap: pretty;
+}
+
+/* A leading sentence in <strong> is set in 600, not the browser's bold: "October is closed." */
+.text strong {
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) calc(var(--space-4) + var(--space-0-5));
+  margin-top: var(--space-2);
+}
+
+/* Subhead 600 in the tone's ink, 32 tall with a 44pt hit area. */
+.action {
+  position: relative;
+  min-height: 32px;
+  font: var(--text-subhead);
+  font-weight: 600;
+}
+
+.action::after {
+  content: '';
+  position: absolute;
+  inset: -6px -8px;
+}
+
+.action:active {
+  opacity: 0.6;
+}
+
+.info {
+  background: var(--accent-soft);
+}
+
+.info .icon,
+.info .action {
+  color: var(--accent-ink);
+}
+
+.warning {
+  background: var(--warning-soft);
+}
+
+.warning .icon {
+  color: var(--warning);
+}
+
+.warning .action {
+  color: var(--warning-ink);
+}
+
+.critical {
+  background: var(--critical-soft);
+}
+
+.critical .icon {
+  color: var(--critical);
+}
+
+.critical .action {
+  color: var(--critical-ink);
+}
+
+/* Statement paper, a card on the desk (EXTRAS.md §1.6): the review banner. Its icon is the 22px
+   Closed seal, which the Engraving draws in --brass at 0.75px; brass keeps 3.48:1 (light) and
+   8.52:1 (dark) on --surface. The action is "act here", so it takes the accent ink. */
+.statement {
+  background: var(--surface);
+}
+
+.statement .action {
+  color: var(--accent-ink);
+}
+
+/* "Not now" is quiet: --ink-2, regular weight, in every tone (after the tone rules, so it wins). */
+.banner .dismiss {
+  font-weight: 400;
+  color: var(--ink-2);
+}

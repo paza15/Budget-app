@@ -1,0 +1,100 @@
+/* Limit meters (DESIGN.md §9.21). The bar sits 9 below line 1 of its row; the status line 7 below. */
+.meter {
+  display: grid;
+  margin-top: 9px;
+}
+
+/* 4 tall, radius 2, on --track, spanning the text column. */
+.bar {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--track);
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(var(--ratio) * 100%);
+  border-radius: 2px;
+  background: var(--ink);
+  transition: width var(--dur-grow) var(--ease-out);
+}
+
+.warning .fill {
+  background: var(--warning-mark);
+}
+
+/* Over: --critical to 100% − 12px, a 2px gap, a 10px nub at the end. */
+.over .fill {
+  width: calc(100% - 12px);
+  background: var(--critical);
+}
+
+.nub {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  border-radius: 2px;
+  background: var(--critical);
+}
+
+/* Today's share of the month: a 1 × 12 notch in --ink-2, centred on the bar. */
+.now {
+  position: absolute;
+  top: -4px;
+  left: calc(var(--at) * 100%);
+  width: 1px;
+  height: 12px;
+  background: var(--ink-2);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: calc(var(--space-2) - 1px);
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.lead {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.of {
+  flex: none;
+  white-space: nowrap;
+}
+
+.warning .lead {
+  font-weight: 500;
+  color: var(--warning-ink);
+}
+
+.warning .icon {
+  color: var(--warning);
+}
+
+.over .lead {
+  font-weight: 600;
+  color: var(--critical-ink);
+}
+
+.over .icon {
+  color: var(--critical);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
+}

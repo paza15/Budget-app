@@ -1,0 +1,109 @@
+/* The hero figure (DESIGN.md §2, §5.3, §5.4). The root fills the width it is given and measures it;
+   the figure inside keeps its natural width so overflow can be detected. */
+.root {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: baseline;
+  min-width: 0;
+  font: var(--text-hero);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.figure {
+  display: inline-flex;
+  flex: none;
+  align-items: baseline;
+  /* The optical side bearing of the first digit: −3px at 76px. */
+  margin-left: -0.04em;
+}
+
+/* Proportional figures: Source Serif 4's default figures are tabular. Only the hero is tracked. */
+.number {
+  position: relative;
+  font-variant-numeric: proportional-nums lining-nums;
+  letter-spacing: -0.012em;
+}
+
+/* The unit at half size in --ink-2, 0.16em from the figure, on the baseline. */
+.unit {
+  font-size: 0.5em;
+  color: var(--ink-2);
+}
+
+.unitAfter {
+  margin-left: 0.16em;
+}
+
+.unitBefore {
+  margin-right: 0.16em;
+}
+
+/* Intl's space between number and unit stays in the text for assistive technology, at no width. */
+.gap {
+  font-size: 0;
+}
+
+.critical .number,
+.critical .unit {
+  color: var(--critical-ink);
+}
+
+.masked {
+  color: var(--ink-3);
+}
+
+/* ── Odometer (DESIGN.md §3.3) ──────────────────────────────────────────────
+   While it rolls every character is a cell whose width is its advance in the text (set by the
+   component), with the glyph at the cell's start, where the text would put it. */
+.cell {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+/* A drum is an inline-grid cell: the hidden target digit gives it its baseline and height, and a
+   strip of the digits it passes slides through it. clip-path, not overflow, clips it: overflow
+   would move the inline baseline and the digits would jump. */
+.drum {
+  position: relative;
+  display: inline-grid;
+  clip-path: inset(0 -0.1em);
+}
+
+.ghost {
+  visibility: hidden;
+}
+
+.strip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.glyph {
+  display: block;
+  height: 1em;
+}
+
+/* Measures digit advances before a roll; removed right after. */
+.ruler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* A change in the number of digits crossfades in --dur-fade (opacity only, also with Reduce Motion). */
+.fadeIn {
+  animation: fade-in var(--dur-fade) var(--ease-standard);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

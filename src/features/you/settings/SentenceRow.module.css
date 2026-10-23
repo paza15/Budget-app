@@ -1,0 +1,10 @@
+/* A form row holding a sentence: Body --ink, the row's padding and height (DESIGN.md §9.8). */
+.row {
+  display: flex;
+  align-items: center;
+  min-height: var(--form-row-min, 50px);
+  padding: calc(var(--space-2) + var(--space-0-5)) var(--group-padding);
+  font: var(--text-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}

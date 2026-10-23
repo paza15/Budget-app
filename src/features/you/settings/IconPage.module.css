@@ -1,0 +1,4 @@
+/* The picker inset on its raised group, like the gallery's sheet sample (16 all round). */
+.picker {
+  padding: var(--space-4) var(--group-padding);
+}

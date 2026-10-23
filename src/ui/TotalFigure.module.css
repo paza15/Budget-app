@@ -1,0 +1,32 @@
+/* A total standing alone (DESIGN.md §5.3): 28/32 serif with proportional figures, the unit at
+   --text-figure-sm in --ink-2, 0.3em from the figure on the locale's side. */
+.figure {
+  display: inline-block;
+  font: var(--text-figure-lg);
+  font-variant-numeric: proportional-nums lining-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.unit {
+  font: var(--text-figure-sm);
+  color: var(--ink-2);
+}
+
+.after {
+  margin-left: 0.3em;
+}
+
+.before {
+  margin-right: 0.3em;
+}
+
+/* Over budget: the figure in the critical ink; the unit keeps --ink-2. */
+.critical .number {
+  color: var(--critical-ink);
+}
+
+/* "•••" in tertiary ink, without a unit (DESIGN.md §5.4). */
+.masked {
+  color: var(--ink-3);
+}

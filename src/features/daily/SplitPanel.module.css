@@ -1,0 +1,271 @@
+/*
+ * The split editor (EXTRAS.md §2.3) in the keypad's box: margin 0 16, padding 10 0 4, at most as
+ * tall as the keypad (10 + 4 × 56, or 10 + 4 × 48 under 700pt), scrolling inside beyond that.
+ */
+.panel {
+  --keypad-key: 56px;
+  --person-row: 48px;
+
+  max-height: calc(var(--space-2) + var(--space-0-5) + 4 * var(--keypad-key));
+  margin: 0 var(--space-4);
+  padding: calc(var(--space-2) + var(--space-0-5)) 0 var(--space-1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  animation: panel-in var(--dur-grow) var(--ease-out) backwards;
+}
+
+.panel::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-height: 699px) {
+  .panel {
+    --keypad-key: 48px;
+    --person-row: 44px;
+  }
+}
+
+/* A 20px fade on the bottom edge while more people wait below. */
+.panel[data-more] {
+  -webkit-mask-image: linear-gradient(to bottom, var(--ink) calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to bottom, var(--ink) calc(100% - 20px), transparent);
+}
+
+/* The group named "Who owes you" (EXTRAS.md §2.8), a plain box. */
+.fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* The title row, 28 tall, stays at the top of the panel while it scrolls. */
+.head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+  padding-left: var(--group-padding);
+  background: var(--surface-sheet);
+}
+
+.title {
+  font: var(--text-footnote);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* "Split evenly": Subhead 600 --accent-ink, padding 0 16, a 44pt hit area. */
+.even {
+  position: relative;
+  min-height: 28px;
+  padding: 0 var(--group-padding);
+  font: var(--text-subhead);
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+
+.even::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--space-2)) 0;
+}
+
+.even:disabled {
+  color: var(--ink-disabled);
+}
+
+.people {
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+
+/* Rows 48 (44 under 700pt): coin 26, the name, the amount, remove 32; gap 10, padding-left 16. */
+.person,
+.addRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto 32px;
+  column-gap: calc(var(--space-2) + var(--space-0-5));
+  align-items: center;
+  min-height: var(--person-row);
+  padding-left: var(--group-padding);
+}
+
+/* A person added fades in (EXTRAS.md §2.9). */
+.person {
+  animation: person-in var(--dur-grow) var(--ease-out) backwards;
+}
+
+@keyframes person-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Hairlines from the name column (x 52) to the trailing edge. */
+.person + .person::before,
+.person + .addRow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--group-padding) + 26px + calc(var(--space-2) + var(--space-0-5)));
+  height: var(--hairline-width);
+  background: var(--hairline);
+  pointer-events: none;
+}
+
+/* The person coin: the initial in SF Pro 600 12, --ink, in a plain hairline ring. */
+.initial {
+  font: var(--text-caption);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.name {
+  min-width: 0;
+  height: var(--touch-min);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font: var(--text-body);
+  font-size: var(--text-input);
+  color: var(--ink);
+  text-overflow: ellipsis;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.name::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+/* The amount owed, an AmountField cell: right-aligned serif figures, "Amount" when empty. */
+.amount {
+  width: 6.5em;
+  min-width: 0;
+}
+
+/* Text that is not an amount: the field's message runs under the whole row, from the name column,
+   instead of squeezing into the amount's cell. The cell is not positioned, so the row places it. */
+.amount [data-part='error'] {
+  position: absolute;
+  right: var(--group-padding);
+  bottom: calc(var(--space-1) + var(--space-0-5));
+  left: calc(var(--group-padding) + 26px + var(--space-2) + var(--space-0-5));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.person:has(.amount [data-part='error']) {
+  padding-bottom: calc(var(--space-5) + var(--space-0-5));
+}
+
+/* Remove: x-circle fill 19 in --ink-3, its 44pt target reaching 12 back into the gap. */
+.person .remove {
+  margin-left: calc(-1 * var(--space-3));
+  color: var(--ink-3);
+}
+
+/* A split that was paid back or forgiven: its name and status, and its amount in --ink-2. */
+.settled {
+  display: grid;
+  min-width: 0;
+  padding: var(--space-1) 0;
+}
+
+.settledName {
+  overflow: hidden;
+  font: var(--text-body);
+  color: var(--ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status {
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.settledAmount {
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* "Add person": plus-circle 22 in the coin column and the words in Body --accent-ink, one button. */
+.add {
+  display: grid;
+  grid-column: 1 / 3;
+  grid-template-columns: 26px minmax(0, 1fr);
+  column-gap: calc(var(--space-2) + var(--space-0-5));
+  align-items: center;
+  min-height: var(--touch-min);
+  font: var(--text-body);
+  color: var(--accent-ink);
+  text-align: start;
+}
+
+.add:focus-visible {
+  outline-offset: -2px;
+}
+
+.addGlyph {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+}
+
+.addLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Names from earlier splits as mini chips, right-aligned with 16 padding, 6 apart. */
+.suggestions {
+  display: flex;
+  grid-column: 3 / 5;
+  justify-content: flex-end;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-width: 0;
+  padding-right: var(--group-padding);
+}
+
+.suggestion {
+  display: inline-flex;
+  min-width: 0;
+}
+
+.suggestion > button {
+  max-width: 7.5em;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation-name: panel-fade;
+  }
+}
+
+@keyframes panel-fade {
+  from {
+    opacity: 0;
+  }
+}

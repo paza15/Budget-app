@@ -1,0 +1,5 @@
+/* The review banner's box (docs/design/EXTRAS.md §1.6, §1.9). The shell places it in Home's banner
+   slot; while it collapses after "Dismiss" its content is clipped to the shrinking height. */
+.wrap[data-dismissing] {
+  overflow: hidden;
+}

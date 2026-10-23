@@ -1,0 +1,63 @@
+/* Fixed (DESIGN.md §9.2, §9.8, §9.10, §9.11; reference ?screen=fixed and fixed-sub). */
+
+/* Costs | Income, 2 under the title row, across the content width. */
+.segment {
+  padding: var(--space-0-5) var(--gutter) 0;
+}
+
+/* The category chips, 14 under the sentence. The row's own 4pt padding (it keeps the chips' hit
+   areas inside) counts towards the gaps above and below it. */
+.chips {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+  margin-bottom: calc(-1 * var(--space-1));
+}
+
+/* With a chip selected: the category row 16 under the chips, the rows 12 under it. */
+.categoryRow {
+  margin-top: var(--space-4);
+}
+
+.chipList {
+  margin-top: var(--space-3);
+}
+
+/* The limit's meter under the category row, in the text column. */
+.meter {
+  padding: 0 var(--group-padding) var(--space-3) calc(var(--group-padding) + 34px + var(--space-3));
+  margin-top: calc(-1 * var(--space-1));
+}
+
+/* "Fixed costs count in full…": Footnote --ink-2, 14 under the total, indented to the content. */
+.footer {
+  padding: calc(var(--space-3) + var(--space-0-5)) calc(var(--gutter) + var(--group-padding)) 0;
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+/* No fixed costs yet: the invitation, then the suggestion chips centred under it. */
+.empty {
+  margin-top: var(--space-4);
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--gutter);
+}
+
+/* Or any other: a secondary button, 16 under the chips. */
+.emptyAction {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+.incomeEmpty {
+  margin-top: var(--space-2);
+}
+
+.incomeActions {
+  margin-top: var(--space-1);
+}

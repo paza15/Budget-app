@@ -1,0 +1,166 @@
+/*
+ * The iOS 26 floating sheet (docs/DESIGN.md §9.16, §10): 8px from the sides and the bottom, radius
+ * 40, --surface-sheet with --shadow-sheet over the scrim, at most 560px wide and centred. No card
+ * stack: a sheet opened over another simply covers it, with its own scrim. The month-end review is
+ * printed on statement paper, --surface, instead (docs/design/EXTRAS.md §1.1).
+ */
+
+.layer {
+  /* 10px: the large sheet's gap below the top of the web view, and the least bottom padding. */
+  --sheet-gap: calc(var(--space-2) + var(--space-0-5));
+  --sheet-top: calc(env(safe-area-inset-top) + var(--sheet-gap));
+  /* Content clears the home indicator; DESIGN.md: max(10px, safe area − 8px). */
+  --sheet-pad-bottom: max(var(--sheet-gap), calc(env(safe-area-inset-bottom) - var(--sheet-inset)));
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* With the iOS keyboard up the frame is the visual viewport (useVisualViewport sets --vv-top and
+   --vv-height): it ends at the keyboard, so the sheet sits on it and its max-height shrinks to what
+   is visible. The keyboard covers the home indicator, so the safe-area part of the bottom padding
+   goes. Without the keyboard the frame is the layout viewport again, so no stale keyboard-time
+   size can leave a gap under the sheet. */
+.layer[data-keyboard] {
+  --sheet-pad-bottom: var(--sheet-gap);
+  top: var(--vv-top, 0px);
+  bottom: auto;
+  height: var(--vv-height, 100%);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  /* Lightens as the sheet is dragged down (Sheet sets --drag-share, 0…1). */
+  opacity: calc(1 - 0.6 * var(--drag-share, 0));
+  transition: opacity var(--dur-fade) var(--ease-standard);
+  animation: fade-in var(--dur-fade) var(--ease-standard) backwards;
+}
+
+.panel {
+  /* The sheet's material, which the SheetHeader inside paints too (SheetHeader.module.css). */
+  --sheet-bg: var(--surface-sheet);
+
+  position: absolute;
+  left: max(var(--sheet-inset), env(safe-area-inset-left));
+  right: max(var(--sheet-inset), env(safe-area-inset-right));
+  bottom: var(--sheet-inset);
+  /* <dialog open> brings fit-content sizing, auto margins, a border and padding; reset them. */
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border: 0;
+  padding: 0;
+  max-width: var(--sheet-max-width);
+  max-height: calc(100% - var(--sheet-top) - var(--sheet-inset));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-sheet);
+  background: var(--sheet-bg);
+  box-shadow: var(--shadow-sheet);
+  color: var(--ink);
+  /* Sheet sets --drag while a finger pulls it down; letting go springs it back with --ease-sheet. */
+  transform: translateY(var(--drag, 0px));
+  transition: transform var(--dur-sheet) var(--ease-sheet);
+}
+
+/* The dialog takes focus when it opens so VoiceOver reads its name; a ring round it adds nothing. */
+.panel:focus,
+.panel:focus-visible {
+  outline: none;
+}
+
+.panel[data-size='large'] {
+  top: var(--sheet-top);
+}
+
+/* Statement paper (EXTRAS.md §1.1): the review's content is printed straight onto --surface, where
+   the category inks and the brass seal keep their contrast. */
+.panel[data-material='paper'] {
+  --sheet-bg: var(--surface);
+}
+
+.layer[data-state='open'] .panel {
+  animation: sheet-in var(--dur-sheet) var(--ease-sheet) backwards;
+}
+
+.layer[data-dragging] .panel,
+.layer[data-dragging] .scrim {
+  transition: none;
+}
+
+.layer[data-dragging] .panel {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Leaving: down past the bottom edge (from wherever a drag let go) while the scrim fades. */
+.layer[data-state='closing'] .panel {
+  transform: translateY(calc(100% + var(--sheet-inset) + var(--space-8)));
+}
+
+.layer[data-state='closing'] .scrim {
+  opacity: 0;
+}
+
+/* The grab handle, 36 × 5 and 6px from the top. With the header it is the drag handle. */
+.grab {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  padding-top: calc(var(--space-1) + var(--space-0-5));
+  touch-action: none;
+  cursor: grab;
+}
+
+.handle {
+  width: 36px;
+  height: 5px;
+  border-radius: var(--radius-xs);
+  background: var(--hairline-strong);
+}
+
+.content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: var(--sheet-pad-bottom);
+  /* Fields scrolled into view clear the sticky SheetHeader (52px). */
+  scroll-padding-top: 52px;
+  scroll-padding-bottom: var(--space-4);
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(calc(100% + var(--sheet-inset)));
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Reduce Motion: no slide; the sheet fades in and out (the tokens make that 200ms). A drag still
+   follows the finger, but letting go puts the sheet back at once. */
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: opacity var(--dur-sheet) var(--ease-standard);
+  }
+
+  .layer[data-state='open'] .panel {
+    animation-name: fade-in;
+  }
+
+  .layer[data-state='closing'] .panel {
+    transform: translateY(var(--drag, 0px));
+    opacity: 0;
+  }
+}

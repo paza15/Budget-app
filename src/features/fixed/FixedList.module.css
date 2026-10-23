@@ -1,0 +1,142 @@
+/* The Fixed lists (DESIGN.md §9.7, §9.8). */
+
+/* An inset group of paper: margin 0 20, radius 22, flat. */
+.group {
+  margin: 0 var(--gutter);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* Category header ("All"): 22 above, 8 below; a 26pt coin, the name in Subhead 600 and the
+   subtotal in serif --ink-2, aligned with the row amounts (the check column, 28 + 12, plus the
+   group padding: 56). */
+.header {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-height: 26px;
+  margin: calc(var(--space-5) + var(--space-0-5)) 0 var(--space-2);
+  padding: 0 var(--gutter);
+  font: var(--text-subhead);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.headerTitle {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.subtotal {
+  flex: none;
+  padding-right: calc(var(--group-padding) + 28px + var(--space-3));
+  font: var(--text-figure-sm);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink-2);
+}
+
+/* The amount crossfades to --ink-2 as a check is pressed in (§10). */
+.amount {
+  transition: color var(--dur-stamp) var(--ease-standard);
+}
+
+/* The empty check column of rows that cannot be ticked off. */
+.noCheck {
+  display: block;
+  width: 28px;
+}
+
+/* "Today" in Footnote 600 --ink, then a 1pt --ink line to the trailing edge, 10 apart; 30 tall. */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-height: 30px;
+  padding: 0 var(--group-padding);
+  font: var(--text-footnote);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.divider::after {
+  content: '';
+  flex: 1;
+  height: var(--rule-width);
+  background: var(--ink);
+}
+
+/* Total (§9.8): on --bg under the last group, in the group's columns (1fr auto 28px), padding
+   18 16 12. The sum rule sits 10 above the figure, the brass double rule 7 below it; both span the
+   figure. */
+.total {
+  display: grid;
+  grid-template-columns: 1fr auto 28px;
+  column-gap: var(--space-3);
+  align-items: center;
+  margin: 0 var(--gutter);
+  padding: calc(var(--space-4) + var(--space-0-5)) var(--group-padding) var(--space-3);
+}
+
+.totalLabel {
+  font: var(--text-headline);
+  color: var(--ink);
+}
+
+.totalFigure {
+  position: relative;
+  font: var(--text-figure-strong);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.totalFigure::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 0;
+  left: 0;
+  height: var(--rule-width);
+  background: var(--ink-3);
+}
+
+.totalFigure::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -7px;
+  left: 0;
+  height: calc(2 * var(--rule-width) + var(--double-rule-gap));
+  border-top: var(--rule-width) solid var(--brass);
+  border-bottom: var(--rule-width) solid var(--brass);
+}
+
+/* "Add fixed cost": its plus-circle lines up with the row text (36 from the edge). */
+.addLine {
+  margin: calc(var(--space-1) + var(--space-0-5)) 0 0
+    calc(var(--gutter) + var(--group-padding) - var(--space-4) - var(--space-0-5));
+}
+
+.addLine + .addLine {
+  margin-top: 0;
+}
+
+/* The sentence under the segmented control: Body --ink-2 with the figure part in --ink. */
+.lede {
+  margin-top: calc(var(--space-3) + var(--space-0-5));
+  padding: 0 var(--gutter);
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+.ledeStrong {
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amount {
+    transition-duration: var(--dur-press);
+  }
+}

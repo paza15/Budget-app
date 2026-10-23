@@ -1,0 +1,26 @@
+/* The app fills the viewport and the document never scrolls (docs/SPEC.md §7): every screen
+   scrolls in its own container. Banners sit in the flow above the content, so a banner pushes the
+   screens down instead of covering them. */
+
+.appRoot {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  /* The fixed containing block is the viewport; 100% is the fallback for engines without dvh. */
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+}

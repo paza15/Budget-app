@@ -1,0 +1,23 @@
+node_modules
+dist
+dev-dist
+coverage
+*.local
+.DS_Store
+Thumbs.db
+
+# Playwright
+test-results
+playwright-report
+blob-report
+playwright/.cache
+e2e/__screenshots__/actual
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Exported user data must never be committed
+on-a-budget-backup-*.json
+on-a-budget-spending-*.csv

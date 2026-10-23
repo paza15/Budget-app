@@ -1,0 +1,99 @@
+/* The Daily tab (docs/DESIGN.md §9.2, §9.22, §9.23, §9.26). */
+
+/* Search belongs to the expanded header: it leaves with the large title, so the compact header
+   keeps only the stepper (DESIGN.md §14 note 22). Out of the row, so the centred title has room. */
+:global(section[data-compact]) .searchButton {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.searchButton {
+  transition:
+    opacity var(--dur-fade) var(--ease-standard),
+    visibility var(--dur-fade);
+}
+
+/* "336,40 € spent, about 18,69 € a day": Body, the total in --ink, the rest in --ink-2. */
+.lede {
+  padding: var(--space-0-5) var(--gutter) 0;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+.strong {
+  color: var(--ink);
+}
+
+/* The day chart on its paper: padding 14 16 10, 14 under the sentence. */
+.chart {
+  margin: calc(var(--space-3) + var(--space-0-5)) var(--gutter) 0;
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding) calc(var(--space-2) + var(--space-0-5));
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* "Quick add" sits 26 under the chart (not the 36 between Home sections). */
+.quick {
+  --section-gap: calc(var(--space-6) + var(--space-0-5));
+}
+
+.quickEmpty {
+  padding: 0 calc(var(--gutter) + var(--group-padding));
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+/* Away from the current period the strip gives way to "Back to this month" (DESIGN.md §9.23):
+   the pill of §9.2, glass, 34 tall with a 44 hit area, Subhead 600 in --accent-ink. */
+.backRow {
+  display: flex;
+  padding: calc(var(--space-6) + var(--space-0-5)) var(--gutter) 0;
+}
+
+.backRow .backPill {
+  min-height: 34px;
+  padding: 0 calc(var(--space-3) + var(--space-0-5));
+  font: var(--text-subhead);
+  font-weight: 600;
+}
+
+.backRow .backPill::before {
+  content: '';
+  position: absolute;
+  inset: -5px 0;
+}
+
+/* The category chips, 22 under the tiles. ChipTabs pads its row by 4 above and below for the
+   chips' hit areas, so the margins give that back and the list keeps its 24 to the chips. */
+.chips {
+  margin-top: calc(var(--space-5) - var(--space-0-5));
+  margin-bottom: calc(-1 * var(--space-1));
+}
+
+/* The chosen category: its row and its limit, on paper. */
+.categoryGroup {
+  margin: var(--space-4) var(--gutter) 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* The Meter spans the text column, like a limit row (DESIGN.md §9.21). */
+.meter {
+  padding: 0 var(--group-padding) calc(var(--space-3) + var(--space-0-5)) calc(var(--group-padding) + 34px + var(--space-3));
+}
+
+/* A day paid entirely from the wallet: the words in Subhead --ink-2 where the total would be. */
+.fromWallet {
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.emptyGroup {
+  margin: var(--space-6) var(--gutter) 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}

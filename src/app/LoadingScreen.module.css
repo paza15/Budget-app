@@ -1,0 +1,22 @@
+/* DESIGN.md §9.24: --bg with the 64px mark centred in --ink-3. */
+
+.loading {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--ink-3);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Read by screen readers, not shown. */
+.label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

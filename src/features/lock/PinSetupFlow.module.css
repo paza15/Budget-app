@@ -1,0 +1,58 @@
+/* PIN setup (docs/SPEC.md §3.8, DESIGN.md §9.15, §9.24): the length choice, the prompt, the dots,
+   a line for problems and the PIN keypad, centred. */
+
+.flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--gutter) var(--space-5);
+}
+
+/* A full screen: the keypad sits at the bottom, like the lock screen's. */
+.fill {
+  flex: 1;
+  padding-bottom: 0;
+}
+
+.length {
+  width: min(100%, 240px);
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.prompt {
+  margin: var(--space-5) 0 0;
+  font: var(--text-title3);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.dots {
+  margin-top: var(--space-5);
+}
+
+/* One Footnote line is always reserved, so a problem never moves the keypad. */
+.problem {
+  display: block;
+  max-width: 320px;
+  min-height: 1lh;
+  margin: var(--space-3) 0 0;
+  font: var(--text-footnote);
+  color: var(--critical-ink);
+  text-align: center;
+}
+
+.keypad {
+  margin-top: var(--space-5);
+}
+
+.fill .keypad {
+  margin-top: auto;
+  padding-top: var(--space-5);
+}
+
+.cancel {
+  margin-top: calc(var(--space-3) + var(--space-0-5));
+}

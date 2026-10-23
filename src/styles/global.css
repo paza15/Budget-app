@@ -1,0 +1,227 @@
+/*
+ * Global styles: the bundled Source Serif 4 faces, a small reset, base elements, utilities and the
+ * row-separator convention. Every value comes from tokens.css; docs/DESIGN.md explains the roles.
+ * Component styles live in CSS Modules next to their components.
+ */
+
+/* ── Source Serif 4 (SIL OFL), optical-size files, Latin and Latin Extended only (DESIGN.md §5.1) ──
+   font-optical-sizing stays auto, so Safari sets opsz to the font size: the 76px hero gets the
+   Display cut and 18px rows the Text cut. The other five subsets of opsz.css are left out to keep
+   the service-worker precache small. */
+@font-face {
+  font-family: 'Source Serif 4 Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url('@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4 Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url('@fontsource-variable/source-serif-4/files/source-serif-4-latin-ext-opsz-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure,
+blockquote,
+dl,
+dd,
+fieldset {
+  margin: 0;
+}
+
+ul,
+ol,
+fieldset,
+legend {
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+fieldset {
+  border: 0;
+  min-width: 0;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+/* 17px at the default iOS text size, and Dynamic Type follows the user's setting. Browsers without
+   the -apple-system-body keyword drop that declaration and keep the 17px before it. */
+html {
+  font-size: 17px;
+  font: -apple-system-body;
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+body {
+  min-height: 100dvh;
+  font: var(--text-body);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Controls start as bare text in the inherited font; components style them. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+/* iOS: no double-tap zoom delay, no callout or text selection on long presses of controls. */
+button,
+[role='button'],
+[role='tab'],
+[role='switch'],
+label,
+select,
+summary {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Below 16px iOS zooms into a focused field. */
+input,
+select,
+textarea {
+  font-size: var(--text-input);
+}
+
+svg {
+  flex-shrink: 0;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+/* ── Focus ───────────────────────────────────────────────────────────────── */
+/* A 2px ring with a 2px offset on keyboard focus only (DESIGN.md §9.12). */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Utilities ───────────────────────────────────────────────────────────── */
+/* Read by assistive technology, invisible on screen. */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
+/* ── Rows in inset groups ────────────────────────────────────────────────── */
+/* Every row-like component (ListRow, Toggle, form fields, and feature rows that opt in) marks its
+   root with data-row. A 0.5px hairline separates consecutive rows; there is none above the first
+   row or after the last (DESIGN.md §9.8). It starts at the group padding, or at the text column
+   (x 62: padding 16, coin 34, gap 12) when both rows carry a coin (data-row="coin"). */
+[data-row] {
+  position: relative;
+}
+
+[data-row] + [data-row]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--group-padding);
+  right: 0;
+  height: var(--hairline-width);
+  background: var(--hairline);
+  pointer-events: none;
+  z-index: 1;
+}
+
+[data-row='coin'] + [data-row='coin']::before {
+  left: calc(var(--group-padding) + 34px + var(--space-3));
+}
+
+/* ── Materials ───────────────────────────────────────────────────────────── */
+/* Glass falls back to the solid surface where backdrop-filter is missing (DESIGN.md §7). The
+   selectors match the theme blocks of tokens.css in specificity and come later, so they win. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  :root,
+  :root:not([data-theme='light']),
+  :root[data-theme] {
+    --glass: var(--glass-solid);
+    --glass-blur: none;
+  }
+}
+
+/* ── Increase Contrast ───────────────────────────────────────────────────── */
+/* tokens.css already makes glass solid, secondary ink primary and hairlines firmer. A thicker focus
+   ring keeps keyboard focus as legible as the rest. */
+@media (prefers-contrast: more) {
+  :focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* ── Reduce Motion ───────────────────────────────────────────────────────── */
+/* The motion tokens already shorten or zero durations. As a safety net, programmatic scrolling
+   jumps instead of gliding. Components drop their transforms themselves. */
+@media (prefers-reduced-motion: reduce) {
+  html,
+  * {
+    scroll-behavior: auto !important;
+  }
+}

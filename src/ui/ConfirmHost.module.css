@@ -1,0 +1,239 @@
+/*
+ * confirmDialog (an iOS alert) and chooseDialog (an iOS action sheet), docs/DESIGN.md §9.17.
+ * Opaque cards over the scrim, above sheets and toasts. Both enter with a fade and an 8px rise in
+ * --dur-fade (a fade only with Reduce Motion) and leave with a fade.
+ */
+
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-confirm);
+  display: grid;
+  place-items: center;
+  transition: opacity var(--dur-fade) var(--ease-standard);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.layer[data-kind='choose'] {
+  align-items: end;
+}
+
+.layer[data-state='closing'] {
+  opacity: 0;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  animation: fade-in var(--dur-fade) var(--ease-standard) backwards;
+}
+
+/* ── Alert ─────────────────────────────────────────────────────────────────────────────────── */
+
+.alert {
+  position: relative;
+  box-sizing: border-box;
+  /* 320 wide, and 24 clear of each screen edge on narrower screens. */
+  width: min(320px, 100% - 2 * var(--space-6));
+  /* DESIGN.md §9.17: padding 22 20 16 and radius 28. */
+  padding: calc(var(--space-5) + var(--space-0-5)) var(--space-5) var(--space-4);
+  border-radius: var(--radius-dialog);
+  background: var(--surface-raised);
+  color: var(--ink);
+  text-align: center;
+  outline: none;
+  animation: rise-in var(--dur-fade) var(--ease-out) backwards;
+}
+
+.alertTitle {
+  margin: 0;
+  font: var(--text-headline);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* 6 below the title. */
+.alertMessage {
+  margin: calc(var(--space-1) + var(--space-0-5)) 0 0;
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+/* 16 below the text, 10 apart. */
+.alertButtons {
+  display: flex;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  margin-top: var(--space-4);
+}
+
+/* The kit's Button (secondary, primary, destructive filled) at the alert's size: 48 tall, Headline,
+   equal halves. Two classes deep so it wins over the Button's own size whatever the CSS order. */
+.alertButtons > .alertButton {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 48px;
+  /* Long labels wrap inside the pill rather than overflow it. */
+  padding: calc(var(--space-1) + var(--space-0-5)) var(--space-3);
+  font: var(--text-headline);
+  white-space: normal;
+}
+
+/* ── Action sheet ──────────────────────────────────────────────────────────────────────────── */
+
+.actionSheet {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: calc(var(--sheet-max-width) + 2 * var(--sheet-inset));
+  /* 8px above the bottom safe area and 8px from the sides (and clear of the side safe areas). */
+  padding: 0 max(var(--sheet-inset), env(safe-area-inset-right))
+    calc(env(safe-area-inset-bottom) + var(--sheet-inset)) max(var(--sheet-inset), env(safe-area-inset-left));
+  outline: none;
+  animation: rise-in var(--dur-fade) var(--ease-out) backwards;
+}
+
+/* With the keyboard up the layer is the visual viewport (useVisualViewport), so the iOS keyboard
+   never covers a dialog. */
+.layer[data-keyboard] {
+  top: var(--vv-top, 0px);
+  bottom: auto;
+  height: var(--vv-height, 100%);
+}
+
+/* The keyboard covers the home indicator, so the bottom safe area does not apply above it. */
+.layer[data-keyboard] .actionSheet {
+  padding-bottom: var(--sheet-inset);
+}
+
+.group {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  color: var(--ink);
+}
+
+.head {
+  display: grid;
+  gap: var(--space-0-5);
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--space-4);
+  text-align: center;
+}
+
+.headTitle {
+  margin: 0;
+  font: var(--text-footnote);
+  font-weight: 600;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.headMessage {
+  margin: 0;
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.option,
+.cancel {
+  min-height: 56px;
+  padding: var(--space-2) var(--space-4);
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: var(--hairline-width) solid var(--hairline);
+  background: transparent;
+  font: var(--text-body);
+  color: var(--accent-ink);
+}
+
+.option:first-child {
+  border-top: 0;
+}
+
+/* An option with a glyph (the quick-add menu, DESIGN.md §9.1): the light glyph at the leading edge
+   and the label centred in the row, as in an iOS action sheet. While the label fits, the two 1fr
+   columns are equal, so its centre is the row's; a long label keeps clear of the glyph and wraps. */
+.withGlyph {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, auto) 1fr;
+  align-items: center;
+  column-gap: var(--space-3);
+}
+
+/* The glyph takes the label's colour, as an action sheet tints its images. */
+.glyph {
+  justify-self: start;
+}
+
+.destructiveOption {
+  color: var(--critical-ink);
+}
+
+.cancel {
+  font: var(--text-headline);
+  color: var(--accent-ink);
+}
+
+.option:active {
+  background-color: var(--press);
+}
+
+.cancel:active {
+  background-image: linear-gradient(var(--press), var(--press));
+}
+
+.option:focus-visible,
+.cancel:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* A static preview inside the page (gallery). */
+.inline {
+  animation: none;
+}
+
+.actionSheet.inline {
+  padding: 0;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alert,
+  .actionSheet {
+    animation-name: fade-in;
+  }
+}

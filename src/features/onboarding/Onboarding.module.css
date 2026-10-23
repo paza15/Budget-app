@@ -1,0 +1,11 @@
+/* Onboarding fills the app's content area (src/App.module.css); each step lays itself out inside. */
+.onboarding {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  /* clip, not hidden: a step sliding in sticks out to the side for a moment, and a box that
+     scrolls (hidden does) could be scrolled sideways by a focus or a reveal meanwhile. */
+  overflow: hidden;
+  overflow: clip;
+  background: var(--bg);
+}

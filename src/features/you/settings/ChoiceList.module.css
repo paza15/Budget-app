@@ -1,0 +1,95 @@
+/* Choice rows (SPEC §3.7): the form-row look of DESIGN.md §9.8 with a trailing check. */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--form-row-min, 50px);
+  padding: calc(var(--space-2) + var(--space-0-5)) var(--group-padding);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color var(--dur-press) var(--ease-standard);
+  /* A size container, as ListRow's rows: the query below measures the whole row. */
+  container-type: inline-size;
+}
+
+.withLeading {
+  min-height: var(--row-min);
+}
+
+.row:active {
+  background: var(--press);
+}
+
+.row:has(.input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* The native radio covers the row, invisible: it carries the state, the name and the keyboard. */
+.input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+  appearance: none;
+}
+
+.leading {
+  display: flex;
+  flex: none;
+}
+
+/* The title and its detail on one baseline. */
+.main {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: calc(var(--space-2) + var(--space-0-5));
+  min-width: 0;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  font: var(--text-body);
+  overflow-wrap: anywhere;
+}
+
+.detail {
+  flex: none;
+  max-width: 60%;
+  overflow: hidden;
+  font: var(--text-body);
+  color: var(--ink-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* A fixed column, so details line up whether or not their row is checked. */
+.check {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 17px;
+  color: var(--accent-ink);
+}
+
+/* Accessibility text sizes: the detail moves under the title instead of squeezing it. */
+@container (max-width: 14.4em) {
+  .title,
+  .detail {
+    flex-basis: 100%;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
+}

@@ -1,0 +1,9 @@
+/* The backup reminder dot (EXTRAS.md §3.2): never the only signal, the row's name says it too. */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--critical);
+  vertical-align: middle;
+}

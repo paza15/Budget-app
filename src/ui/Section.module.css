@@ -1,0 +1,122 @@
+/* Sections and inset groups (DESIGN.md §9.7). */
+.section {
+  /* Read by rows and controls inside: the group's paper and the form row height. */
+  --group-bg: var(--surface);
+}
+
+.sheet {
+  --group-bg: var(--surface-raised);
+  --form-row-min: 48px;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.title {
+  min-width: 0;
+}
+
+/* Money only: serif, --ink-2, tabular. */
+.meta {
+  flex: none;
+  margin-left: auto;
+  font: var(--text-figure-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.action {
+  flex: none;
+  margin-left: auto;
+}
+
+/* "See all", "Edit": Subhead 600 --accent-ink with a 44pt hit area. */
+.link {
+  position: relative;
+  flex: none;
+  margin-left: auto;
+  font: var(--text-subhead);
+  font-weight: 600;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  inset: -12px -10px;
+}
+
+.link:active {
+  opacity: 0.6;
+}
+
+/* ── Card sections (Home): Title 3, 36 above and 10 below ── */
+.card .header {
+  margin: var(--section-gap) var(--gutter) calc(var(--space-2) + var(--space-0-5));
+}
+
+.card .title {
+  font: var(--text-title3);
+  color: var(--ink);
+}
+
+/* ── Form groups: Footnote 600 --ink-2, 26 above and 7 below, indented to the content (36) ── */
+.form .header {
+  margin: calc(var(--space-6) + var(--space-0-5)) calc(var(--gutter) + var(--group-padding))
+    calc(var(--space-2) - 1px);
+}
+
+.form .title {
+  font: var(--text-footnote);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* ── Day headers (Daily): Headline, 24 above and 8 below; the total lines up with the amounts ── */
+.day .header {
+  margin: var(--space-6) calc(var(--gutter) + var(--group-padding)) var(--space-2) var(--gutter);
+}
+
+.day .title {
+  font: var(--text-headline);
+  color: var(--ink);
+}
+
+/* Without a heading a group keeps a 20pt gap to what is above it. */
+.untitled {
+  margin-top: var(--space-5);
+}
+
+/* ── The inset group: flat paper, radius 22, no border, no shadow ── */
+.group {
+  margin: 0 var(--gutter);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--group-bg);
+}
+
+.sheet .group {
+  margin: 0 var(--space-4);
+}
+
+.footer {
+  padding: var(--space-2) calc(var(--gutter) + var(--group-padding)) 0;
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.sheet .footer {
+  padding-right: calc(var(--space-4) + var(--group-padding));
+  padding-left: calc(var(--space-4) + var(--group-padding));
+}
+
+.sheet.form .header {
+  margin-right: calc(var(--space-4) + var(--group-padding));
+  margin-left: calc(var(--space-4) + var(--group-padding));
+}

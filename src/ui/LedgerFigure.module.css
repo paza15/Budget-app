@@ -1,0 +1,43 @@
+/* Ledger figures (DESIGN.md §9.6): tabular serif, right-aligned on the decimal separator. */
+.figure {
+  position: relative;
+  display: inline-block;
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.result {
+  font: var(--text-figure-strong);
+}
+
+.critical {
+  color: var(--critical-ink);
+}
+
+/* The unit hangs outside the figure's box, so the box (and the rules measured from it) spans the
+   number only. It sits in the 20px margin column the ledger keeps beside the figures. */
+.unit {
+  position: absolute;
+  top: 0;
+  min-width: 20px;
+}
+
+/* "€" ends flush with the margin column; a longer unit ("CHF", "zł") keeps a small gap. */
+.after {
+  left: 100%;
+  padding-left: 0.25em;
+  text-align: right;
+}
+
+.before {
+  right: 100%;
+  padding-right: 0.25em;
+  text-align: left;
+}
+
+.masked {
+  color: var(--ink-3);
+}

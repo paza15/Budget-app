@@ -1,0 +1,32 @@
+/* Empty states (DESIGN.md §9.20): centred, padding 26 28. */
+.empty {
+  display: grid;
+  justify-items: center;
+  padding: calc(var(--space-6) + var(--space-0-5)) calc(var(--space-7) - var(--space-1));
+  text-align: center;
+}
+
+/* A 56px coin with one hairline ring (the md coin, enlarged; not the lg rim). */
+.empty .coin {
+  width: 56px;
+  height: 56px;
+}
+
+.title {
+  margin-top: var(--space-3);
+  font: var(--text-headline);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.message {
+  max-width: 280px;
+  margin-top: var(--space-1);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  text-wrap: balance;
+}
+
+.action {
+  margin-top: var(--space-4);
+}

@@ -1,0 +1,177 @@
+/* The ledger (DESIGN.md §2, §9.6). The group has padding 6 16 14; above a statement line the bottom
+   padding drops to 8 and the group ends 2 below that line. */
+.ledger,
+.ledgerWithStatement {
+  padding: calc(var(--space-1) + var(--space-0-5)) var(--group-padding) calc(var(--space-3) + var(--space-0-5));
+}
+
+.ledgerWithStatement {
+  padding-bottom: var(--space-2);
+}
+
+/* A past period's range under "Statement for September". */
+.range {
+  display: block;
+  margin-top: var(--space-0-5);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+/* Rows: operator, label, figure and the 20px margin column for the hanging unit, at least 44 tall.
+   Each row reaches the group's edges (so its press overlay does) and keeps its content inside. */
+.row,
+.result {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto 20px;
+  align-items: center;
+  min-height: var(--touch-min);
+  margin: 0 calc(-1 * var(--group-padding));
+  padding: 0 var(--group-padding);
+}
+
+/* A 0.5px hairline between addends from x 22 to the end; the operator column stays open, like the
+   margin of ruled paper. None above the result. */
+.row + .row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: var(--group-padding);
+  left: calc(var(--group-padding) + 22px);
+  height: var(--hairline-width);
+  background: var(--hairline);
+  pointer-events: none;
+}
+
+/* Operators in the figures font: + − − − in --ink-3, the result's = in --ink. */
+.operator,
+.equals {
+  font: var(--text-figure);
+  color: var(--ink-3);
+}
+
+.equals {
+  color: var(--ink);
+}
+
+.label,
+.resultLabel {
+  min-width: 0;
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+.resultLabel {
+  font-weight: 600;
+}
+
+/* The label is the row's button; its overlay covers the whole row, so the row is the target. */
+.open {
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.open:active::after {
+  background: var(--press);
+}
+
+.open:focus-visible {
+  outline: none;
+}
+
+.open:focus-visible::after {
+  border-radius: var(--radius-sm);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* Figures right-aligned in their column; flex keeps each figure's own line box. */
+.cell {
+  display: flex;
+  justify-content: flex-end;
+  padding-left: var(--space-3);
+}
+
+/* ── The result: 52 tall, the sum rule on its top edge, the brass double rule 9 below the figure ── */
+.result {
+  min-height: var(--row-min);
+}
+
+/* Both rules span --colw, the widest figure (useLedgerColumn), aligned right with the figures. */
+.sumRule {
+  position: absolute;
+  top: 0;
+  right: calc(var(--group-padding) + 20px);
+  width: var(--colw, 0);
+  height: var(--rule-width);
+  background: var(--ink-3);
+}
+
+.doubleRule {
+  position: relative;
+  display: flex;
+}
+
+.doubleRule::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -9px;
+  width: var(--colw, 100%);
+  height: calc(2 * var(--rule-width) + var(--double-rule-gap));
+  border-top: var(--rule-width) solid var(--brass);
+  border-bottom: var(--rule-width) solid var(--brass);
+}
+
+/* Over budget: the result's double rule turns critical (its figure does in LedgerFigure). */
+.result[data-over] .doubleRule::after {
+  border-color: var(--critical);
+}
+
+/* ── The statement line: where a closed month's result went (DESIGN.md §9.6) ── */
+.statement {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: calc(100% - 2 * var(--group-padding));
+  min-height: var(--touch-min);
+  margin: 0 var(--group-padding) var(--space-0-5);
+  border-top: var(--hairline-width) solid var(--hairline);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  text-align: start;
+}
+
+/* The press overlay reaches the group's edges. */
+.statement::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(-1 * var(--group-padding));
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.statement:active::after {
+  background: var(--press);
+}
+
+.statementText {
+  min-width: 0;
+}
+
+.statementAmount {
+  color: var(--ink);
+}
+
+.chevron {
+  flex: none;
+  margin-left: auto;
+  color: var(--ink-3);
+}

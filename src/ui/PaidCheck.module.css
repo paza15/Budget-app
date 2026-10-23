@@ -1,0 +1,65 @@
+/* The paid check (DESIGN.md §9.8, motion §10): a light outline, never a filled disc. */
+.check {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--ink-2);
+  box-shadow: inset 0 0 0 1.5px var(--mark);
+  transition: box-shadow var(--dur-fade) var(--ease-standard);
+}
+
+/* A 44pt hit area around the 26pt ring. */
+.check::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+}
+
+.check:focus-visible {
+  outline-offset: 4px;
+}
+
+.paid {
+  box-shadow: inset 0 0 0 1.25px var(--ink-2);
+  transition-duration: var(--dur-stamp);
+}
+
+/* The check fades out over --dur-fade when unticked… */
+.mark {
+  opacity: 0;
+  transition: opacity var(--dur-fade) var(--ease-standard);
+}
+
+/* …and in with the stamp when ticked. */
+.paid .mark {
+  opacity: 1;
+  transition-duration: var(--dur-stamp);
+}
+
+/* Pressed in like a bank stamp: 1 → 0.9 → 1 over --dur-stamp. */
+.stamp {
+  animation: stamp var(--dur-stamp) var(--ease-standard);
+}
+
+@keyframes stamp {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+/* Reduce Motion (--dur-stamp is 0 there): no scale, a 120ms fade only. */
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    animation: none;
+  }
+
+  .paid,
+  .mark,
+  .paid .mark {
+    transition-duration: var(--dur-press);
+  }
+}

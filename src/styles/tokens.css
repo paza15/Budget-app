@@ -1,0 +1,479 @@
+/*
+ * On a Budget design tokens: "Private bank". docs/DESIGN.md explains every role.
+ *
+ * - Light values live on bare :root. Dark values are redefined twice with the same content: in
+ *   @media (prefers-color-scheme: dark) for :root:not([data-theme="light"]) (follow the system)
+ *   and in :root[data-theme="dark"] (forced dark). Both set color-scheme: dark.
+ * - Accents are -l/-d pairs. :root[data-accent="<key>"] swaps the pairs; the theme blocks pick
+ *   the -l or -d member, so every accent works in both themes. Navy is the default.
+ * - Type tokens are font shorthands, rem-based on html { font: -apple-system-body } (17px at the
+ *   default iOS text size), so Dynamic Type applies. Chrome that cannot grow is capped with min().
+ * - Words and controls are SF Pro (--font-ui). Money figures and the month name in the month
+ *   switcher are Source Serif 4 (--font-figures) at its optical sizes. Nothing else is serif.
+ * - No component styles here. Components use these variables only (no hex or rgb literals).
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ── Paper ────────────────────────────────────────────────────────────── */
+  --bg: #EDEEEA;                 /* cool bone, the desk; also theme-color and the html background */
+  --surface: #FAFAF8;            /* statement paper: inset groups and cards on --bg */
+  --surface-raised: #FFFFFF;     /* groups inside sheets, segmented thumb, menus, tooltips */
+  --surface-sheet: #F0F1ED;      /* bottom sheets, dialogs, the month picker */
+  --surface-2: rgba(18, 28, 51, 0.06);  /* control fill: chips, segmented track, fields, keys pressed */
+  --surface-2-strong: rgba(18, 28, 51, 0.10); /* pressed chips and rows; the switch track when off */
+  --thumb: #FFFFFF;              /* segmented-control thumb */
+  --switch-knob: #FFFFFF;        /* switch knob when off; when on it is --on-accent */
+  --glass: rgba(248, 248, 245, 0.76);   /* tab bar (with --glass-blur) and glass buttons (no blur: they sit on opaque paper) */
+  --glass-solid: #F6F6F3;        /* glass without backdrop-filter, or with Increase Contrast */
+  --scrim: rgba(11, 18, 34, 0.30);
+
+  /* ── Ink ──────────────────────────────────────────────────────────────── */
+  --ink: #121C33;                /* navy ink: primary text, figures, the pace fill */
+  --ink-2: #566074;              /* secondary text; placeholders (>= 4.5:1 on every fill too) */
+  --ink-3: #616A7C;              /* tertiary text: operators, chevrons, captions (never on fills) */
+  --ink-inverse: #F7F6F2;        /* text on an --ink fill */
+  --ink-disabled: #A9AEB8;       /* disabled labels only (exempt from contrast) */
+  --mark: #7F8798;               /* non-text marks: unpaid rings, past-day columns, ticks ahead (>= 3:1) */
+  --hairline: rgba(18, 28, 51, 0.13);        /* 0.5px separators */
+  --hairline-strong: rgba(18, 28, 51, 0.24); /* coin rings, field outlines, chart baselines */
+  --hairline-width: 0.5px;
+  --rule-width: 1px;             /* the sum rule and each line of the double rule */
+  --double-rule-gap: 2px;
+  --track: rgba(18, 28, 51, 0.09);           /* empty part of the pace bar and meters */
+
+  /* ── Brass: what is settled. Only under a bottom line and on a closed statement ── */
+  --brass: #A08245;              /* the double rule, the Closed seal (marks, >= 3:1) */
+  --brass-soft: rgba(160, 130, 69, 0.14);    /* the seal's inner field */
+
+  /* ── Status (always with an icon and words) ───────────────────────────── */
+  --good: #2E7D52;               /* marks: success icons */
+  --good-ink: #276B47;           /* text */
+  --warning: #A35F00;            /* icons: "Spending fast", "Near the limit" */
+  --warning-mark: #A35F00;       /* data marks: the ahead part of the pace bar, a meter near its limit */
+  --warning-ink: #8A4F00;        /* text */
+  --warning-soft: #F4E9D6;       /* banner background (backup nudge, install hint) */
+  --critical: #B3261E;           /* marks and fills: over budget, overflow nub, destructive fill */
+  --critical-ink: #A8231C;       /* text: over-budget figure and labels, destructive labels */
+  --critical-soft: #F6E3E0;      /* banner background (storage errors) */
+
+  /* ── Accent: "act here". Default navy; -l/-d pairs, resolved below ────── */
+  --accent-l: #1D3160;  --accent-d: #E6E7E2;          /* fills: add button, primary button, selected chip, switch on */
+  --on-accent-l: #F7F6F2;  --on-accent-d: #101A31;    /* text and glyphs on --accent */
+  --accent-ink-l: #26437F;  --accent-ink-d: #B4C3E6;  /* tinted text: links, plain buttons, the active tab */
+  --accent-soft-l: rgba(29, 49, 96, 0.08);  --accent-soft-d: rgba(180, 195, 230, 0.12); /* selected rows, info banner */
+
+  /* Swatches for You > Accent, one per key, independent of the chosen accent */
+  --accent-navy-l: #1D3160;      --accent-navy-d: #B4C3E6;
+  --accent-royal-l: #2747B3;     --accent-royal-d: #A9BBF5;
+  --accent-teal-l: #0D5C63;      --accent-teal-d: #8ECFC8;
+  --accent-bottle-l: #1E5136;    --accent-bottle-d: #94CCA6;
+  --accent-burgundy-l: #74233A;  --accent-burgundy-d: #EAA4B3;
+  --accent-plum-l: #552D6E;      --accent-plum-d: #C7B0E2;
+  --accent-cognac-l: #7C4321;    --accent-cognac-d: #E2B190;
+  --accent-graphite-l: #33383F;  --accent-graphite-d: #C6C9CD;
+
+  /* ── Category inks: data marks only (stacked bar, legend dots, chart columns), never text ── */
+  --cat-blue-l: #2F5FA9;     --cat-blue-d: #547ECD;
+  --cat-orange-l: #CC6A29;   --cat-orange-d: #D3773E;
+  --cat-aqua-l: #269D93;     --cat-aqua-d: #39A89C;
+  --cat-yellow-l: #DBAA16;   --cat-yellow-d: #B29025;
+  --cat-magenta-l: #B44280;  --cat-magenta-d: #B55294;
+  --cat-green-l: #1A6B42;    --cat-green-d: #2A7645;
+  --cat-violet-l: #7E5EB9;   --cat-violet-d: #9278C8;
+  --cat-red-l: #8C2A3F;      --cat-red-d: #B04455;
+  --cat-slate-l: #5087C0;    --cat-slate-d: #408FBA;
+  --cat-brown-l: #996128;    --cat-brown-d: #955B1E;
+  --cat-other-l: #7D8494;    --cat-other-d: #727C8F;  /* the folded "{n} more" segment */
+
+  /* ── Resolved accent and category tokens (light) ──────────────────────── */
+  --accent: var(--accent-l);
+  --on-accent: var(--on-accent-l);
+  --accent-ink: var(--accent-ink-l);
+  --accent-soft: var(--accent-soft-l);
+  --accent-navy: var(--accent-navy-l);
+  --accent-royal: var(--accent-royal-l);
+  --accent-teal: var(--accent-teal-l);
+  --accent-bottle: var(--accent-bottle-l);
+  --accent-burgundy: var(--accent-burgundy-l);
+  --accent-plum: var(--accent-plum-l);
+  --accent-cognac: var(--accent-cognac-l);
+  --accent-graphite: var(--accent-graphite-l);
+  --cat-blue: var(--cat-blue-l);
+  --cat-orange: var(--cat-orange-l);
+  --cat-aqua: var(--cat-aqua-l);
+  --cat-yellow: var(--cat-yellow-l);
+  --cat-magenta: var(--cat-magenta-l);
+  --cat-green: var(--cat-green-l);
+  --cat-violet: var(--cat-violet-l);
+  --cat-red: var(--cat-red-l);
+  --cat-slate: var(--cat-slate-l);
+  --cat-brown: var(--cat-brown-l);
+  --cat-other: var(--cat-other-l);
+
+  /* ── Charts ───────────────────────────────────────────────────────────── */
+  --chart-grid: var(--hairline);
+  --chart-axis: var(--hairline-strong);
+  --chart-ref: var(--ink-2);     /* reference lines: the per-day allowance, income */
+  --chart-col: var(--mark);      /* past-day columns */
+  --chart-col-now: var(--ink);   /* today's column, a selected column */
+  --chart-fixed: var(--mark);    /* trend: fixed costs */
+  --chart-daily: var(--ink);     /* trend: daily spending */
+
+  /* ── Engraving (guilloché, static SVG) ────────────────────────────────── */
+  --engrave: var(--ink);         /* stroke colour of the rosettes */
+  --engrave-opacity: 0.12;       /* a whisper: never behind body text at more */
+  --engrave-width: 0.5px;
+
+  /* ── Elevation and light ──────────────────────────────────────────────── */
+  --glass-blur: blur(20px) saturate(160%);
+  --glass-edge: rgba(18, 28, 51, 0.08);       /* 0.5px inner outline of glass */
+  --glass-highlight: rgba(255, 255, 255, 0.75);/* 1px inner top light of glass */
+  --lens: rgba(18, 28, 51, 0.07);             /* pill behind the active tab */
+  --press: rgba(18, 28, 51, 0.06);            /* overlay on pressed rows and keys */
+  --shadow-float: 0 10px 30px rgba(18, 28, 51, 0.10), 0 1px 3px rgba(18, 28, 51, 0.06);
+  --shadow-control: 0 0.5px 1px rgba(18, 28, 51, 0.06), 0 2px 8px rgba(18, 28, 51, 0.06);
+  --shadow-sheet: 0 -1px 0 rgba(18, 28, 51, 0.04), 0 18px 48px rgba(18, 28, 51, 0.20);
+  --shadow-thumb: 0 1px 3px rgba(18, 28, 51, 0.12), 0 0 0 0.5px rgba(18, 28, 51, 0.06);
+  --shadow-knob: 0 2px 6px rgba(0, 0, 0, 0.18), 0 0 0 0.5px rgba(0, 0, 0, 0.04);  /* switch knob, both themes */
+  --toast-bg: #1B2540;           /* navy pill in light, bone pill in dark */
+  --toast-ink: #F2F2EE;
+  --toast-action: #C9D5F2;
+  --focus-ring: var(--accent-ink);
+
+  /* ── Type ─────────────────────────────────────────────────────────────── */
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-figures: "Source Serif 4 Variable", "Source Serif 4", ui-serif, "New York", Georgia, serif;
+
+  /* SF Pro styles (iOS text styles at the default size; rem on a 17px root) */
+  --text-large-title: 700 2rem/1.2059 var(--font-ui);          /* 34/41  "You", onboarding titles */
+  --text-title1: 700 1.6471rem/1.2143 var(--font-ui);          /* 28/34  welcome title */
+  --text-title2: 600 1.2941rem/1.2727 var(--font-ui);          /* 22/28  dialog titles, empty states */
+  --text-title3: 600 1.1765rem/1.25 var(--font-ui);            /* 20/25  section titles */
+  --text-headline: 600 1rem/1.2941 var(--font-ui);             /* 17/22 */
+  --text-body: 400 1rem/1.2941 var(--font-ui);                 /* 17/22 */
+  --text-callout: 400 0.9412rem/1.3125 var(--font-ui);         /* 16/21 */
+  --text-subhead: 400 0.8824rem/1.3333 var(--font-ui);         /* 15/20 */
+  --text-footnote: 400 0.7647rem/1.3846 var(--font-ui);        /* 13/18 */
+  --text-caption: 400 0.7059rem/1.3333 var(--font-ui);         /* 12/16  chart labels */
+  --text-caption2: 500 0.6471rem/1.1818 var(--font-ui);        /* 11/13 */
+  --text-tab: 500 min(0.6471rem, 13px)/1.1818 var(--font-ui);  /* 11     tab labels, capped */
+  --text-keypad: 400 min(1.6471rem, 34px)/1 var(--font-ui);    /* 28     keypad digits, capped */
+  --text-sheet-title: 600 min(1rem, 22px)/1.2941 var(--font-ui); /* 17   sheet titles, capped */
+  --text-input: max(16px, 1rem);                               /* every input: below 16px iOS zooms */
+
+  /* Source Serif 4 styles (money figures and the month name). Optical size follows font-size. */
+  --text-hero: 400 min(4.4706rem, 76px)/1 var(--font-figures);       /* 76  left to spend */
+  --text-hero-unit: 400 min(2.2353rem, 38px)/1 var(--font-figures);  /* 38  its currency unit */
+  --text-amount: 400 min(3.7647rem, 64px)/1 var(--font-figures);     /* 64  amount being entered */
+  --text-amount-unit: 400 min(1.8824rem, 32px)/1 var(--font-figures);/* 32 */
+  --text-month: 500 min(2rem, 44px)/1.1765 var(--font-figures);      /* 34/40  month switcher title */
+  --text-month-compact: 600 1rem/1.2941 var(--font-figures);         /* 17/22  compact header month */
+  --text-figure-lg: 400 1.6471rem/1.1429 var(--font-figures);        /* 28/32  category total */
+  --text-figure: 400 1.0588rem/1.2222 var(--font-figures);           /* 18/22  amounts in lists and the ledger */
+  --text-figure-strong: 600 1.0588rem/1.2222 var(--font-figures);    /* 18/22  results and totals */
+  --text-figure-sm: 400 0.9412rem/1.25 var(--font-figures);          /* 16/20  quick-add amounts, section meta */
+  --text-figure-caption: 400 0.7647rem/1.3846 var(--font-figures);   /* 13/18  chart value labels */
+
+  /* ── Space (4pt grid) ─────────────────────────────────────────────────── */
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --gutter: 20px;                /* screen side margin: text, section titles and group edges */
+  --group-padding: 16px;         /* inner side padding of inset groups */
+  --section-gap: 36px;           /* between Home sections */
+  --touch-min: 44px;             /* minimum touch target in both directions */
+  --row-min: 52px;               /* one-line list row */
+  --row-2: 62px;                 /* two-line list row */
+  --nav-height: 44px;            /* nav row above a large title; also the compact header */
+  --title-height: 52px;          /* large-title row */
+  --tabbar-height: 62px;
+  --tabbar-inset: 20px;          /* side inset of the floating tab bar */
+  --tabbar-offset: max(8px, calc(env(safe-area-inset-bottom) - 13px));  /* 21px on iPhone 15 */
+  --add-button-size: 50px;
+  --content-bottom: calc(var(--tabbar-offset) + var(--tabbar-height) + 28px);
+  --sheet-inset: 8px;            /* floating sheet gap to the screen edges */
+  --sheet-max-width: 560px;
+
+  /* ── Radii (concentric) ───────────────────────────────────────────────── */
+  --radius-xs: 3px;              /* 6px pace bar; meters use 2px */
+  --radius-data: 4px;            /* data ends of columns and stacked bars */
+  --radius-sm: 8px;              /* tooltips, small tags */
+  --radius-md: 14px;             /* quick-add tiles, keys pressed, fields in groups */
+  --radius-lg: 22px;             /* inset groups and cards */
+  --radius-dialog: 28px;         /* confirmDialog alert card (DESIGN.md §9.17) */
+  --radius-sheet: 40px;          /* floating sheet */
+  --radius-pill: 999px;          /* chips, buttons, segmented control, steppers, tab bar, toasts */
+
+  /* ── Motion ───────────────────────────────────────────────────────────── */
+  --dur-press: 120ms;            /* press feedback */
+  --dur-fade: 200ms;             /* fades, toggles, chip and segment selection, compact header */
+  --dur-grow: 320ms;             /* bars and meters growing, toast enter */
+  --dur-stamp: 220ms;            /* a paid check pressed in */
+  --dur-push: 420ms;             /* screen push and pop */
+  --dur-sheet: 480ms;            /* sheet present and dismiss */
+  --dur-value: 640ms;            /* the odometer: the hero figure rolling to its new value */
+  --dur-value-stagger: 45ms;     /* delay per digit, right to left */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0, 0, 0, 1);
+  --ease-in: cubic-bezier(0.3, 0, 1, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-push: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-counter: cubic-bezier(0.25, 0.9, 0.3, 1);  /* odometer drums: quick start, soft landing */
+
+  /* ── Layers ───────────────────────────────────────────────────────────── */
+  --z-content: 0;
+  --z-header: 20;
+  --z-tabbar: 30;
+  --z-banner: 35;
+  --z-scrim: 40;
+  --z-sheet: 50;
+  --z-toast: 70;
+  --z-confirm: 80;
+  --z-lock: 90;
+  --z-cover: 100;
+}
+
+/* ── Accents (pairs only; the theme blocks resolve them) ───────────────────── */
+:root[data-accent="royal"] {
+  --accent-l: #2747B3; --accent-d: #C5D2FB;
+  --on-accent-l: #FFFFFF; --on-accent-d: #13245F;
+  --accent-ink-l: #2747B3; --accent-ink-d: #A9BBF5;
+  --accent-soft-l: rgba(39, 71, 179, 0.08); --accent-soft-d: rgba(169, 187, 245, 0.13);
+}
+:root[data-accent="teal"] {
+  --accent-l: #0D5C63; --accent-d: #BFE2DE;
+  --on-accent-l: #F2F8F7; --on-accent-d: #06393D;
+  --accent-ink-l: #0D5C63; --accent-ink-d: #8ECFC8;
+  --accent-soft-l: rgba(13, 92, 99, 0.08); --accent-soft-d: rgba(142, 207, 200, 0.12);
+}
+:root[data-accent="bottle"] {
+  --accent-l: #1E5136; --accent-d: #C6E0CD;
+  --on-accent-l: #F3F7F2; --on-accent-d: #0D2E1C;
+  --accent-ink-l: #1E5136; --accent-ink-d: #94CCA6;
+  --accent-soft-l: rgba(30, 81, 54, 0.08); --accent-soft-d: rgba(148, 204, 166, 0.12);
+}
+:root[data-accent="burgundy"] {
+  --accent-l: #74233A; --accent-d: #F1CAD2;
+  --on-accent-l: #FBF3F4; --on-accent-d: #4A1323;
+  --accent-ink-l: #74233A; --accent-ink-d: #EAA4B3;
+  --accent-soft-l: rgba(116, 35, 58, 0.08); --accent-soft-d: rgba(234, 164, 179, 0.12);
+}
+:root[data-accent="plum"] {
+  --accent-l: #552D6E; --accent-d: #DECEEC;
+  --on-accent-l: #F8F3FA; --on-accent-d: #2F1746;
+  --accent-ink-l: #552D6E; --accent-ink-d: #C7B0E2;
+  --accent-soft-l: rgba(85, 45, 110, 0.08); --accent-soft-d: rgba(199, 176, 226, 0.12);
+}
+:root[data-accent="cognac"] {
+  --accent-l: #7C4321; --accent-d: #EED3BF;
+  --on-accent-l: #FBF5F0; --on-accent-d: #45240F;
+  --accent-ink-l: #7C4321; --accent-ink-d: #E2B190;
+  --accent-soft-l: rgba(124, 67, 33, 0.08); --accent-soft-d: rgba(226, 177, 144, 0.12);
+}
+:root[data-accent="graphite"] {
+  --accent-l: #33383F; --accent-d: #DCDDDA;
+  --on-accent-l: #F6F6F4; --on-accent-d: #1E2228;
+  --accent-ink-l: #33383F; --accent-ink-d: #C6C9CD;
+  --accent-soft-l: rgba(51, 56, 63, 0.08); --accent-soft-d: rgba(198, 201, 205, 0.12);
+}
+
+/* ── Dark: navy night (follows the system unless data-theme="light") ─────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0B1222;
+    --surface: #141C30;
+    --surface-raised: #1C2639;
+    --surface-sheet: #121A2D;
+    --surface-2: rgba(233, 234, 230, 0.08);
+    --surface-2-strong: rgba(233, 234, 230, 0.13);
+    --thumb: #2B3650;
+    --switch-knob: #E9EAE6;
+    --glass: rgba(26, 35, 56, 0.76);
+    --glass-solid: #182136;
+    --scrim: rgba(2, 5, 12, 0.55);
+    --ink: #E9EAE6;
+    --ink-2: #A2AABA;
+    --ink-3: #8E97A9;
+    --ink-inverse: #0B1222;
+    --ink-disabled: #4B5466;
+    --mark: #6E788C;
+    --hairline: rgba(233, 234, 230, 0.11);
+    --hairline-strong: rgba(233, 234, 230, 0.22);
+    --track: rgba(233, 234, 230, 0.10);
+    --brass: #CFB57C;
+    --brass-soft: rgba(207, 181, 124, 0.16);
+    --good: #6CC08F;
+    --good-ink: #8CCFA8;
+    --warning: #E3A740;
+    --warning-mark: #D99A30;
+    --warning-ink: #EDBB64;
+    --warning-soft: #2E2615;
+    --critical: #F2867B;
+    --critical-ink: #F59A90;
+    --critical-soft: #34191C;
+    --accent: var(--accent-d);
+    --on-accent: var(--on-accent-d);
+    --accent-ink: var(--accent-ink-d);
+    --accent-soft: var(--accent-soft-d);
+    --accent-navy: var(--accent-navy-d);
+    --accent-royal: var(--accent-royal-d);
+    --accent-teal: var(--accent-teal-d);
+    --accent-bottle: var(--accent-bottle-d);
+    --accent-burgundy: var(--accent-burgundy-d);
+    --accent-plum: var(--accent-plum-d);
+    --accent-cognac: var(--accent-cognac-d);
+    --accent-graphite: var(--accent-graphite-d);
+    --cat-blue: var(--cat-blue-d);
+    --cat-orange: var(--cat-orange-d);
+    --cat-aqua: var(--cat-aqua-d);
+    --cat-yellow: var(--cat-yellow-d);
+    --cat-magenta: var(--cat-magenta-d);
+    --cat-green: var(--cat-green-d);
+    --cat-violet: var(--cat-violet-d);
+    --cat-red: var(--cat-red-d);
+    --cat-slate: var(--cat-slate-d);
+    --cat-brown: var(--cat-brown-d);
+    --cat-other: var(--cat-other-d);
+    --engrave-opacity: 0.16;
+    --glass-edge: rgba(233, 234, 230, 0.10);
+    --glass-highlight: rgba(255, 255, 255, 0.07);
+    --lens: rgba(233, 234, 230, 0.10);
+    --press: rgba(233, 234, 230, 0.08);
+    --shadow-float: 0 10px 30px rgba(0, 0, 0, 0.40), 0 1px 3px rgba(0, 0, 0, 0.30);
+    --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.30), 0 2px 10px rgba(0, 0, 0, 0.25);
+    --shadow-sheet: 0 -1px 0 rgba(233, 234, 230, 0.06), 0 18px 48px rgba(0, 0, 0, 0.55);
+    --shadow-thumb: 0 1px 3px rgba(0, 0, 0, 0.40), inset 0 0.5px 0 rgba(255, 255, 255, 0.08);
+    --toast-bg: #E6E7E2;
+    --toast-ink: #101A31;
+    --toast-action: #26437F;
+  }
+}
+
+/* ── Dark, forced (same values as above) ─────────────────────────────────── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0B1222;
+  --surface: #141C30;
+  --surface-raised: #1C2639;
+  --surface-sheet: #121A2D;
+  --surface-2: rgba(233, 234, 230, 0.08);
+  --surface-2-strong: rgba(233, 234, 230, 0.13);
+  --thumb: #2B3650;
+  --switch-knob: #E9EAE6;
+  --glass: rgba(26, 35, 56, 0.76);
+  --glass-solid: #182136;
+  --scrim: rgba(2, 5, 12, 0.55);
+  --ink: #E9EAE6;
+  --ink-2: #A2AABA;
+  --ink-3: #8E97A9;
+  --ink-inverse: #0B1222;
+  --ink-disabled: #4B5466;
+  --mark: #6E788C;
+  --hairline: rgba(233, 234, 230, 0.11);
+  --hairline-strong: rgba(233, 234, 230, 0.22);
+  --track: rgba(233, 234, 230, 0.10);
+  --brass: #CFB57C;
+  --brass-soft: rgba(207, 181, 124, 0.16);
+  --good: #6CC08F;
+  --good-ink: #8CCFA8;
+  --warning: #E3A740;
+  --warning-mark: #D99A30;
+  --warning-ink: #EDBB64;
+  --warning-soft: #2E2615;
+  --critical: #F2867B;
+  --critical-ink: #F59A90;
+  --critical-soft: #34191C;
+  --accent: var(--accent-d);
+  --on-accent: var(--on-accent-d);
+  --accent-ink: var(--accent-ink-d);
+  --accent-soft: var(--accent-soft-d);
+  --accent-navy: var(--accent-navy-d);
+  --accent-royal: var(--accent-royal-d);
+  --accent-teal: var(--accent-teal-d);
+  --accent-bottle: var(--accent-bottle-d);
+  --accent-burgundy: var(--accent-burgundy-d);
+  --accent-plum: var(--accent-plum-d);
+  --accent-cognac: var(--accent-cognac-d);
+  --accent-graphite: var(--accent-graphite-d);
+  --cat-blue: var(--cat-blue-d);
+  --cat-orange: var(--cat-orange-d);
+  --cat-aqua: var(--cat-aqua-d);
+  --cat-yellow: var(--cat-yellow-d);
+  --cat-magenta: var(--cat-magenta-d);
+  --cat-green: var(--cat-green-d);
+  --cat-violet: var(--cat-violet-d);
+  --cat-red: var(--cat-red-d);
+  --cat-slate: var(--cat-slate-d);
+  --cat-brown: var(--cat-brown-d);
+  --cat-other: var(--cat-other-d);
+  --engrave-opacity: 0.16;
+  --glass-edge: rgba(233, 234, 230, 0.10);
+  --glass-highlight: rgba(255, 255, 255, 0.07);
+  --lens: rgba(233, 234, 230, 0.10);
+  --press: rgba(233, 234, 230, 0.08);
+  --shadow-float: 0 10px 30px rgba(0, 0, 0, 0.40), 0 1px 3px rgba(0, 0, 0, 0.30);
+  --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.30), 0 2px 10px rgba(0, 0, 0, 0.25);
+  --shadow-sheet: 0 -1px 0 rgba(233, 234, 230, 0.06), 0 18px 48px rgba(0, 0, 0, 0.55);
+  --shadow-thumb: 0 1px 3px rgba(0, 0, 0, 0.40), inset 0 0.5px 0 rgba(255, 255, 255, 0.08);
+  --toast-bg: #E6E7E2;
+  --toast-ink: #101A31;
+  --toast-action: #26437F;
+}
+
+/* ── Increase Contrast: solid glass, primary ink for secondary text, firmer lines ──
+   Selectors carry the same specificity as the theme blocks and come later, so they win in
+   every theme combination. */
+@media (prefers-contrast: more) {
+  :root:not([data-theme="light"]),
+  :root[data-theme] {
+    --ink-2: var(--ink);
+    --ink-3: var(--ink);
+    --hairline-width: 1px;
+    --glass: var(--glass-solid);
+    --glass-blur: none;
+    --engrave-opacity: 0.08;
+  }
+  :root:not([data-theme="dark"]) {
+    --hairline: rgba(18, 28, 51, 0.32);
+    --hairline-strong: rgba(18, 28, 51, 0.5);
+    --mark: #5E6779;
+    --track: rgba(18, 28, 51, 0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --hairline: rgba(233, 234, 230, 0.32);
+      --hairline-strong: rgba(233, 234, 230, 0.5);
+      --mark: #8E97A9;
+      --track: rgba(233, 234, 230, 0.18);
+    }
+  }
+  :root[data-theme="dark"] {
+    --hairline: rgba(233, 234, 230, 0.32);
+    --hairline-strong: rgba(233, 234, 230, 0.5);
+    --mark: #8E97A9;
+    --track: rgba(233, 234, 230, 0.18);
+  }
+}
+
+/* ── Reduce Motion: no rolls, springs or slides; quick fades ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease-sheet: var(--ease-standard);
+    --ease-push: var(--ease-standard);
+    --dur-grow: 200ms;
+    --dur-push: 200ms;
+    --dur-sheet: 200ms;
+    --dur-stamp: 0ms;
+    --dur-value: 0ms;
+    --dur-value-stagger: 0ms;
+  }
+}

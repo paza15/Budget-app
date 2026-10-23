@@ -1,0 +1,353 @@
+{
+  "app": "on-a-budget",
+  "kind": "backup",
+  "schemaVersion": 1,
+  "exportedAt": "2026-10-14T07:50:00.000Z",
+  "data": {
+    "schemaVersion": 1,
+    "settings": {
+      "name": "Sam",
+      "avatar": "",
+      "currency": "EUR",
+      "locale": "de-DE",
+      "monthStartDay": 1,
+      "savingsGoal": 0,
+      "theme": "system",
+      "accent": "royal",
+      "showCents": true,
+      "hideAmounts": false,
+      "homeCards": [
+        "equation",
+        "wallet",
+        "owed",
+        "whereItWent",
+        "budgets",
+        "comingUp",
+        "trend",
+        "recent"
+      ],
+      "onboarded": true,
+      "lastBackupAt": 1791655200000,
+      "lastReviewedMonth": null,
+      "createdAt": 1790838000000
+    },
+    "categories": [
+      {
+        "id": "cat-rent",
+        "name": "Rent",
+        "icon": "house",
+        "color": "blue",
+        "kind": "fixed",
+        "budget": null,
+        "order": 0,
+        "archived": false
+      },
+      {
+        "id": "cat-subscriptions",
+        "name": "Subscriptions",
+        "icon": "repeat",
+        "color": "violet",
+        "kind": "fixed",
+        "budget": null,
+        "order": 1,
+        "archived": false
+      },
+      {
+        "id": "cat-transport",
+        "name": "Transport",
+        "icon": "train",
+        "color": "aqua",
+        "kind": "both",
+        "budget": null,
+        "order": 2,
+        "archived": false
+      },
+      {
+        "id": "cat-phone",
+        "name": "Phone & internet",
+        "icon": "device-mobile",
+        "color": "slate",
+        "kind": "fixed",
+        "budget": null,
+        "order": 3,
+        "archived": false
+      },
+      {
+        "id": "cat-insurance",
+        "name": "Insurance",
+        "icon": "shield-check",
+        "color": "brown",
+        "kind": "fixed",
+        "budget": null,
+        "order": 4,
+        "archived": false
+      },
+      {
+        "id": "cat-eating",
+        "name": "Eating",
+        "icon": "fork-knife",
+        "color": "orange",
+        "kind": "daily",
+        "budget": 10000,
+        "order": 5,
+        "archived": false
+      },
+      {
+        "id": "cat-groceries",
+        "name": "Groceries",
+        "icon": "shopping-cart",
+        "color": "green",
+        "kind": "daily",
+        "budget": null,
+        "order": 6,
+        "archived": false
+      },
+      {
+        "id": "cat-coffee",
+        "name": "Coffee & snacks",
+        "icon": "coffee",
+        "color": "yellow",
+        "kind": "daily",
+        "budget": null,
+        "order": 7,
+        "archived": false
+      },
+      {
+        "id": "cat-shopping",
+        "name": "Shopping",
+        "icon": "shopping-bag",
+        "color": "magenta",
+        "kind": "daily",
+        "budget": null,
+        "order": 8,
+        "archived": false
+      },
+      {
+        "id": "cat-going-out",
+        "name": "Going out",
+        "icon": "martini",
+        "color": "red",
+        "kind": "daily",
+        "budget": null,
+        "order": 9,
+        "archived": false
+      },
+      {
+        "id": "cat-health",
+        "name": "Health",
+        "icon": "pill",
+        "color": "blue",
+        "kind": "daily",
+        "budget": null,
+        "order": 10,
+        "archived": false
+      },
+      {
+        "id": "cat-other",
+        "name": "Other",
+        "icon": "package",
+        "color": "slate",
+        "kind": "both",
+        "budget": null,
+        "order": 11,
+        "archived": false
+      }
+    ],
+    "recurring": [
+      {
+        "id": "inc-job",
+        "kind": "income",
+        "name": "Job",
+        "categoryId": null,
+        "amounts": [
+          {
+            "from": "2026-10",
+            "amount": 90000
+          }
+        ],
+        "everyMonths": 1,
+        "spread": false,
+        "startMonth": "2026-10",
+        "endMonth": null,
+        "dueDay": 1,
+        "note": "",
+        "order": 0,
+        "createdAt": 1790838300000
+      },
+      {
+        "id": "fx-rent",
+        "kind": "expense",
+        "name": "Rent",
+        "categoryId": "cat-rent",
+        "amounts": [
+          {
+            "from": "2026-10",
+            "amount": 64000
+          }
+        ],
+        "everyMonths": 1,
+        "spread": false,
+        "startMonth": "2026-10",
+        "endMonth": null,
+        "dueDay": 1,
+        "note": "",
+        "order": 1,
+        "createdAt": 1790838300000
+      }
+    ],
+    "transactions": [
+      {
+        "id": "tx-1002-restaurant",
+        "kind": "expense",
+        "amount": 4500,
+        "categoryId": "cat-eating",
+        "date": "2026-10-02",
+        "note": "Restaurant",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1790935200000,
+        "updatedAt": 1790935200000
+      },
+      {
+        "id": "tx-1003-edeka",
+        "kind": "expense",
+        "amount": 5600,
+        "categoryId": "cat-groceries",
+        "date": "2026-10-03",
+        "note": "Edeka",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791021600000,
+        "updatedAt": 1791021600000
+      },
+      {
+        "id": "tx-1006-sushi",
+        "kind": "expense",
+        "amount": 3800,
+        "categoryId": "cat-eating",
+        "date": "2026-10-06",
+        "note": "Sushi",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791280800000,
+        "updatedAt": 1791280800000
+      },
+      {
+        "id": "tx-1007-lidl",
+        "kind": "expense",
+        "amount": 4200,
+        "categoryId": "cat-groceries",
+        "date": "2026-10-07",
+        "note": "Lidl",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791367200000,
+        "updatedAt": 1791367200000
+      },
+      {
+        "id": "tx-1008-mensa",
+        "kind": "expense",
+        "amount": 450,
+        "categoryId": "cat-eating",
+        "date": "2026-10-08",
+        "note": "Mensa",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791453600000,
+        "updatedAt": 1791453600000
+      },
+      {
+        "id": "tx-1009-burger",
+        "kind": "expense",
+        "amount": 1250,
+        "categoryId": "cat-eating",
+        "date": "2026-10-09",
+        "note": "Burger",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791540000000,
+        "updatedAt": 1791540000000
+      },
+      {
+        "id": "tx-1010-jacket",
+        "kind": "expense",
+        "amount": 4300,
+        "categoryId": "cat-shopping",
+        "date": "2026-10-10",
+        "note": "Jacket",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791626400000,
+        "updatedAt": 1791626400000
+      },
+      {
+        "id": "tx-1011-rewe",
+        "kind": "expense",
+        "amount": 3900,
+        "categoryId": "cat-groceries",
+        "date": "2026-10-11",
+        "note": "Rewe",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791712800000,
+        "updatedAt": 1791712800000
+      },
+      {
+        "id": "tx-1012-pizza",
+        "kind": "expense",
+        "amount": 2000,
+        "categoryId": "cat-eating",
+        "date": "2026-10-12",
+        "note": "Pizza",
+        "fromWallet": false,
+        "splits": [],
+        "createdAt": 1791799200000,
+        "updatedAt": 1791799200000
+      }
+    ],
+    "quickAdds": [
+      {
+        "id": "qa-coffee",
+        "label": "Coffee",
+        "icon": "coffee",
+        "amount": 350,
+        "categoryId": "cat-coffee",
+        "order": 0
+      },
+      {
+        "id": "qa-bakery",
+        "label": "Bakery",
+        "icon": "bread",
+        "amount": 250,
+        "categoryId": "cat-coffee",
+        "order": 1
+      },
+      {
+        "id": "qa-mensa",
+        "label": "Mensa",
+        "icon": "bowl-food",
+        "amount": 450,
+        "categoryId": "cat-eating",
+        "order": 2
+      }
+    ],
+    "months": {
+      "2026-10": {
+        "overrides": {
+          "inc-job": {
+            "paid": true
+          },
+          "fx-rent": {
+            "paid": true
+          }
+        }
+      }
+    },
+    "wallet": {
+      "opening": 0,
+      "startMonth": null,
+      "entries": [],
+      "goals": []
+    }
+  }
+}

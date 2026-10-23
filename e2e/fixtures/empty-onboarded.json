@@ -1,0 +1,192 @@
+{
+  "app": "on-a-budget",
+  "kind": "backup",
+  "schemaVersion": 1,
+  "exportedAt": "2026-10-14T07:30:00.000Z",
+  "data": {
+    "schemaVersion": 1,
+    "settings": {
+      "name": "",
+      "avatar": "",
+      "currency": "EUR",
+      "locale": "de-DE",
+      "monthStartDay": 1,
+      "savingsGoal": 0,
+      "theme": "system",
+      "accent": "royal",
+      "showCents": true,
+      "hideAmounts": false,
+      "homeCards": [
+        "equation",
+        "wallet",
+        "owed",
+        "whereItWent",
+        "budgets",
+        "comingUp",
+        "trend",
+        "recent"
+      ],
+      "onboarded": true,
+      "lastBackupAt": null,
+      "lastReviewedMonth": null,
+      "createdAt": 1790838000000
+    },
+    "categories": [
+      {
+        "id": "cat-rent",
+        "name": "Rent",
+        "icon": "house",
+        "color": "blue",
+        "kind": "fixed",
+        "budget": null,
+        "order": 0,
+        "archived": false
+      },
+      {
+        "id": "cat-subscriptions",
+        "name": "Subscriptions",
+        "icon": "repeat",
+        "color": "violet",
+        "kind": "fixed",
+        "budget": null,
+        "order": 1,
+        "archived": false
+      },
+      {
+        "id": "cat-transport",
+        "name": "Transport",
+        "icon": "train",
+        "color": "aqua",
+        "kind": "both",
+        "budget": null,
+        "order": 2,
+        "archived": false
+      },
+      {
+        "id": "cat-phone",
+        "name": "Phone & internet",
+        "icon": "device-mobile",
+        "color": "slate",
+        "kind": "fixed",
+        "budget": null,
+        "order": 3,
+        "archived": false
+      },
+      {
+        "id": "cat-insurance",
+        "name": "Insurance",
+        "icon": "shield-check",
+        "color": "brown",
+        "kind": "fixed",
+        "budget": null,
+        "order": 4,
+        "archived": false
+      },
+      {
+        "id": "cat-eating",
+        "name": "Eating",
+        "icon": "fork-knife",
+        "color": "orange",
+        "kind": "daily",
+        "budget": null,
+        "order": 5,
+        "archived": false
+      },
+      {
+        "id": "cat-groceries",
+        "name": "Groceries",
+        "icon": "shopping-cart",
+        "color": "green",
+        "kind": "daily",
+        "budget": null,
+        "order": 6,
+        "archived": false
+      },
+      {
+        "id": "cat-coffee",
+        "name": "Coffee & snacks",
+        "icon": "coffee",
+        "color": "yellow",
+        "kind": "daily",
+        "budget": null,
+        "order": 7,
+        "archived": false
+      },
+      {
+        "id": "cat-shopping",
+        "name": "Shopping",
+        "icon": "shopping-bag",
+        "color": "magenta",
+        "kind": "daily",
+        "budget": null,
+        "order": 8,
+        "archived": false
+      },
+      {
+        "id": "cat-going-out",
+        "name": "Going out",
+        "icon": "martini",
+        "color": "red",
+        "kind": "daily",
+        "budget": null,
+        "order": 9,
+        "archived": false
+      },
+      {
+        "id": "cat-health",
+        "name": "Health",
+        "icon": "pill",
+        "color": "blue",
+        "kind": "daily",
+        "budget": null,
+        "order": 10,
+        "archived": false
+      },
+      {
+        "id": "cat-other",
+        "name": "Other",
+        "icon": "package",
+        "color": "slate",
+        "kind": "both",
+        "budget": null,
+        "order": 11,
+        "archived": false
+      }
+    ],
+    "recurring": [],
+    "transactions": [],
+    "quickAdds": [
+      {
+        "id": "qa-coffee",
+        "label": "Coffee",
+        "icon": "coffee",
+        "amount": 350,
+        "categoryId": "cat-coffee",
+        "order": 0
+      },
+      {
+        "id": "qa-bakery",
+        "label": "Bakery",
+        "icon": "bread",
+        "amount": 250,
+        "categoryId": "cat-coffee",
+        "order": 1
+      },
+      {
+        "id": "qa-mensa",
+        "label": "Mensa",
+        "icon": "bowl-food",
+        "amount": 450,
+        "categoryId": "cat-eating",
+        "order": 2
+      }
+    ],
+    "months": {},
+    "wallet": {
+      "opening": 0,
+      "startMonth": null,
+      "entries": [],
+      "goals": []
+    }
+  }
+}

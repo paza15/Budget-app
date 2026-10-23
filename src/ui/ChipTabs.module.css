@@ -1,0 +1,26 @@
+/* A scrolling chip row (DESIGN.md §9.10): 8 gaps, 20 side padding, a 28px fade at the trailing
+   edge while more chips follow. The vertical padding keeps the chips' 44pt hit areas inside. */
+.row {
+  position: relative;
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.row::-webkit-scrollbar {
+  display: none;
+}
+
+.row[data-more] {
+  -webkit-mask-image: linear-gradient(to right, var(--ink) calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, var(--ink) calc(100% - 28px), transparent);
+}
+
+/* Keep the focus ring of a chip inside the clipped row. */
+.row > :focus-visible {
+  outline-offset: -2px;
+}

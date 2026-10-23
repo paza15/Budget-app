@@ -1,0 +1,7 @@
+/* The plus in the 34pt coin column, in the accent ink like the label next to it. */
+.coin {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  color: var(--accent-ink);
+}

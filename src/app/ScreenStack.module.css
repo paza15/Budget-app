@@ -1,0 +1,25 @@
+/* One tab's screens, stacked. Each layer fills the stack and is opaque, so a covered screen never
+   shows through; the Screen inside fills its layer and scrolls in its own container. */
+
+.stack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  background: var(--bg);
+}
+
+/* Covered screens keep their state but are not painted; push and pop animate them visible. */
+.layer[data-position='covered'] {
+  visibility: hidden;
+}
+
+.layer[data-position='exiting'] {
+  pointer-events: none;
+}

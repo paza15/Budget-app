@@ -1,0 +1,118 @@
+/* The Home Wallet card (DESIGN.md §9.26 "The Home Wallet card"). */
+
+/* One button filling the group: padding 14 16 16, the --press overlay when pressed. */
+.card {
+  display: block;
+  width: 100%;
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding) var(--space-4);
+  color: var(--ink);
+  text-align: start;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.card:active {
+  background: var(--press);
+}
+
+/* The group clips anything outside it, so the ring sits inside. */
+.card:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Below zero: the label row (min 22, 4 above the figure). */
+.status {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-height: 22px;
+  margin-bottom: var(--space-1);
+  font: var(--text-subhead);
+  font-weight: 600;
+  color: var(--critical-ink);
+}
+
+.statusIcon {
+  color: var(--critical);
+}
+
+/* The figure, and the chevron at the trailing end centred on it. */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.figure {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  min-width: 0;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+/* --text-figure-lg with proportional figures (Source Serif's defaults are tabular). */
+.number {
+  font: var(--text-figure-lg);
+  font-variant-numeric: proportional-nums lining-nums;
+}
+
+/* The unit in --text-figure-sm --ink-2, 0.3em from the number. */
+.unit {
+  font: var(--text-figure-sm);
+  color: var(--ink-2);
+}
+
+.unitAfter {
+  margin-left: 0.3em;
+}
+
+.unitBefore {
+  margin-right: 0.3em;
+}
+
+/* The brass double rule, 9 below the figure box, across number and unit: the card shows the
+   passbook's closing balance, so it closes the same way. */
+.figure::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: calc(-1 * (var(--space-2) + 1px));
+  left: 0;
+  height: calc(2 * var(--rule-width) + var(--double-rule-gap));
+  border-top: var(--rule-width) solid var(--brass);
+  border-bottom: var(--rule-width) solid var(--brass);
+}
+
+.critical .number,
+.critical .unit {
+  color: var(--critical-ink);
+}
+
+.figure.critical::after {
+  border-color: var(--critical);
+}
+
+/* Hidden amounts: "•••" in --ink-3 without a unit; the rule spans the dots. */
+.masked .number {
+  color: var(--ink-3);
+}
+
+.chevron {
+  flex: none;
+  color: var(--ink-3);
+}
+
+/* The line, 19 below the figure (clear of the rule): Subhead --ink-2 with the amount in --ink. */
+.line {
+  display: block;
+  margin-top: calc(var(--space-4) + 3px);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+.lineAmount {
+  color: var(--ink);
+  white-space: nowrap;
+}

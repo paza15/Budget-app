@@ -1,0 +1,21 @@
+/* The goal sheet (DESIGN.md §9.26 "The goal sheet"): the form group 12 below the header, then
+   "Mark as done" and "Delete goal" 26 apart. Section gives untitled groups 20 above; the doubled
+   classes win over that whatever order the style sheets load in. */
+
+.first.first {
+  margin-top: var(--space-3);
+}
+
+.next.next {
+  margin-top: calc(var(--space-6) + var(--space-0-5));
+}
+
+/* The sm coin (26) sits centred on the row, beside the chevron. */
+.iconCoin {
+  vertical-align: middle;
+}
+
+/* The icon picker, as the sheet's second view: inset like the sheet's groups. */
+.picker {
+  padding: var(--space-3) var(--space-4) var(--space-2);
+}

@@ -1,0 +1,16 @@
+/*
+ * Visually hidden, still read by VoiceOver (docs/DESIGN.md §9.22). The rules sit on a wrapper box,
+ * not on the table: a table box ignores width and overflow and grows to its content, so a hidden
+ * table would still be hundreds of pixels wide and could make the page scroll sideways.
+ */
+.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

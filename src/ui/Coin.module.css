@@ -1,0 +1,40 @@
+/* The engraved coin (DESIGN.md §9.9): monochrome, a hairline ring, never a category tint. */
+.coin {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 0.75px var(--hairline-strong);
+}
+
+.sm {
+  width: 26px;
+  height: 26px;
+}
+
+.md {
+  width: 34px;
+  height: 34px;
+}
+
+/* The large coin has its rim: a 1px ring plus an inner 0.75px hairline ring inset 4px. */
+.lg {
+  width: 56px;
+  height: 56px;
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+}
+
+.lg::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.75px var(--hairline);
+  pointer-events: none;
+}
+
+.muted {
+  color: var(--ink-2);
+}

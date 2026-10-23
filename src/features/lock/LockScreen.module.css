@@ -1,0 +1,190 @@
+/*
+ * The lock screen (DESIGN.md §9.24): opaque --bg at --z-lock, above everything but the privacy
+ * cover. Top to bottom: the vault (a 236px rosette with the 64px mark, 10 under the top),
+ * "Enter your PIN" in Title 3 6 below, the dots 20 below, a message line, the PIN keypad pushed
+ * to the bottom, and "Forgot PIN?" 14 above a bottom margin of 38 (from the screen's edge, home
+ * indicator included). On shorter screens the vault gives way first, so the keypad always fits;
+ * when even that is not enough (landscape) the screen scrolls.
+ */
+
+.lock {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-lock);
+  /* The views size the vault against the screen's height (cqh). */
+  container-type: size;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.view {
+  --pad-top: calc(env(safe-area-inset-top) + var(--space-2) + var(--space-0-5));
+  /* 38 from the bottom edge where there is a home indicator (34 + 4), 16 where there is none. */
+  --pad-bottom: max(var(--space-4), calc(env(safe-area-inset-bottom) + var(--space-1)));
+  /* The PIN keypad: four rows of 76px keys, 14 apart (DESIGN.md §9.15). */
+  --keypad-height: calc(4 * 76px + 3 * (var(--space-3) + var(--space-0-5)));
+  /* At least this much between the message line and the keypad. */
+  --keypad-gap: calc(var(--space-2) + var(--space-0-5));
+  /* Everything under the vault at the current text size: the title (6 + one Title 3 line of
+     25/17rem), the dots (20 + 13), the message (12 + one Footnote line of 18/17rem), the gap, the
+     keypad and Forgot PIN? (14 + 44). */
+  --below-vault: calc(
+    var(--space-1) + var(--space-0-5) + 1.4706rem + var(--space-5) + 13px + var(--space-3) + 1.0588rem +
+      var(--keypad-gap) + var(--keypad-height) + var(--space-3) + var(--space-0-5) + var(--touch-min)
+  );
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100cqh;
+  padding: var(--pad-top) max(var(--gutter), env(safe-area-inset-right)) var(--pad-bottom)
+    max(var(--gutter), env(safe-area-inset-left));
+}
+
+/* ── The vault ─────────────────────────────────────────────────────────────────────────────── */
+
+.vault {
+  /* 236px where it fits, less on short screens (an iPhone SE gets about 120), never under 96. */
+  --vault: clamp(96px, calc(100cqh - var(--pad-top) - var(--pad-bottom) - var(--below-vault)), 236px);
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--vault);
+  height: var(--vault);
+}
+
+.rosette {
+  position: absolute;
+  inset: 0;
+}
+
+/* 64px in the 236px vault, and in proportion when the vault is smaller. */
+.mark {
+  position: relative;
+  width: calc(var(--vault) * 64 / 236);
+  height: calc(var(--vault) * 64 / 236);
+  color: var(--ink);
+}
+
+/* ── PIN entry ─────────────────────────────────────────────────────────────────────────────── */
+
+.title {
+  max-width: 320px;
+  margin: calc(var(--space-1) + var(--space-0-5)) 0 0;
+  font: var(--text-title3);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Titles take focus only for VoiceOver (they are not controls), so they show no ring. */
+.title:focus,
+.question:focus {
+  outline: none;
+}
+
+.dots {
+  margin-top: var(--space-5);
+}
+
+.message {
+  margin-top: var(--space-3);
+}
+
+/* Holds the keypad at the bottom, never closer than --keypad-gap to the message above. */
+.pad {
+  margin-top: auto;
+  padding-top: var(--keypad-gap);
+}
+
+.forgot {
+  margin-top: calc(var(--space-3) + var(--space-0-5));
+}
+
+/* ── Forgot PIN and the error view ─────────────────────────────────────────────────────────── */
+
+.text {
+  max-width: 320px;
+  margin: var(--space-2) 0 0;
+  font: var(--text-body);
+  color: var(--ink-2);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.note {
+  display: block;
+  max-width: 320px;
+  min-height: 1lh;
+  margin: var(--space-3) 0 0;
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.actions {
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 360px;
+  margin-top: auto;
+  padding-top: var(--space-6);
+}
+
+/* ── Full-page steps: a new PIN, erasing ───────────────────────────────────────────────────── */
+
+.page {
+  /* The header is painted in the lock screen's own --bg. */
+  --sheet-bg: var(--bg);
+  align-items: stretch;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) var(--pad-bottom) env(safe-area-inset-left);
+}
+
+.pageHeader {
+  flex: none;
+}
+
+/* The new PIN's keypad sits where the lock screen's was, above the room Forgot PIN? took. */
+.newPin {
+  padding-bottom: calc(var(--pad-bottom) + var(--space-3) + var(--space-0-5) + var(--touch-min));
+}
+
+.erase {
+  width: 100%;
+  max-width: var(--sheet-max-width);
+  margin: 0 auto;
+  padding-bottom: var(--space-6);
+  /* The lock screen turns selection off; iOS then refuses typing into a field inside it. */
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.question {
+  margin: var(--space-3) var(--gutter) 0;
+  font: var(--text-title3);
+  text-wrap: balance;
+}
+
+.eraseText {
+  margin: var(--space-2) var(--gutter) 0;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+.error {
+  min-height: 1lh;
+  margin: var(--space-2) calc(var(--gutter) + var(--group-padding)) 0;
+  font: var(--text-footnote);
+  color: var(--critical-ink);
+}
+
+.eraseAction {
+  margin: var(--space-2) var(--gutter) 0;
+}

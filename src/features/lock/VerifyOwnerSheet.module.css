@@ -1,0 +1,27 @@
+/* The verify sheet (docs/SPEC.md §3.8): the lock screen's prompt, dots, message and PIN keypad,
+   centred under the sheet header. */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--gutter) var(--space-5);
+}
+
+.prompt {
+  margin: var(--space-3) 0 0;
+  font: var(--text-title3);
+  text-align: center;
+}
+
+.dots {
+  margin-top: var(--space-5);
+}
+
+.message {
+  margin-top: var(--space-3);
+}
+
+.keypad {
+  margin-top: var(--space-5);
+}

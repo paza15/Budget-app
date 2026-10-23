@@ -1,0 +1,91 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y", "vitest", "import"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "error",
+    "react/react-in-jsx-scope": "off",
+    "import/no-cycle": "error",
+    "import/no-unassigned-import": "off",
+    "no-underscore-dangle": "off",
+    "no-console": ["warn", { "allow": ["warn", "error"] }]
+  },
+  "overrides": [
+    {
+      "files": ["src/domain/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["react", "react-dom", "react/*", "react-dom/*", "zustand", "zustand/*", "idb-keyval", "@/store/*", "@/ui", "@/ui/*", "@/app/*", "@/features/*"],
+                "message": "src/domain is pure TypeScript (docs/SPEC.md §5.1)."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/store/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/ui", "@/ui/*", "@/app/*", "@/features/*"],
+                "message": "The store never depends on UI (docs/SPEC.md §5.1)."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/ui/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/store/*", "@/app/*", "@/features/*"],
+                "message": "The UI kit reads money settings from MoneyFormatContext, never the store (docs/SPEC.md §5.8)."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/app/*", "!@/app/nav", "!@/app/MonthSwitcher", "!@/app/undo", "@/App"],
+                "message": "Features import only @/app/nav, @/app/MonthSwitcher and @/app/undo from the shell (docs/SPEC.md §5.1)."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["docs/design/*.mjs"],
+      "rules": {
+        "no-console": "off",
+        "unicorn/no-array-sort": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["dist", "dev-dist", "node_modules", "playwright-report", "test-results", "coverage", "src/ui/icons/generated.ts"]
+}

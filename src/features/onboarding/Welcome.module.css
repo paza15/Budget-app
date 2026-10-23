@@ -1,0 +1,119 @@
+/* Welcome (DESIGN.md §9.25, reference.html ?screen=welcome): the rosette with the app icon, the
+   title, the lead and three feature lines, then the two buttons pinned at the bottom. */
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Scrolls on its own (docs/SPEC.md §7) only once the rosette has given way: it shrinks first, so
+   the welcome fits short screens such as the iPhone SE without scrolling. */
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+  padding: 0 var(--space-6) var(--space-6);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 260px, centred, 18 below the top; the icon is 92/260 of it, so both scale together. */
+.rosette {
+  position: relative;
+  display: grid;
+  flex: 0 1 260px;
+  place-items: center;
+  min-height: 150px;
+  aspect-ratio: 1;
+  margin-top: calc(var(--space-4) + var(--space-0-5));
+}
+
+.engraving {
+  position: absolute;
+  inset: 0;
+}
+
+/* The 92px icon (radius 20.6): a hairline ring and the float shadow, on a quiet fill until it loads. */
+.icon {
+  position: relative;
+  display: block;
+  width: calc(100% * 92 / 260);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 22.4%;
+  background: var(--surface-2);
+  box-shadow:
+    0 0 0 0.5px var(--hairline),
+    var(--shadow-float);
+  object-fit: cover;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.title {
+  flex: none;
+  margin-top: var(--space-1);
+  font: var(--text-title1);
+  color: var(--ink);
+  text-align: center;
+}
+
+.lead {
+  flex: none;
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+  font: var(--text-body);
+  color: var(--ink-2);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Three lines 18 apart: a 28px light glyph in a 30px column, 14 from the Subhead text. */
+.features {
+  display: grid;
+  flex: none;
+  gap: calc(var(--space-4) + var(--space-0-5));
+  width: 100%;
+  max-width: var(--sheet-max-width);
+  margin-top: calc(var(--space-7) - var(--space-0-5));
+}
+
+.feature {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: calc(var(--space-3) + var(--space-0-5));
+  align-items: center;
+  font: var(--text-subhead);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* Pinned above the bottom safe area: 44 from the screen edge with a home indicator. */
+.actions {
+  position: relative;
+  display: grid;
+  flex: none;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: var(--sheet-max-width);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-6) max(var(--space-4), calc(env(safe-area-inset-bottom) + 10px));
+}
+
+/* What scrolls under the buttons fades out instead of being cut. */
+.actions::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: var(--space-6);
+  background: linear-gradient(to top, var(--bg), color-mix(in srgb, var(--bg) 0%, transparent));
+  pointer-events: none;
+}

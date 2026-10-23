@@ -1,0 +1,265 @@
+/* The passbook (DESIGN.md §9.26 "The passbook"): one grid on the group's paper, rows as subgrids,
+   so the four columns line up down the whole book. The date column is a margin: rules start at the
+   entry column, and month closings carry the seal there. */
+
+/* A size container: below 17em of inner width (289px at the default text size, so only large
+   text gets there) each movement takes two lines. */
+.book {
+  padding: 0 var(--group-padding) var(--group-padding);
+  container: passbook / inline-size;
+}
+
+.table {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto auto;
+  column-gap: calc(var(--space-2) + var(--space-0-5));
+}
+
+.head,
+.row,
+.year {
+  grid-column: 1 / -1;
+}
+
+.head,
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+}
+
+/* Header: padding 13 0 7, Footnote --ink-2, a --hairline-strong rule the full width under it. */
+.head {
+  padding: calc(var(--space-3) + 1px) 0 calc(var(--space-2) - 1px);
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.head::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--hairline-width);
+  background: var(--hairline-strong);
+}
+
+.headAmount {
+  text-align: end;
+}
+
+.headBalance {
+  padding-left: calc(var(--space-2) + var(--space-0-5));
+  text-align: end;
+}
+
+/* Lines: min 44, padding 11 0, on the first baseline; figures stay on the entry's first line. */
+.row {
+  min-height: var(--touch-min);
+  padding: calc(var(--space-3) - 1px) 0;
+}
+
+/* Hairlines between lines start at the entry column (44 + 10): the date column is a margin. */
+.row + .row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(44px + var(--space-2) + var(--space-0-5));
+  height: var(--hairline-width);
+  background: var(--hairline);
+  pointer-events: none;
+}
+
+/* Date: Footnote --ink-2, tabular, the day right-aligned in 2ch ("1 Aug", "12 Sep"). */
+.date {
+  font: var(--text-footnote);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.day {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: end;
+}
+
+/* The stamp: the 20px seal centred in the date column, sitting on the line like a glyph. */
+.stamp {
+  text-align: center;
+}
+
+.date .seal {
+  display: inline-block;
+  vertical-align: -5px;
+}
+
+/* Entry: Subhead --ink, at most two lines, then an ellipsis. */
+.entry {
+  min-width: 0;
+  font: var(--text-subhead);
+  color: var(--ink);
+}
+
+.rowButton {
+  display: -webkit-box;
+  overflow: hidden;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* The whole line, out to the group's edges, is the button. */
+.rowButton::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(-1 * var(--group-padding));
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.rowButton:active::after {
+  background: var(--press);
+}
+
+.rowButton:focus-visible {
+  outline: none;
+}
+
+.rowButton:focus-visible::after {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* Amount and balance: --text-figure-sm serif, tabular. Amounts --ink, always signed; balances --ink-2. */
+.amount,
+.balance {
+  font: var(--text-figure-sm);
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.amount {
+  color: var(--ink);
+}
+
+.balance {
+  padding-left: calc(var(--space-2) + var(--space-0-5));
+  color: var(--ink-2);
+}
+
+/* "Brought forward": the entry and the balance before it in --ink-2. */
+.forward .entry {
+  color: var(--ink-2);
+}
+
+/* The closing balance: 600 --ink, closed by the brass double rule 7 below the figure box, across
+   the balance column from its padding; below zero --critical-ink with a --critical rule. */
+.closing .balance {
+  position: relative;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.closing .balance::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: calc(-1 * (var(--space-2) - 1px));
+  left: calc(var(--space-2) + var(--space-0-5));
+  height: calc(2 * var(--rule-width) + var(--double-rule-gap));
+  border-top: var(--rule-width) solid var(--brass);
+  border-bottom: var(--rule-width) solid var(--brass);
+}
+
+.closing .short {
+  color: var(--critical-ink);
+}
+
+.closing .short::after {
+  border-color: var(--critical);
+}
+
+/* The column rule on the leading edge of the balance column, from 12 below the top of the book to
+   16 above its end. */
+.rule {
+  position: absolute;
+  top: var(--space-3);
+  bottom: 0;
+  left: 0;
+  grid-column: 4;
+  width: var(--hairline-width);
+  background: var(--hairline);
+  pointer-events: none;
+}
+
+/* A year row at each year's first movement: 30 tall, Footnote 600 --ink, then a --hairline-strong
+   line to the trailing edge, 10 apart. */
+.year {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-height: 30px;
+  font: var(--text-footnote);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.year::after {
+  content: '';
+  flex: 1;
+  height: var(--hairline-width);
+  background: var(--hairline-strong);
+}
+
+/* Narrow book (large text): the date and the entry, then the amount at the leading end and the
+   balance at the trailing end. The header and the column rule go. */
+@container passbook (max-width: 17em) {
+  .head,
+  .rule {
+    display: none;
+  }
+
+  .table {
+    display: block;
+  }
+
+  /* The date column grows with the text (3em of the row's Body size holds "12 Sep"). */
+  .row {
+    grid-template-columns: 3em minmax(0, 1fr) auto;
+    grid-template-areas:
+      'date entry entry'
+      '. amount balance';
+    column-gap: calc(var(--space-2) + var(--space-0-5));
+    row-gap: var(--space-0-5);
+  }
+
+  .row + .row::before {
+    left: calc(3em + var(--space-2) + var(--space-0-5));
+  }
+
+  .date {
+    grid-area: date;
+  }
+
+  .entry {
+    grid-area: entry;
+  }
+
+  .amount {
+    grid-area: amount;
+    text-align: start;
+  }
+
+  .balance {
+    grid-area: balance;
+  }
+}

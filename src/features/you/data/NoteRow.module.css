@@ -1,0 +1,7 @@
+/* A text row of an inset group (DESIGN.md §9.8): 50 tall for one line, 11px row padding plus the
+   3px that centres a 22px Body line, --ink-2. */
+.row {
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding);
+  font: var(--text-body);
+  color: var(--ink-2);
+}

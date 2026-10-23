@@ -1,0 +1,101 @@
+/* docs/DESIGN.md §9.22: --surface-raised, radius 8, --shadow-float. */
+.tooltip {
+  position: absolute;
+  /*
+   * Its own width wherever it goes, so the size measured in the corner is the size placed. Huge
+   * text wraps it at the screen's width instead.
+   */
+  width: max-content;
+  min-width: 72px;
+  max-width: calc(100vw - 2 * var(--gutter));
+  padding: calc(var(--space-1) + var(--space-0-5)) calc(var(--space-2) + var(--space-0-5));
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-float);
+  color: var(--ink);
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  animation: tooltip-in var(--dur-fade) var(--ease-standard);
+}
+
+/*
+ * Above the plot: fixed to the screen, so no group's clipping (overflow: hidden for its rounded
+ * corners) cuts it. It lies over the content around the chart and under the bars, sheets and
+ * covers, which all stack higher.
+ */
+.tooltip[data-placement='above'] {
+  position: fixed;
+  z-index: calc(var(--z-content) + 1);
+}
+
+/* An opacity fade only, so it suits Reduce Motion too. */
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Marks where left 0, top 0 of a fixed element lands, for placing the tooltip above the plot. */
+.origin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.title {
+  margin: 0;
+  font: var(--text-footnote);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.rows {
+  display: grid;
+  margin: 0;
+}
+
+/* Name at the start, value at the end; a lone value sits under the title. Huge text wraps the value under its name. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  column-gap: var(--space-3);
+}
+
+.label {
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/*
+ * A line key, not a box: at tooltip size a filled swatch would outweigh the name. Inline, so the
+ * name keeps the text baseline the value lines up on.
+ */
+.key {
+  display: inline-block;
+  width: 10px;
+  height: 2px;
+  margin-right: calc(var(--space-1) + var(--space-0-5));
+  border-radius: 1px;
+  vertical-align: middle;
+}
+
+.value {
+  margin: 0;
+  font: var(--text-figure-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+/* After a name the value keeps to the end, also when it wraps onto a line of its own. */
+.label + .value {
+  margin-left: auto;
+}

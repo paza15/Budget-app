@@ -1,0 +1,72 @@
+/* You's profile (SPEC §3.7, DESIGN.md §9.9): 8 below the large title, a 64px medallion row. */
+section.section {
+  margin-top: var(--space-2);
+}
+
+/* min 84: the medallion with 10 above and below; the text 14 after it. */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-3) + var(--space-0-5));
+  width: 100%;
+  min-height: 84px;
+  padding: calc(var(--space-2) + var(--space-0-5)) var(--group-padding);
+  color: var(--ink);
+  text-align: start;
+  transition: background-color var(--dur-press) var(--ease-standard);
+}
+
+.profile:active {
+  background: var(--press);
+}
+
+/* Inside the group's rounded clip, the focus ring sits within the row. */
+.profile:focus-visible {
+  outline-offset: -2px;
+}
+
+/* The medallion keeps its size beside a long name. */
+.medal {
+  flex: none;
+}
+
+.text {
+  display: grid;
+  flex: 1;
+  gap: var(--space-0-5);
+  min-width: 0;
+}
+
+.name {
+  font: var(--text-title3);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+/* caret-right, turning down while the editor is open. */
+.chevron {
+  flex: none;
+  color: var(--ink-3);
+  transition: transform var(--dur-fade) var(--ease-standard);
+}
+
+.profile[aria-expanded='true'] .chevron {
+  transform: rotate(90deg);
+}
+
+/* The emoji grid, inset like the group's content. */
+.picker {
+  padding: var(--space-3) var(--group-padding) var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile,
+  .chevron {
+    transition: none;
+  }
+}

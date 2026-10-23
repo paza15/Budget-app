@@ -1,0 +1,8 @@
+.picker {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.empty {
+  justify-self: start;
+}

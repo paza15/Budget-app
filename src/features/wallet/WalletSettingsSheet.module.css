@@ -1,0 +1,10 @@
+/* Wallet settings (DESIGN.md §9.26): two groups, 12 and 26 below the header. Section gives
+   untitled groups 20 above; the doubled classes win over that whatever order the sheets load in. */
+
+.first.first {
+  margin-top: var(--space-3);
+}
+
+.next.next {
+  margin-top: calc(var(--space-6) + var(--space-0-5));
+}

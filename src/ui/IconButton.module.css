@@ -1,0 +1,91 @@
+/* Icon buttons: 44pt (or 50pt) circles (DESIGN.md §9.2, §9.12). */
+.button {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ink);
+  transition:
+    transform var(--dur-press) var(--ease-standard),
+    color var(--dur-fade) var(--ease-standard);
+}
+
+.button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--press);
+  opacity: 0;
+  transition: opacity var(--dur-press) var(--ease-standard);
+  pointer-events: none;
+}
+
+.button:active:not(:disabled)::after {
+  opacity: 1;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  color: var(--ink-disabled);
+}
+
+.md {
+  width: var(--touch-min);
+  height: var(--touch-min);
+}
+
+.lg {
+  width: var(--add-button-size);
+  height: var(--add-button-size);
+}
+
+.tinted {
+  color: var(--accent-ink);
+}
+
+.filled {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.filled:disabled {
+  background: var(--surface-2);
+}
+
+/* Glass (DESIGN.md §7): it always sits on opaque paper, so it needs no blur. */
+.glass,
+.group {
+  background: var(--glass);
+  box-shadow:
+    inset 0 0 0 0.5px var(--glass-edge),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-control);
+}
+
+/* The fieldset only groups; the capsule inside draws. */
+.groupBox {
+  display: inline-block;
+  flex: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  height: var(--touch-min);
+  border-radius: var(--radius-pill);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:active:not(:disabled) {
+    transform: none;
+  }
+}

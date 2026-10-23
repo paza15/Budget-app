@@ -1,0 +1,4 @@
+/* 26 below the group above (DESIGN.md §9.7 form spacing), as wide as the groups. */
+.bar {
+  margin: calc(var(--space-6) + var(--space-0-5)) var(--gutter) 0;
+}

@@ -1,0 +1,10 @@
+/* Where it went (docs/DESIGN.md §9.22). The gaps between segments show the --surface below. */
+.root {
+  position: relative;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}

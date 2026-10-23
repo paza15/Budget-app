@@ -1,0 +1,11 @@
+/* "See the review" under a closed statement (EXTRAS.md §1.7): full content width, 14 below the
+   group; the next section keeps its 36 gap. */
+.review {
+  margin-top: calc(var(--space-3) + var(--space-0-5));
+  padding: 0 var(--gutter);
+}
+
+/* Every card empty: the invitation sits where the first card would. */
+.empty {
+  margin-top: var(--space-5);
+}

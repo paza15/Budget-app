@@ -1,0 +1,74 @@
+/* The monogram medallion (DESIGN.md §9.9): the engraved rim around an SF Pro 600 initial. */
+.medal {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  color: var(--ink);
+}
+
+.rim {
+  position: absolute;
+  inset: 0;
+}
+
+.initial {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.emoji {
+  line-height: 1;
+}
+
+/* Without a name or emoji: the light person glyph, centred in the rim (EXTRAS.md §3.1). */
+.person {
+  position: relative;
+  color: var(--ink);
+}
+
+.sm {
+  width: 26px;
+  height: 26px;
+}
+
+.sm .initial {
+  font-size: 12px;
+}
+
+.sm .emoji {
+  font-size: 14px;
+}
+
+.md {
+  width: 32px;
+  height: 32px;
+}
+
+.md .initial {
+  font-size: 15px;
+}
+
+.md .emoji {
+  font-size: 17px;
+}
+
+.lg {
+  width: 64px;
+  height: 64px;
+}
+
+.lg .initial {
+  font-size: 26px;
+}
+
+/* At 64px the milled edge is drawn a little heavier, as in the reference (0.4 of the 32-unit
+   drawing at twice its size), so it keeps the weight it has at 32px. */
+.lg .rim {
+  stroke-width: 0.8px;
+}
+
+.lg .emoji {
+  font-size: 32px;
+}

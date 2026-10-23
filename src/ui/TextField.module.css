@@ -1,0 +1,141 @@
+/* Text fields (DESIGN.md §9.14). Inputs are at least 16px so iOS never zooms. */
+.field {
+  position: relative;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--form-row-min, 50px);
+  padding: 0 var(--group-padding);
+}
+
+/* 11 above and below: a label that wraps keeps that much from the group's edges. On the label,
+   not the row: one line (22) plus 22 still fits a 44 row, so single-line rows keep their height. */
+.label {
+  flex: none;
+  min-width: 48px;
+  padding-top: calc(var(--space-3) - 1px);
+  padding-bottom: calc(var(--space-3) - 1px);
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: var(--touch-min);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font: var(--text-body);
+  font-size: var(--text-input);
+  color: var(--ink);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input::placeholder {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+.input:disabled {
+  color: var(--ink-disabled);
+  -webkit-text-fill-color: var(--ink-disabled);
+}
+
+/* The clear button: a 44pt target that reaches into the row's padding. */
+.clear {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  margin-right: calc(-1 * var(--space-3));
+  color: var(--ink-3);
+}
+
+.clear:focus-visible {
+  outline-offset: -4px;
+}
+
+/* Rows and form fields show it only while editing; display: none also takes it out of the
+   accessibility tree. The search field shows it whenever it holds text. */
+.row .clear,
+.form .clear {
+  display: none;
+}
+
+.row:focus-within .clear,
+.form:focus-within .clear {
+  display: grid;
+}
+
+.error {
+  padding: 0 var(--group-padding) var(--space-3);
+  font: var(--text-footnote);
+  color: var(--critical-ink);
+}
+
+/* ── form: label --ink at the start, the value right-aligned ── */
+.form .label {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--ink);
+}
+
+.form .input {
+  flex: 1 1 50%;
+  text-align: right;
+}
+
+/* iOS draws the value of a date or month field in a shrink-wrapped inner box of a flex input, so
+   text-align alone does not move it: in form rows an auto margin pushes it to the end. */
+.input::-webkit-date-and-time-value {
+  text-align: inherit;
+}
+
+.form .input::-webkit-date-and-time-value {
+  margin-right: 0;
+  margin-left: auto;
+  text-align: right;
+}
+
+/* ── search: a 44pt capsule on --surface-2 with a 17px magnifier in --ink-2 ── */
+.search .line {
+  gap: var(--space-2);
+  min-height: var(--touch-min);
+  padding: 0 var(--space-1) 0 calc(var(--space-3) + var(--space-0-5));
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+}
+
+.search .clear {
+  margin-right: 0;
+}
+
+.searchIcon {
+  color: var(--ink-2);
+}
+
+/* The field draws its own magnifier and clear button; WebKit's built-in ones would double them. */
+.input::-webkit-search-decoration,
+.input::-webkit-search-cancel-button,
+.input::-webkit-search-results-button,
+.input::-webkit-search-results-decoration {
+  display: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search .error {
+  padding: var(--space-2) calc(var(--space-3) + var(--space-0-5)) 0;
+}
+
+.disabled .label {
+  color: var(--ink-disabled);
+}

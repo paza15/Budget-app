@@ -1,0 +1,18 @@
+/* The privacy cover (docs/SPEC.md §3.8, DESIGN.md §9.24): opaque --bg with the 64px mark in
+   --ink-3, above everything, while the root element carries data-cover="on". */
+
+.cover {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cover);
+  display: none;
+  place-items: center;
+  background: var(--bg);
+  color: var(--ink-3);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+:global(:root[data-cover='on']) .cover {
+  display: grid;
+}

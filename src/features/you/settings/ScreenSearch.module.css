@@ -1,0 +1,4 @@
+/* The search capsule 8 under the large title, inset like the groups (20). */
+.bar {
+  padding: var(--space-2) var(--gutter) 0;
+}

@@ -1,0 +1,106 @@
+/* Category detail (SPEC §3.2, DESIGN.md §9.2): the 56px coin and the name in Title 1, 14 apart. */
+.heading {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-3) + var(--space-0-5));
+  min-width: 0;
+}
+
+.name {
+  min-width: 0;
+  font: var(--text-title1);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* The total and "spent this month" beside the compact month switcher, 18 below the title. */
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: calc(var(--space-4) + var(--space-0-5)) var(--gutter) 0;
+}
+
+.total {
+  min-width: 0;
+}
+
+.caption {
+  margin-top: 3px;
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+.month {
+  margin-left: auto;
+}
+
+/* The limit: a group 16 below, "Monthly limit" and the limit's amount, then the meter. */
+.limit {
+  margin: var(--space-4) var(--gutter) 0;
+  padding: var(--space-3) var(--group-padding);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.limitLine {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  font: var(--text-body);
+  color: var(--ink);
+}
+
+.figure {
+  flex: none;
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Spending per day in the category's ink, in a group 12 below (DESIGN.md §9.22: padding 14 16 10). */
+.chart {
+  margin: var(--space-3) var(--gutter) 0;
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding) calc(var(--space-2) + var(--space-0-5));
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* "12 entries": words, so SF Pro Subhead in --ink-2, lined up with the row amounts. */
+.count {
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.none {
+  display: flex;
+  align-items: center;
+  min-height: var(--row-min);
+  padding: var(--space-3) var(--group-padding);
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* "Add expense": a plus-circle and Body in --accent-ink, 44 tall, aligned with the group's text. */
+.add {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  min-height: var(--touch-min);
+  margin: calc(var(--space-1) + var(--space-0-5)) var(--gutter) 0;
+  padding: 0 var(--group-padding);
+  border-radius: var(--radius-pill);
+  font: var(--text-body);
+  color: var(--accent-ink);
+}
+
+.add:active {
+  background: var(--press);
+}
+
+.gone {
+  margin-top: var(--space-7);
+}

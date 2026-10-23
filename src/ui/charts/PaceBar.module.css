@@ -1,0 +1,50 @@
+/* The pace bar: the month as a ruler (docs/DESIGN.md §9.5). */
+.root {
+  position: relative;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.track {
+  fill: var(--track);
+}
+
+.fill {
+  fill: var(--ink);
+}
+
+.ahead {
+  fill: var(--warning-mark);
+}
+
+.over {
+  fill: var(--critical);
+}
+
+/* Today and the days ahead are paler; the days gone, and every day of a past month, are --ink-3. */
+.tick {
+  fill: var(--mark);
+}
+
+.tick[data-past] {
+  fill: var(--ink-3);
+}
+
+.notch {
+  fill: var(--ink);
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 var(--space-3);
+  margin: calc(var(--space-1) + var(--space-0-5)) 0 0;
+  font: var(--text-footnote);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}

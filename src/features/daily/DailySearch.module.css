@@ -1,0 +1,40 @@
+/* Daily's search (DESIGN.md §9.14): the capsule at the gutter, "Cancel" plain beside it. */
+.search {
+  padding-top: var(--space-1);
+}
+
+/* "Cancel" brings its own side padding, so the bar ends 2 short of the gutter's edge and the word
+   lines up with the controls of the nav row. */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-0-5) 0 var(--gutter);
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+}
+
+.cancel {
+  flex: none;
+}
+
+.hint,
+.more {
+  padding: var(--space-3) calc(var(--gutter) + var(--group-padding)) 0;
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.more {
+  padding-top: var(--space-2);
+}
+
+/* No results: the empty state on paper, like the list it stands for. */
+.emptyGroup {
+  margin: var(--space-6) var(--gutter) 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}

@@ -1,0 +1,5 @@
+/* "Not this month": its own group, 12 under the footer, headed by a disclosure row. The doubled
+   class wins over the group's own margin whatever order the style sheets load in. */
+.group.group {
+  margin-top: var(--space-3);
+}

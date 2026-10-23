@@ -1,0 +1,411 @@
+/* The foundations board, laid out like the reference boards (docs/design/reference.html
+   ?screen=kit and ?screen=parts). Sections keep their own gutters; other content sits in .inset. */
+.gallery {
+  /* A grid item of GalleryApp's main: without this, content that shrinks to fit (the hero figure)
+     would size the column by its natural width instead. */
+  min-width: 0;
+  /* GalleryApp pads its main by 16px; the boards bring their own gutters. */
+  margin: calc(-1 * var(--space-4));
+  padding-bottom: var(--space-8);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.header {
+  padding: var(--space-6) var(--gutter) 0;
+}
+
+.eyebrow {
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.largeTitle {
+  margin-top: var(--space-3);
+  font: var(--text-large-title);
+}
+
+.board {
+  display: grid;
+  /* Columns never grow past the page: inputs and figures shrink to fit instead. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(var(--space-2) + var(--space-0-5));
+  padding-top: var(--space-2);
+}
+
+.boardTitle {
+  margin: var(--space-6) var(--gutter) 0;
+  font: var(--text-headline);
+}
+
+.note {
+  margin: 0 var(--gutter);
+  font: var(--text-footnote);
+  color: var(--ink-2);
+}
+
+.inset {
+  margin: 0 var(--gutter);
+}
+
+.stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(var(--space-2) + var(--space-0-5));
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--space-2) + var(--space-0-5));
+}
+
+.group {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* A strip of sheet paper, so groups show their in-sheet look (--surface-raised, 16 from the edges). */
+.sheetSurface {
+  padding: var(--space-1) 0 var(--space-5);
+  background: var(--surface-sheet);
+}
+
+.pickerPad {
+  padding: var(--space-4) var(--group-padding);
+}
+
+/* ── Hero cards (the kit board) ── */
+.cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(var(--space-2) + var(--space-0-5));
+  margin: 0 var(--gutter);
+}
+
+.heroCard {
+  display: grid;
+  padding: calc(var(--space-3) + var(--space-0-5)) var(--group-padding) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.caption {
+  margin-bottom: var(--space-1);
+  font: var(--text-caption);
+  color: var(--ink-3);
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 22px;
+}
+
+.heroLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.critical {
+  font-weight: 600;
+  color: var(--critical-ink);
+}
+
+.criticalIcon {
+  color: var(--critical);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: var(--text-subhead);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* 6px under the label (DESIGN.md §9.4); BigAmount itself sets the −3px side bearing. */
+.heroFigure {
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+}
+
+.heroButton {
+  margin-top: calc(var(--space-3) + var(--space-0-5));
+}
+
+.figureRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* The Closed seal beside the figure: 54px, the caption 5 under it, centred (DESIGN.md §3.2). */
+.seal {
+  display: grid;
+  flex: none;
+  justify-items: center;
+  gap: 5px;
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+  font: var(--text-footnote);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* The compact seal: 22px, 7 from "Closed 31 Aug" in Subhead 500. */
+.sealChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: var(--text-subhead);
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.narrow,
+.narrower {
+  display: flex;
+  box-shadow: inset -1px 0 0 var(--hairline-strong);
+}
+
+.narrow {
+  width: 240px;
+}
+
+.narrower {
+  width: 150px;
+}
+
+/* ── Ledger, as Home lays it out (DESIGN.md §9.6) ── */
+.ledger {
+  padding: calc(var(--space-1) + var(--space-0-5)) var(--group-padding) calc(var(--space-3) + var(--space-0-5));
+}
+
+.ledgerRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px 1fr auto 20px;
+  align-items: center;
+  min-height: var(--touch-min);
+  font: var(--text-body);
+}
+
+.ledgerRow + .ledgerRow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 22px;
+  height: var(--hairline-width);
+  background: var(--hairline);
+}
+
+.ledgerOp {
+  font: var(--text-figure);
+  color: var(--ink-3);
+}
+
+.ledgerCell {
+  text-align: right;
+}
+
+.ledgerResult {
+  min-height: var(--row-min);
+}
+
+.ledgerResult::before {
+  display: none;
+}
+
+.ledgerResult .ledgerOp {
+  color: var(--ink);
+}
+
+.ledgerLabel {
+  font-weight: 600;
+}
+
+.ledgerRules {
+  position: relative;
+  display: inline-block;
+}
+
+/* The sum rule on the result row's top edge and the brass double rule 9 below the figure. */
+.ledgerRules::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  right: 0;
+  width: var(--colw);
+  height: var(--rule-width);
+  background: var(--ink-3);
+}
+
+.ledgerRules::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -9px;
+  width: var(--colw);
+  height: calc(2 * var(--rule-width) + var(--double-rule-gap));
+  border-top: var(--rule-width) solid var(--brass);
+  border-bottom: var(--rule-width) solid var(--brass);
+}
+
+.ledgerResult[data-over] .ledgerRules::after {
+  border-color: var(--critical);
+}
+
+/* ── Coins and engravings ── */
+.engravings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+/* The lock screen's vault (DESIGN.md §9.24): the 236px rosette with the 64px mark at its centre. */
+.vault {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 236px;
+  height: 236px;
+  margin: var(--space-2) auto;
+}
+
+.rosette {
+  position: absolute;
+  inset: 0;
+}
+
+.mark {
+  color: var(--ink);
+}
+
+/* ── Chips and fields ── */
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.searchRow > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Limits (DESIGN.md §9.21) ── */
+.limit {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: var(--space-3);
+  padding: var(--space-3) var(--group-padding);
+}
+
+.limitLine {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--space-2) + var(--space-0-5));
+  font: var(--text-body);
+}
+
+.figure {
+  font: var(--text-figure);
+  font-variant-numeric: tabular-nums;
+}
+
+.limitCard {
+  margin: var(--space-5) var(--gutter) 0;
+  padding: var(--space-3) var(--group-padding);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* ── Screens ── */
+.frame {
+  position: relative;
+  height: 560px;
+  overflow: hidden;
+  border-top: var(--hairline-width) solid var(--hairline-strong);
+  border-bottom: var(--hairline-width) solid var(--hairline-strong);
+}
+
+.frameShort {
+  height: 320px;
+}
+
+.monthTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) + var(--space-0-5));
+  min-height: var(--touch-min);
+  font: var(--text-month);
+  letter-spacing: -0.005em;
+}
+
+.monthCaret {
+  margin-top: calc(var(--space-1) + var(--space-0-5));
+  color: var(--ink-3);
+}
+
+.hero {
+  padding: calc(var(--space-2) + var(--space-0-5)) var(--gutter) 0;
+}
+
+.sentence {
+  margin-top: calc(var(--space-2) + var(--space-0-5));
+  font: var(--text-body);
+}
+
+.subline {
+  margin-top: var(--space-0-5);
+  font: var(--text-subhead);
+  color: var(--ink-2);
+}
+
+.categoryTitle {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-3) + var(--space-0-5));
+}
+
+.title1 {
+  font: var(--text-title1);
+}
+
+/* ── Icons ── */
+.icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--touch-min), 1fr));
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.iconCell {
+  display: grid;
+  place-items: center;
+  height: var(--touch-min);
+  color: var(--ink);
+}

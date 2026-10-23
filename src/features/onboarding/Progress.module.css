@@ -1,0 +1,28 @@
+/* The progress ruler (DESIGN.md §9.25), sized like the trailing controls of a nav row. */
+.progress {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  padding-right: var(--space-1);
+}
+
+.ruler {
+  display: block;
+  overflow: visible;
+}
+
+.baseline {
+  fill: var(--hairline-strong);
+}
+
+.done {
+  fill: var(--ink-3);
+}
+
+.ahead {
+  fill: var(--mark);
+}
+
+.current {
+  fill: var(--ink);
+}

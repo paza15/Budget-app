@@ -1,0 +1,6 @@
+/* Icons are drawn at whole-pixel sizes in currentColor (DESIGN.md §8). */
+.icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
