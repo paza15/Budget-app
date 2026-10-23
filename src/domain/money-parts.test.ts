@@ -12,7 +12,8 @@ describe('formatMoney with symbol: false', () => {
     expect(formatMoney(-350, { currency: 'EUR', locale: 'de-DE', symbol: false })).toBe('-3,50')
     expect(formatMoney(350, { currency: 'EUR', locale: 'de-DE', symbol: false, sign: 'always' })).toBe('+3,50')
     expect(formatMoney(35000, { currency: 'JPY', locale: 'en-US', symbol: false })).toBe('350')
-    expect(formatMoney(123456, { currency: 'CHF', locale: 'de-CH', symbol: false }).replace(spaces, ' ')).toBe(
+    // Newer CLDR data writes the Swiss grouping as ' and older data as ’ (see money.test.ts).
+    expect(formatMoney(123456, { currency: 'CHF', locale: 'de-CH', symbol: false }).replace(spaces, ' ').replace(/'/g, '’')).toBe(
       '1’234.56',
     )
   })

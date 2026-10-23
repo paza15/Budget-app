@@ -25,8 +25,14 @@ import {
  * spell out an expected string compare after turning both into plain spaces; tests that need the
  * exact characters compute the expectation with Intl itself.
  */
+/**
+ * Compares formatted output across ICU versions: no-break spaces become plain ones, and de-CH's
+ * group separator becomes \u2019. Newer CLDR data writes the Swiss grouping as a plain apostrophe
+ * (1'234.56) where older data writes \u2019 (1\u2019234.56), so Node 22 on a laptop and on the CI runner
+ * disagree. The parser accepts both (AMOUNT_CHARACTERS).
+ */
 function spaced(s: string): string {
-  return s.replace(/[\u00A0\u202F]/g, ' ')
+  return s.replace(/[\u00A0\u202F]/g, ' ').replace(/'/g, '\u2019')
 }
 
 /** The number locales of §5.3 (NUMBER_LOCALES) with the currency each region uses. */
